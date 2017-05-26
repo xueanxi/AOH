@@ -22,7 +22,7 @@ public class BattleEngine {
     private static BattleEngine mInstance;
 
     // 常量
-    private int ACTION_VALUES_MAX = 500;         // 最大行动值，角色的行动值会随时间增加，当行动值到达最大时，就可以发起进攻
+    private int ACTION_VALUES_MAX = 1000;         // 最大行动值，角色的行动值会随时间增加，当行动值到达最大时，就可以发起进攻
     private int TIME_ACTION_WIAT = 200;          // 行动值增加的时间间隔
     private int TIME_PLAYER_ATTACT = 1000;        // 武将进攻花费的时间
 
@@ -57,10 +57,10 @@ public class BattleEngine {
         while (mIsBattleing && (isBattleFinish(p1, p2) == 0)) {
             PlayerModel actionPlayer = getActionPlayer(playerLists);
             int currentActionCamp = actionPlayer.getCamp();
-            if(currentActionCamp == p1.getCamp()){
-                attack(actionPlayer,p1,p2);
-            }else{
-                attack(actionPlayer,p2,p1);
+            if (currentActionCamp == p1.getCamp()) {
+                attack(actionPlayer, p1, p2);
+            } else {
+                attack(actionPlayer, p2, p1);
             }
         }
     }
@@ -115,7 +115,7 @@ public class BattleEngine {
         }
     }
 
-    private void attack(PlayerModel actionPlayer, TeamModel actionTeam, TeamModel beAttackedTeam){
+    private void attack(PlayerModel actionPlayer, TeamModel actionTeam, TeamModel beAttackedTeam) {
         // TODO: 5/25/17  这里要处理阵法的Buff效果，然后再进行攻击
         // TODO: 5/25/17  这里要处理actionPlayer的技能释放效果
         int actionCamp = TeamModel.CAMP_NEUTRAL;  // 当前行动的阵营
@@ -124,16 +124,16 @@ public class BattleEngine {
         if (beAttackPlayer == null) {
             mIsBattleFinish = true;
             mIsBattleing = false;
-            BattleLog.log(TAG,(actionCamp == TeamModel.CAMP_LEFT ? "敌方":"我方") +" 已经没有可以战斗的人员。");
-        }else{
+            BattleLog.log(TAG, (actionCamp == TeamModel.CAMP_LEFT ? "敌方" : "我方") + " 已经没有可以战斗的人员。");
+        } else {
             String actionPlayerName = actionPlayer.getName();
             String beAttackedPlayName = beAttackPlayer.getName();
             BattleLog.log(TAG, actionPlayerName + " 对 " + beAttackedPlayName + "发起攻击");
             //随机判断对方进行格档还是闪避，
             if (RandomUtils.flipCoin()) {
-                attackBlock(actionPlayer,beAttackPlayer);
+                attackBlock(actionPlayer, beAttackPlayer);
             } else {
-                attackDodge(actionPlayer,beAttackPlayer);
+                attackDodge(actionPlayer, beAttackPlayer);
             }
         }
     }
@@ -190,7 +190,7 @@ public class BattleEngine {
      * @param p1
      * @param p2
      */
-    public void attackDodge(PlayerModel p1,PlayerModel p2) {
+    public void attackDodge(PlayerModel p1, PlayerModel p2) {
         //进行躲闪
         float blockPhysic = 0.1f;       //成功躲闪，物理攻击只承受10%伤害
         float blockMagic = 0.3f;        //成功躲闪，魔法攻击只承受30%伤害
@@ -201,11 +201,11 @@ public class BattleEngine {
         int reduceHP = 0;
         if (RandomUtils.isHappen(accuracy)) {
             // 敌人躲闪失败,躲闪的伤害减免系数变为1
-            BattleLog.log(TAG, p2.getName() + "闪避失败 ！！！ 他的躲闪率为" + (1f - accuracy) * 100 + "% 他的Dodge为"+p2.getDodge());
+            BattleLog.log(TAG, p2.getName() + "闪避失败 ！！！ 他的躲闪率为" + (1f - accuracy) * 100 + "% 他的Dodge为" + p2.getDodge());
             blockPhysic = 1f;
             blockMagic = 1f;
         } else {
-            BattleLog.log(TAG, p2.getName() + "闪避成功 ！！！ 他的躲闪率为" + (1f - accuracy) * 100 + "% 他的Dodge为"+p2.getDodge());
+            BattleLog.log(TAG, p2.getName() + "闪避成功 ！！！ 他的躲闪率为" + (1f - accuracy) * 100 + "% 他的Dodge为" + p2.getDodge());
         }
 
         if (p1.getSkillLists() == null) {
@@ -250,10 +250,12 @@ public class BattleEngine {
             try {
                 BattleLog.log(TAG, "所有人都没有达到进攻活跃值，继续等待。。。");
                 for (PlayerModel player : allPlayers) {
+
                     BattleLog.log(TAG, player.getName() + "当前的活跃值为" + player.getActiveValues() + " 剩下" + player.getHP() + "生命值。");
                 }
                 Thread.sleep(TIME_ACTION_WIAT);
                 for (PlayerModel player : allPlayers) {
+                    if (player.getHP() <= 0) continue;
                     player.setActiveValues(player.getActiveValues() + player.getSpeed());
                 }
                 continue;
@@ -294,7 +296,7 @@ public class BattleEngine {
 
         // 通过循环，获取行动值最高的武将
         for (PlayerModel player : players) {
-            if (player.getActiveValues() > maxValues) {
+            if (player.getActiveValues() > maxValues && player.getHP() > 0) {
                 maxValues = player.getActiveValues();
                 maxPlayer = player;
             }

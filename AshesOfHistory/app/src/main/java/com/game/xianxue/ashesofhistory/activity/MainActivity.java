@@ -53,13 +53,23 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mSc != null) {
+            unbindService(mSc);
+            mService = null;
+        }
+
+    }
+
     private void startBattle() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 SystemClock.sleep(2000);
                 PlayerModel play1 = PlayerManager.getCharacterFromDataBaseByName("关羽");
-                PlayerModel play2 = PlayerManager.getCharacterFromDataBaseByName("刘备");
+                PlayerModel play2 = PlayerManager.getCharacterFromDataBaseByName("赵云");
                 PlayerModel play3 = PlayerManager.getCharacterFromDataBaseByName("张飞");
                 PlayerModel play4 = PlayerManager.getCharacterFromDataBaseByName("马超");
                 PlayerModel play5 = PlayerManager.getCharacterFromDataBaseByName("典韦");
