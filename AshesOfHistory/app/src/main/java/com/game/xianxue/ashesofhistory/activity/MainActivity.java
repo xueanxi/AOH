@@ -69,29 +69,29 @@ public class MainActivity extends AppCompatActivity {
             public void run() {
                 SystemClock.sleep(2000);
                 PlayerModel play1 = PlayerManager.getCharacterFromDataBaseByName("关羽");
-                PlayerModel play2 = PlayerManager.getCharacterFromDataBaseByName("赵云");
-                PlayerModel play3 = PlayerManager.getCharacterFromDataBaseByName("张飞");
-                PlayerModel play4 = PlayerManager.getCharacterFromDataBaseByName("马超");
-                PlayerModel play5 = PlayerManager.getCharacterFromDataBaseByName("典韦");
-                PlayerModel play6 = PlayerManager.getCharacterFromDataBaseByName("许诸");
+                PlayerModel play2 = PlayerManager.getCharacterFromDataBaseByName("诸葛亮");
+                //PlayerModel play3 = PlayerManager.getCharacterFromDataBaseByName("张飞");
+                //PlayerModel play4 = PlayerManager.getCharacterFromDataBaseByName("马超");
+                //PlayerModel play5 = PlayerManager.getCharacterFromDataBaseByName("典韦");
+                //PlayerModel play6 = PlayerManager.getCharacterFromDataBaseByName("许诸");
 
-                play1.setLevel(5);
-                play2.setLevel(5);
-                play3.setLevel(5);
-                play4.setLevel(5);
-                play5.setLevel(5);
-                play6.setLevel(5);
+                play1.setLevel(1);
+                play2.setLevel(1);
+                //play3.setLevel(1);
+                //play4.setLevel(1);
+                //play5.setLevel(1);
+                //play6.setLevel(1);
 
                 ArrayList<PlayerModel> ourPlayer = new ArrayList<PlayerModel>();
                 ourPlayer.add(play1);
-                ourPlayer.add(play2);
-                ourPlayer.add(play3);
+                //ourPlayer.add(play2);
+                //ourPlayer.add(play3);
                 TeamModel t1 = new TeamModel(TeamModel.CAMP_LEFT, ourPlayer);
 
                 ArrayList<PlayerModel> enemyPlayer = new ArrayList<PlayerModel>();
-                enemyPlayer.add(play4);
-                enemyPlayer.add(play5);
-                enemyPlayer.add(play6);
+                enemyPlayer.add(play2);
+                //enemyPlayer.add(play5);
+                //enemyPlayer.add(play6);
                 TeamModel t2 = new TeamModel(TeamModel.CAMP_RIGHT, enemyPlayer);
 
                 if (mService != null) {

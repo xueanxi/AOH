@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<all_character>
+    <item>
+        <skill_id>0</skill_id>
+        <name>关羽</name>
+        <level>1</level>
+        <naturetype>1</naturetype>
+        <strength_Initial>17</strength_Initial>
+        <intellect_Initial>13</intellect_Initial>
+        <physique_Initial>16</physique_Initial>
+        <dexterity_Initial>14</dexterity_Initial>
+        <spirit_Initial>14</spirit_Initial>
+        <luck_Initial>12</luck_Initial>
+        <fascination_Initial>18</fascination_Initial>
+        <skill_lists>关羽技能</skill_lists>
+    </item>
+
+</all_character>

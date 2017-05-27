@@ -122,6 +122,36 @@
 
     <item>
         <character_id>8</character_id>
+        <name>诸葛亮</name>
+        <sexuality>0</sexuality>
+        <aptitude>4.6</aptitude>
+        <strength_Initial>10</strength_Initial>
+        <intellect_Initial>20</intellect_Initial>
+        <physique_Initial>10</physique_Initial>
+        <dexterity_Initial>12</dexterity_Initial>
+        <spirit_Initial>20</spirit_Initial>
+        <luck_Initial>18</luck_Initial>
+        <fascination_Initial>16</fascination_Initial>
+        <skill_lists>诸葛亮技能</skill_lists>
+    </item>
+
+    <item>
+        <character_id>9</character_id>
+        <name>许攸</name>
+        <sexuality>0</sexuality>
+        <aptitude>2.8</aptitude>
+        <strength_Initial>8</strength_Initial>
+        <intellect_Initial>15</intellect_Initial>
+        <physique_Initial>7</physique_Initial>
+        <dexterity_Initial>8</dexterity_Initial>
+        <spirit_Initial>12</spirit_Initial>
+        <luck_Initial>13</luck_Initial>
+        <fascination_Initial>8</fascination_Initial>
+        <skill_lists>许攸技能</skill_lists>
+    </item>
+
+    <item>
+        <character_id>100</character_id>
         <name>步兵</name>
         <sexuality>0</sexuality>
         <aptitude>1.5</aptitude>
@@ -136,7 +166,7 @@
     </item>
 
     <item>
-        <character_id>9</character_id>
+        <character_id>101</character_id>
         <name>骑兵</name>
         <sexuality>0</sexuality>
         <aptitude>1.8</aptitude>
@@ -151,7 +181,7 @@
     </item>
 
     <item>
-        <character_id>10</character_id>
+        <character_id>102</character_id>
         <name>弓箭兵</name>
         <sexuality>0</sexuality>
         <aptitude>1.5</aptitude>

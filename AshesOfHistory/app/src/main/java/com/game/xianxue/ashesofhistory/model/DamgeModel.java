@@ -1,62 +1,46 @@
 package com.game.xianxue.ashesofhistory.model;
 
 
-import com.game.xianxue.ashesofhistory.utils.RandomUtils;
+import java.io.Serializable;
 
 /**
- * 伤害计算模型
+ * 伤害模型
  */
-public class DamgeModel {
+public class DamgeModel implements Serializable {
+
+    public static final int DAMGE_TYPE_PHYSICS = 1;         // 伤害为物理伤害
+    public static final int DAMGE_TYPE_MAGIC = 2;           // 伤害为魔法伤害
+    public static final int DAMGE_TYPE_REAL = 3;            // 伤害为真实伤害
+    public static final int DAMGE_TYPE_PHYSICS_PERCENT = 4; // 百分比物理伤害
+    public static final int DAMGE_TYPE_MAGIC_PERCENT = 5;   // 百分比魔法伤害
+    public static final int DAMGE_TYPE_REAL_PERCENT = 6;    // 百分比真实伤害
+
+    private int level;                         // 技能等级
+    public int damage1;                        // 技能伤害固定部分
+    public float damage2;                      // 技能伤害随武将浮动部分,一般是一个百分比浮点数
+    public int damageType;         // 伤害类型
+    public int time;               // 伤害持续回合，普通技能一般都是一个回合，除了那些持续类型的伤害
 
     /**
-     * 传入攻击力，抗性，穿透。
-     * 返回造成的伤害
-     *
-     * @param PhysicDamage
-     * @param Armor
-     * @param Penetrate
+     * 一个技能如果比较特殊，需要重写这个方法来计算伤害
+     * @param player
+     * @return
      */
-    public static int attack(float PhysicDamage, float Armor, float Penetrate) {
-        Armor -= Penetrate;
-        float result = PhysicDamage * (1f - (Armor / (Armor + 200f)));
-        result = result * RandomUtils.getRandombetween(0.95f, 1.05f);// 造成的伤害随机波动
-        return ((int) (Math.ceil(result)));
+    public int getDamageResult(PlayerModel player) {
+        if (DAMGE_TYPE_PHYSICS == damageType) {
+            return (int) Math.ceil(player.getPhysicDamage() * damage2 + damage1);
+        } else if (DAMGE_TYPE_MAGIC == damageType) {
+            return (int) Math.ceil(player.getMagicDamage() * damage2 + damage1);
+        } else{
+            return 0;
+        }
     }
 
     /**
-     * 传入攻击力，抗性，百分比穿透。
-     * 返回造成的伤害
-     *
-     * @param PhysicDamage
-     * @param Armor
-     * @param Penetrate
+     * 如果技能的效果和等级有关，需要在这里处理
+     * @param level
      */
-    public static int attackWithPercent(float PhysicDamage, float Armor, float Penetrate) {
-        Armor = Armor * (1f - Penetrate);
-        float result = PhysicDamage * (1f - (Armor / (Armor + 200f)));
-        result = result * RandomUtils.getRandombetween(0.95f, 1.05f);// 造成的伤害随机波动
-        return ((int) (Math.ceil(result)));
-    }
+    public void setLevel(int level){
 
-    /**
-     * 传入命中值，和格档值
-     * 返回 格档失败的概率，也就是进攻方，攻击成功的概率
-     *
-     * @param Accuracy
-     * @param Block
-     */
-    public static float block(float Accuracy, float Block) {
-        return Accuracy / (Accuracy + Block);
-    }
-
-    /**
-     * 传入命中值，和躲闪值
-     * 返回 躲闪失败的概率，也就是进攻方，攻击成功的概率
-     *
-     * @param Accuracy
-     * @param Dodge
-     */
-    public static float dodge(float Accuracy, float Dodge) {
-        return Accuracy / (Accuracy + Dodge);
     }
 }

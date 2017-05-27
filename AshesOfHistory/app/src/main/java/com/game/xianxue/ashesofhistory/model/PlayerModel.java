@@ -49,6 +49,7 @@ public class PlayerModel {
      * 技能
      */
     String skillLists = null;
+    ArrayList<SkillModel> skillArrays = null;
     private int level = 0;//等级
 
     /**
@@ -92,57 +93,120 @@ public class PlayerModel {
         this.fascination = fascination;
         this.luck = luck;
 
-        HP = this.strength * 2 + this.physique * 5;                // 生命值
-        experiencePoint = 0;                             // 经验值
-        physicDamage = this.strength * 3 + this.dexterity * 1;     // 物理伤害
-        magicDamage = this.intellect * 3 + this.spirit * 1;        // 魔法伤害
-        realDamage = this.dexterity / 2;                      // 真实伤害
-        physicsPenetrate = 0;                            // 物理穿透
-        magicPenetrate = 0;                              // 魔法穿透
-        accuracy = this.strength + this.intellect * 2 + this.dexterity * 3 + this.spirit * 1 + this.physique + (int) (this.luck * 0.5);//命中率
-        criteRate = this.dexterity * 1 + (int) (this.luck * 0.5f); //暴击率
-        criteDamage = (int) (200 + (this.physique + this.spirit) * 0.1);//暴击伤害
-        armor = this.strength + this.physique * 3;                //护甲（物抗）
-        magicResist = intellect * 2 + this.physique + this.spirit * 3;//魔抗
-        dodge = this.dexterity * 2 + this.spirit + (int) (this.luck * 0.5f);//闪避（闪避成功承受10%的物理伤害 或者 承受30%的魔法伤害）
-        block = this.strength * 3 + this.physique * 2;//格档几率（格档成功只承受30%物理伤害 或者 承受70%魔法伤害）
-        speed = this.dexterity * 3 + this.physique;//速度
-        hpRestore = this.strength + this.physique * 3 + this.spirit;  // 生命恢复
+        HP = calculateHp();                                     // 生命值
+        experiencePoint = 0;                                    // 经验值
+        physicDamage = calculatePhysicDamage();                 // 物理伤害
+        magicDamage = calculateMagicDamage();                   // 魔法伤害
+        realDamage = calculateRealDamage();                     // 真实伤害
+        physicsPenetrate = calculatePhysicsPenetrate();         // 物理穿透
+        magicPenetrate = calculateMagicPenetrate();             // 魔法穿透
+        accuracy = calculateAccuracy();                         // 命中率
+        criteRate = calculateCriteRate();                       // 暴击率
+        criteDamage = calculateCriteDamege();                   // 暴击伤害
+        armor = calculateArmor();                               // 护甲（物抗）
+        magicResist = calculateMagicResist();                   // 魔抗
+        dodge = calculateDodge();                               // 闪避值（闪避成功承受10%的物理伤害 或者 承受30%的魔法伤害）
+        block = calculateBlock();                               // 格档值（格档成功只承受30%物理伤害 或者 承受70%魔法伤害）
+        speed = calculateSpeed();                               // 速度
+        hpRestore = calculateHpRestore();                       // 发起进攻时，生命恢复
         sexuality = isBoy ? 1 : 0; // 男1 女0
     }
 
+    private int calculateHp() {
+        return strength * 3 + physique * 6 + spirit * 1;
+    }
+
+    private int calculatePhysicDamage() {
+        return (int) (strength * 1.5f + dexterity * 0.5f);
+    }
+
+    private int calculateMagicDamage() {
+        return (int) (intellect * 2f + spirit * 1f);
+    }
+
+    private int calculateRealDamage() {
+        return (int) (dexterity * 0.4f + intellect * 0.2f);
+    }
+
+    private int calculatePhysicsPenetrate() {
+        return 0;
+    }
+
+    private int calculateMagicPenetrate() {
+        return 0;
+    }
+
+    private int calculateAccuracy() {
+        return strength + intellect * 2 + dexterity * 3 + spirit * 1 + physique + (int) (luck * 0.5);
+    }
+
+    private int calculateCriteRate() {
+        return dexterity * 1 + (int) (luck * 0.5f);
+    }
+
+    private int calculateCriteDamege() {
+        return (int) (200 + (physique + spirit) * 0.1);
+    }
+
+    private int calculateArmor() {
+        return strength + physique * 3;
+    }
+
+    private int calculateMagicResist() {
+        return intellect * 2 + physique + spirit * 3;
+    }
+
+    private int calculateDodge() {
+        return dexterity * 2 + spirit + (int) (luck * 0.5f);
+    }
+
+    private int calculateBlock() {
+        return strength * 3 + physique * 2;
+    }
+
+    private int calculateSpeed() {
+        return dexterity * 3 + physique + spirit;
+    }
+
+    private int calculateHpRestore() {
+        return strength + physique * 3 + spirit;
+    }
+
+
     /**
      * 设置等级的时候，同时初始化属性
+     *
      * @param level
      */
     public void setLevel(int level) {
         this.level = level;
-        this.strength = getNewAttribute(this.strength_Initial,level);
-        this.intellect = getNewAttribute(this.intellect_Initial,level);
-        this.dexterity = getNewAttribute(this.dexterity_Initial,level);
-        this.physique = getNewAttribute(this.physique_Initial,level);
-        this.spirit = getNewAttribute(this.spirit_Initial,level);
+        strength = getNewAttribute(strength_Initial, level);
+        intellect = getNewAttribute(intellect_Initial, level);
+        dexterity = getNewAttribute(dexterity_Initial, level);
+        physique = getNewAttribute(physique_Initial, level);
+        spirit = getNewAttribute(spirit_Initial, level);
 
-        HP = this.strength * 2 + this.physique * 5;                // 生命值
-        experiencePoint = 0;                             // 经验值
-        physicDamage = this.strength * 3 + this.dexterity * 1;     // 物理伤害
-        magicDamage = this.intellect * 3 + this.spirit * 1;        // 魔法伤害
-        realDamage = this.dexterity / 2;                      // 真实伤害
-        physicsPenetrate = 0;                            // 物理穿透
-        magicPenetrate = 0;                              // 魔法穿透
-        accuracy = this.strength + this.intellect * 2 + this.dexterity * 3 + this.spirit * 1 + this.physique + (int) (this.luck * 0.5);//命中率
-        criteRate = this.dexterity * 1 + (int) (this.luck * 0.5f); //暴击率
-        criteDamage = (int) (200 + (this.physique + this.spirit) * 0.1);//暴击伤害
-        armor = this.strength + this.physique * 3;                //护甲（物抗）
-        magicResist = intellect * 2 + this.physique + this.spirit * 3;//魔抗
-        dodge = this.dexterity * 2 + this.spirit + (int) (this.luck * 0.5f);//闪避（闪避成功承受10%的物理伤害 或者 承受30%的魔法伤害）
-        block = this.strength * 3 + this.physique * 2;//格档几率（格档成功只承受30%物理伤害 或者 承受70%魔法伤害）
-        speed = this.dexterity * 3 + this.physique;//速度
-        hpRestore = this.strength + this.physique * 3 + this.spirit;  // 生命恢复
+        HP = calculateHp();                                     // 生命值
+        experiencePoint = 0;                                    // 经验值
+        physicDamage = calculatePhysicDamage();                 // 物理伤害
+        magicDamage = calculateMagicDamage();                   // 魔法伤害
+        realDamage = calculateRealDamage();                     // 真实伤害
+        physicsPenetrate = calculatePhysicsPenetrate();         // 物理穿透
+        magicPenetrate = calculateMagicPenetrate();             // 魔法穿透
+        accuracy = calculateAccuracy();                         // 命中率
+        criteRate = calculateCriteRate();                       // 暴击率
+        criteDamage = calculateCriteDamege();                   // 暴击伤害
+        armor = calculateArmor();                               // 护甲（物抗）
+        magicResist = calculateMagicResist();                   // 魔抗
+        dodge = calculateDodge();                               // 闪避值（闪避成功承受10%的物理伤害 或者 承受30%的魔法伤害）
+        block = calculateBlock();                               // 格档值（格档成功只承受30%物理伤害 或者 承受70%魔法伤害）
+        speed = calculateSpeed();                               // 速度
+        hpRestore = calculateHpRestore();                       // 发起进攻时，生命恢复
     }
 
     /**
      * 通过等级和初始属性，获得升级之后的属性
+     *
      * @param Initial
      * @param level
      * @return
@@ -465,6 +529,20 @@ public class PlayerModel {
 
     public void setCharacter_id(int character_id) {
         this.character_id = character_id;
+    }
+
+    public ArrayList<SkillModel> getSkillArrays() {
+        if (skillLists == null || skillLists.length() < 1){
+            return null;
+        }else{
+
+        }
+
+            return skillArrays;
+    }
+
+    public void setSkillArrays(ArrayList<SkillModel> skillArrays) {
+        this.skillArrays = skillArrays;
     }
 
     @Override
