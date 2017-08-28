@@ -218,7 +218,7 @@ public class BattleEngine {
             BattleLog.log(TAG, p2.getName() + "闪避成功 ！！！ 他的躲闪率为" + (1f - accuracy) * 100 + "% 他的Dodge为" + p2.getDodge());
         }
 
-        p1.getSkil
+        //p1.getSkil
 
         if (p1.getSkillLists() == null) {
             //技能列表为空，则进行普通攻击。

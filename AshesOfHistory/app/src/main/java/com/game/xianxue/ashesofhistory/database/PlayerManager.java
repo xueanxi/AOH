@@ -72,10 +72,27 @@ public class PlayerManager {
     public static PlayerModel getCharacterFromDataBaseByName(String name) {
         DataBaseHelper helper = new DataBaseHelper();
         PlayerModel player = null;
-        if (helper == null) return player;
         SQLiteDatabase db = helper.getReadableDatabase();
         //String sql = "SELECT * FROM " + PlayerModel.Column.tableName_initial + " WHERE " + PlayerModel.Column.name + " = ? ";
         String selection = PlayerModel.Column.name + " = ? ";
+        String[] args = new String[]{name};
+        Cursor cursor = db.query(PlayerModel.Column.tableName_initial, null, selection, args, null, null, null);
+        if (cursor == null) return player;
+        player = cursorToPlayer(cursor);
+        cursor.close();
+        db.close();
+        return player;
+    }
+
+    /**
+     * SELECT 列名称 FROM 表名称 WHERE 列 运算符 值
+     */
+    public static PlayerModel getCharacterFromDataBaseByEnglishName(String name) {
+        DataBaseHelper helper = new DataBaseHelper();
+        PlayerModel player = null;
+        SQLiteDatabase db = helper.getReadableDatabase();
+        //String sql = "SELECT * FROM " + PlayerModel.Column.tableName_initial + " WHERE " + PlayerModel.Column.name + " = ? ";
+        String selection = PlayerModel.Column.name2 + " = ? ";
         String[] args = new String[]{name};
         Cursor cursor = db.query(PlayerModel.Column.tableName_initial, null, selection, args, null, null, null);
         if (cursor == null) return player;

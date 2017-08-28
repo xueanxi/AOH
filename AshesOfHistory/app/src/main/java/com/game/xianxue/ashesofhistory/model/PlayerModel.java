@@ -568,7 +568,8 @@ public class PlayerModel {
         public static final String tableName_initial = "character_initial";
         public static final String id = "_id";
         public static final String character_id = "character_id";
-        public static final String name = "name";
+        public static final String name = "name";   // 中文名
+        public static final String name2 = "name2"; // 拼音名
         public static final String sexuality = "sexuality";
         public static final String aptitude = "aptitude";
         public static final String strength_Initial = "strength_Initial";

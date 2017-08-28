@@ -150,7 +150,8 @@ public class BattleEngine {
         float blockPhysic = 0.3f;       //成功格档，物理攻击只承受30%伤害
         float blockMagic = 0.7f;        //成功格档，魔法攻击只承受70%伤害
 
-        float accuracy = DamgeModel.block(p1.getAccuracy(), p2.getBlock());
+        //float accuracy = DamgeModel.block(p1.getAccuracy(), p2.getBlock());
+        float accuracy = 0.7f;
 
         int reduceHP = 0;
         if (RandomUtils.isHappen(accuracy)) {
@@ -166,7 +167,8 @@ public class BattleEngine {
             //技能列表为空，则进行普通攻击。
             BattleLog.log(TAG, p1.getName() + "的物理伤害为" + p1.getPhysicDamage() + " 真实伤害为" + p1.getRealDamage() + " " + p2.getName() + "的护甲为" + p2.getArmor());
             // 计算敌方需要减少多少生命值
-            reduceHP = (int) (DamgeModel.attack(p1.getPhysicDamage(), p2.getArmor(), p1.getPhysicsPenetrate()) * blockPhysic) + p1.getRealDamage();
+            //reduceHP = (int) (DamgeModel.attack(p1.getPhysicDamage(), p2.getArmor(), p1.getPhysicsPenetrate()) * blockPhysic) + p1.getRealDamage();
+            reduceHP = 50;
         } else {
             // TODO: 5/24/17 技能攻击的代码处理
         }
@@ -195,8 +197,8 @@ public class BattleEngine {
         float blockPhysic = 0.1f;       //成功躲闪，物理攻击只承受10%伤害
         float blockMagic = 0.3f;        //成功躲闪，魔法攻击只承受30%伤害
 
-        float accuracy = DamgeModel.dodge(p1.getAccuracy(), p2.getDodge());
-
+        //float accuracy = DamgeModel.dodge(p1.getAccuracy(), p2.getDodge());
+        float accuracy = 0.5f;
 
         int reduceHP = 0;
         if (RandomUtils.isHappen(accuracy)) {
@@ -212,7 +214,8 @@ public class BattleEngine {
             //技能列表为空，则进行普通攻击。
             BattleLog.log(TAG, p1.getName() + "的物理伤害为" + p1.getPhysicDamage() + " 真实伤害为" + p1.getRealDamage() + " " + p2.getName() + "的护甲为" + p2.getArmor());
             // 计算敌方需要减少多少生命值
-            reduceHP = (int) (DamgeModel.attack(p1.getPhysicDamage(), p2.getArmor(), p1.getPhysicsPenetrate()) * blockPhysic) + p1.getRealDamage();
+            //reduceHP = (int) (DamgeModel.attack(p1.getPhysicDamage(), p2.getArmor(), p1.getPhysicsPenetrate()) * blockPhysic) + p1.getRealDamage();
+            reduceHP = 50;
         } else {
             // TODO: 5/24/17 技能攻击的代码处理
         }
