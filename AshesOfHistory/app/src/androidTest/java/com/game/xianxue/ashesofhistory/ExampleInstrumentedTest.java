@@ -17,20 +17,18 @@ import static org.junit.Assert.assertEquals;
  */
 @RunWith(AndroidJUnit4.class)
 public class ExampleInstrumentedTest {
-    @Test
-    public void useAppContext() throws Exception {
-        // Context of the app under test.
-        Context appContext = InstrumentationRegistry.getTargetContext();
-        assertEquals("com.example_test.user.myapplication_tests", appContext.getPackageName());
+    Context mContext;
+
+    public void init(){
+        mContext = getContext();
     }
 
+    public Context getContext(){
+        return InstrumentationRegistry.getTargetContext();
+    }
 
     @Test
     public void testQQ(){
-        Context appContext = InstrumentationRegistry.getTargetContext();
-        String app = appContext.getString(R.string.app_name);
-        Log.d("anxii","app = "+app);
-        System.out.println("app = "+app);
-        //assertEquals("My Application_tests", app);
+
     }
 }

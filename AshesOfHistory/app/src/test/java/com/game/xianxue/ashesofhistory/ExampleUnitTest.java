@@ -1,7 +1,5 @@
 package com.game.xianxue.ashesofhistory;
 
-import com.game.xianxue.ashesofhistory.utils.LogUtils;
-
 import org.junit.Test;
 
 import static org.junit.Assert.*;

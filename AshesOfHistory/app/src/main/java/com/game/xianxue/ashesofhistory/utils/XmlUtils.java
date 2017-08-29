@@ -1,10 +1,11 @@
 package com.game.xianxue.ashesofhistory.utils;
 
 import android.content.Context;
-import android.util.Log;
 import android.util.Xml;
 
-import com.game.xianxue.ashesofhistory.model.PlayerModel;
+import com.game.xianxue.ashesofhistory.Log.SimpleLog;
+import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.BasePersonColumn;
+import com.game.xianxue.ashesofhistory.model.person.BasePerson;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -24,9 +25,9 @@ public class XmlUtils {
      * @return
      * @throws Exception
      */
-    public static ArrayList<PlayerModel> getAllCharacter(Context context) throws Exception {
-        PlayerModel person = null;
-        ArrayList<PlayerModel> persons = null;
+    public static ArrayList<BasePerson> getAllCharacter(Context context) throws Exception {
+        BasePerson person = null;
+        ArrayList<BasePerson> persons = null;
         XmlPullParser pullParser = Xml.newPullParser();
         pullParser.setInput(context.getAssets().open(DEFAULT_PAGE_TAG), "UTF-8");
         int event = pullParser.getEventType();// 觸發第一個事件
@@ -35,36 +36,38 @@ public class XmlUtils {
         while (event != XmlPullParser.END_DOCUMENT) {
             switch (event) {
                 case XmlPullParser.START_DOCUMENT:
-                    persons = new ArrayList<PlayerModel>();
+                    persons = new ArrayList<BasePerson>();
                     break;
                 case XmlPullParser.START_TAG:
                     String tag = pullParser.getName();
                     if ("item".equals(tag)) {
-                        person = new PlayerModel();
-                    } else if (PlayerModel.Column.name.equals(tag)) {
+                        person = new BasePerson();
+                    } else if (BasePersonColumn.name.equals(tag)) {
                         person.setName(pullParser.nextText());
-                    } else if (PlayerModel.Column.character_id.equals(tag)) {
-                        person.setCharacter_id(Integer.valueOf(pullParser.nextText()));
-                    } else if (PlayerModel.Column.sexuality.equals(tag)) {
+                    } else if (BasePersonColumn.name2.equals(tag)) {
+                        person.setName2(pullParser.nextText());
+                    } else if (BasePersonColumn.personId.equals(tag)) {
+                        person.setPsersonId(Integer.valueOf(pullParser.nextText()));
+                    } else if (BasePersonColumn.sexuality.equals(tag)) {
                         person.setSexuality(Integer.valueOf(pullParser.nextText()));
-                    } else if (PlayerModel.Column.aptitude.equals(tag)) {
+                    } else if (BasePersonColumn.aptitude.equals(tag)) {
                         person.setAptitude(Float.valueOf(pullParser.nextText()));
-                    } else if (PlayerModel.Column.strength_Initial.equals(tag)) {
-                        person.setStrength_Initial(Integer.valueOf(pullParser.nextText()));
-                    } else if (PlayerModel.Column.intellect_Initial.equals(tag)) {
-                        person.setIntellect_Initial(Integer.valueOf(pullParser.nextText()));
-                    } else if (PlayerModel.Column.physique_Initial.equals(tag)) {
-                        person.setPhysique_Initial(Integer.valueOf(pullParser.nextText()));
-                    } else if (PlayerModel.Column.dexterity_Initial.equals(tag)) {
-                        person.setDexterity_Initial(Integer.valueOf(pullParser.nextText()));
-                    } else if (PlayerModel.Column.spirit_Initial.equals(tag)) {
-                        person.setSpirit_Initial(Integer.valueOf(pullParser.nextText()));
-                    } else if (PlayerModel.Column.luck_Initial.equals(tag)) {
-                        person.setLuck_Initial(Integer.valueOf(pullParser.nextText()));
-                    } else if (PlayerModel.Column.fascination_Initial.equals(tag)) {
-                        person.setFascination_Initial(Integer.valueOf(pullParser.nextText()));
-                    } else if (PlayerModel.Column.skill_lists.equals(tag)) {
-                        //person.setSkillLists(pullParser.nextText());
+                    } else if (BasePersonColumn.strength_Raw.equals(tag)) {
+                        person.setStrength_Raw(Integer.valueOf(pullParser.nextText()));
+                    } else if (BasePersonColumn.intellect_Raw.equals(tag)) {
+                        person.setIntellect_Raw(Integer.valueOf(pullParser.nextText()));
+                    } else if (BasePersonColumn.physique_Raw.equals(tag)) {
+                        person.setPhysique_Raw(Integer.valueOf(pullParser.nextText()));
+                    } else if (BasePersonColumn.dexterity_Raw.equals(tag)) {
+                        person.setDexterity_Raw(Integer.valueOf(pullParser.nextText()));
+                    } else if (BasePersonColumn.spirit_Raw.equals(tag)) {
+                        person.setSpirit_Raw(Integer.valueOf(pullParser.nextText()));
+                    } else if (BasePersonColumn.luck_Raw.equals(tag)) {
+                        person.setLuck_Raw(Integer.valueOf(pullParser.nextText()));
+                    } else if (BasePersonColumn.fascination_Raw.equals(tag)) {
+                        person.setFascination_Raw(Integer.valueOf(pullParser.nextText()));
+                    } else if (BasePersonColumn.skill_lists_Raw.equals(tag)) {
+                        person.setSkillLists(pullParser.nextText());
                     }
                     break;
                 case XmlPullParser.END_TAG:
@@ -76,7 +79,7 @@ public class XmlUtils {
             }
             event = pullParser.next();
         }
-        Log.d(TAG, "anxi 解析所有人物使用的时间:" + (System.currentTimeMillis() - startTime));
+        SimpleLog.logd(TAG, "anxi 解析所有人物使用的时间:" + (System.currentTimeMillis() - startTime));
         return persons;
     }
 }

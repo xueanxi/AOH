@@ -1,14 +1,12 @@
 package com.game.xianxue.ashesofhistory.game.engine;
 
 import android.content.Context;
-import android.util.Log;
+import android.os.SystemClock;
 
 import com.game.xianxue.ashesofhistory.App;
 import com.game.xianxue.ashesofhistory.Log.BattleLog;
-import com.game.xianxue.ashesofhistory.Log.SimpleBattleLog;
-import com.game.xianxue.ashesofhistory.model.DamgeModel;
-import com.game.xianxue.ashesofhistory.model.PlayerModel;
 import com.game.xianxue.ashesofhistory.model.TeamModel;
+import com.game.xianxue.ashesofhistory.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.utils.RandomUtils;
 
 import java.util.ArrayList;
@@ -25,13 +23,15 @@ public class BattleEngine {
 
     // 常量
     private int ACTION_VALUES_MAX = 1000;         // 最大行动值，角色的行动值会随时间增加，当行动值到达最大时，就可以发起进攻
-    private int TIME_ACTION_WIAT = 200;          // 行动值增加的时间间隔
-    private int TIME_PLAYER_ATTACT = 1000;        // 武将进攻花费的时间
-
+    private int TIME_ACTION_WIAT = 200;           // 行动值增加的时间间隔
+    private int TIME_PLAYER_ATTACT = 1000;        // 人物进攻花费的时间
 
     // 变量
-    private boolean mIsBattleing = false;        // 是否正在战斗
-    private boolean mIsBattleFinish = false;     // 是否结束战斗
+    private boolean mIsBattleing = false;               // 是否正在战斗
+    private boolean mIsBattleFinish = false;            // 是否结束战斗
+
+    private int mTimePersonAction = TIME_PLAYER_ATTACT; // 人物进攻花费的时间，默认是 TIME_PLAYER_ATTACT
+    private int mTimeActionWait = TIME_ACTION_WIAT;     // 行动值增加的时间间隔，默认是 TIME_ACTION_WIAT
 
 
     private BattleEngine() {
@@ -54,18 +54,20 @@ public class BattleEngine {
      * @param p2
      */
     public void startBattle(TeamModel p1, TeamModel p2) {
-        BattleLog.log(TAG, "startBattle");
-        ArrayList<PlayerModel> playerLists = prepareBattle(p1, p2);
-        int time  = 0;
+        BattleLog.log("startBattle");
+        ArrayList<BattlePerson> playerLists = prepareBattle(p1, p2);
         while (mIsBattleing && (isBattleFinish(p1, p2) == 0)) {
-            PlayerModel actionPlayer = getActionPlayer(playerLists);
+            BattlePerson actionPlayer = getActionPlayer(playerLists);
             int currentActionCamp = actionPlayer.getCamp();
-            time++;
-            Log.d(TAG,"anxi 进攻次数 : "+time);
-            if (currentActionCamp == p1.getCamp()) {
-                attack(actionPlayer, p1, p2);
-            } else {
-                attack(actionPlayer, p2, p1);
+            try {
+                if (currentActionCamp == p1.getCamp()) {
+                    attack(actionPlayer, p1, p2);
+                } else {
+                    attack(actionPlayer, p2, p1);
+                }
+                SystemClock.sleep(mTimePersonAction);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -74,16 +76,17 @@ public class BattleEngine {
      * 战斗之前的准备，数据初始化之类的工作
      * 最后返回 所有参战的人员list
      *
-     * @param p1
-     * @param p2
+     * @param t1
+     * @param t2
      */
-    private ArrayList<PlayerModel> prepareBattle(TeamModel p1, TeamModel p2) {
-        ArrayList<PlayerModel> playerLists = new ArrayList<PlayerModel>();
-        playerLists.addAll(p1.getmPlayerList());
-        playerLists.addAll(p2.getmPlayerList());
+    private ArrayList<BattlePerson> prepareBattle(TeamModel t1, TeamModel t2) {
+        ArrayList<BattlePerson> playerLists = new ArrayList<BattlePerson>();
+        playerLists.addAll(t1.getmMembersList());
+        playerLists.addAll(t2.getmMembersList());
 
-        p1.setCamp(TeamModel.CAMP_LEFT);
-        p2.setCamp(TeamModel.CAMP_RIGHT);
+        t1.setCamp(TeamModel.CAMP_LEFT);
+        t2.setCamp(TeamModel.CAMP_RIGHT);
+
         mIsBattleing = true;
         mIsBattleFinish = false;
         return playerLists;
@@ -106,35 +109,34 @@ public class BattleEngine {
             isRightFail = true;
         }
         if (!isLeftFail && !isRightFail) {
-            BattleLog.log(TAG, "战斗还在继续");
+            BattleLog.log("战斗还在继续");
             return 0;
         } else if (!isLeftFail && isRightFail) {
-            BattleLog.log(TAG, "战斗结束 我军胜利");
+            BattleLog.log("战斗结束 我军胜利");
             return 1;
         } else if (isLeftFail && !isRightFail) {
-            BattleLog.log(TAG, "战斗结束 敌军胜利");
+            BattleLog.log("战斗结束 敌军胜利");
             return 2;
         } else {
-            BattleLog.log(TAG, "战斗结束 两败俱伤");
+            BattleLog.log("战斗结束 两败俱伤");
             return 3;
         }
     }
 
-    private void attack(PlayerModel actionPlayer, TeamModel actionTeam, TeamModel beAttackedTeam) {
+    private void attack(BattlePerson actionPlayer, TeamModel actionTeam, TeamModel beAttackedTeam) {
         // TODO: 5/25/17  这里要处理阵法的Buff效果，然后再进行攻击
         // TODO: 5/25/17  这里要处理actionPlayer的技能释放效果
         int actionCamp = TeamModel.CAMP_NEUTRAL;  // 当前行动的阵营
 
-        PlayerModel beAttackPlayer = getBeAttackedPlayer(beAttackedTeam);//挑选出被攻击的人员
+        BattlePerson beAttackPlayer = getBeAttackedPlayer(beAttackedTeam);//挑选出被攻击的人员
         if (beAttackPlayer == null) {
             mIsBattleFinish = true;
             mIsBattleing = false;
-            BattleLog.log(TAG, (actionCamp == TeamModel.CAMP_LEFT ? "敌方" : "我方") + " 已经没有可以战斗的人员。");
+            BattleLog.log((actionCamp == TeamModel.CAMP_LEFT ? "敌方" : "我方") + " 已经没有可以战斗的人员。");
         } else {
             String actionPlayerName = actionPlayer.getName();
             String beAttackedPlayName = beAttackPlayer.getName();
-            BattleLog.log(TAG, actionPlayerName + " 对 " + beAttackedPlayName + "发起攻击");
-            SimpleBattleLog.log(TAG, actionPlayerName + " 对 " + beAttackedPlayName + "发起攻击");
+            BattleLog.log(actionPlayerName + " 对 " + beAttackedPlayName + "发起攻击");
             //随机判断对方进行格档还是闪避，
             if (RandomUtils.flipCoin()) {
                 attackBlock(actionPlayer, beAttackPlayer);
@@ -151,7 +153,7 @@ public class BattleEngine {
      * @param p1
      * @param p2
      */
-    public void attackBlock(PlayerModel p1, PlayerModel p2) {
+    public void attackBlock(BattlePerson p1, BattlePerson p2) {
         //进行格档
         float blockPhysic = 0.3f;       //成功格档，物理攻击只承受30%伤害
         float blockMagic = 0.7f;        //成功格档，魔法攻击只承受70%伤害
@@ -160,19 +162,17 @@ public class BattleEngine {
 
         int reduceHP = 0;
         if (RandomUtils.isHappen(accuracy)) {
-            BattleLog.log(TAG, p2.getName() + "格档失败 !!! 他的格档率为" + (1f - accuracy) * 100 + "%");
-            SimpleBattleLog.log(TAG, p2.getName() + "格档失败 !!! 他的格档率为" + (1f - accuracy) * 100 + "%");
+            BattleLog.log(p2.getName() + "格档失败 !!! 他的格档率为" + (1f - accuracy) * 100 + "%");
             // 敌人格档失败,格档的伤害减免系数变为1
             blockPhysic = 1f;
             blockMagic = 1f;
         } else {
-            BattleLog.log(TAG, p2.getName() + "格档成功 !!!  的格档率为" + (1f - accuracy) * 100 + "%");
-            SimpleBattleLog.log(TAG, p2.getName() + "格档成功 !!!  的格档率为" + (1f - accuracy) * 100 + "%");
+            BattleLog.log(p2.getName() + "格档成功 !!!  的格档率为" + (1f - accuracy) * 100 + "%");
         }
 
         if (p1.getSkillLists() == null) {
             //技能列表为空，则进行普通攻击。
-            BattleLog.log(TAG, p1.getName() + "的物理伤害为" + p1.getPhysicDamage() + " 真实伤害为" + p1.getRealDamage() + " " + p2.getName() + "的护甲为" + p2.getArmor());
+            BattleLog.log(p1.getName() + "的物理伤害为" + p1.getPhysicDamage() + " 真实伤害为" + p1.getRealDamage() + " " + p2.getName() + "的护甲为" + p2.getArmor());
             // 计算敌方需要减少多少生命值
             reduceHP = (int) (attack(p1.getPhysicDamage(), p2.getArmor(), p1.getPhysicsPenetrate()) * blockPhysic) + p1.getRealDamage();
         } else {
@@ -183,11 +183,9 @@ public class BattleEngine {
         int remainHp = p2.getHP() - reduceHP;
         if (remainHp <= 0) {
             remainHp = 0;
-            BattleLog.log(TAG, p2.getName() + "受到了" + reduceHP + "点伤害，死亡了");
-            SimpleBattleLog.log(TAG, p2.getName() + "受到了" + reduceHP + "点伤害，死亡了");
+            BattleLog.log(p2.getName() + "受到了" + reduceHP + "点伤害，死亡了");
         } else {
-            BattleLog.log(TAG, p2.getName() + "受到了" + reduceHP + "点伤害，剩下" + remainHp + "生命值");
-            SimpleBattleLog.log(TAG, p2.getName() + "受到了" + reduceHP + "点伤害，剩下" + remainHp + "生命值");
+            BattleLog.log(p2.getName() + "受到了" + reduceHP + "点伤害，剩下" + remainHp + "生命值");
         }
         p2.setHP(remainHp);
     }
@@ -200,7 +198,7 @@ public class BattleEngine {
      * @param p1
      * @param p2
      */
-    public void attackDodge(PlayerModel p1, PlayerModel p2) {
+    public void attackDodge(BattlePerson p1, BattlePerson p2) {
         //进行躲闪
         float blockPhysic = 0.1f;       //成功躲闪，物理攻击只承受10%伤害
         float blockMagic = 0.3f;        //成功躲闪，魔法攻击只承受30%伤害
@@ -211,18 +209,18 @@ public class BattleEngine {
         int reduceHP = 0;
         if (RandomUtils.isHappen(accuracy)) {
             // 敌人躲闪失败,躲闪的伤害减免系数变为1
-            BattleLog.log(TAG, p2.getName() + "闪避失败 ！！！ 他的躲闪率为" + (1f - accuracy) * 100 + "% 他的Dodge为" + p2.getDodge());
+            BattleLog.log(p2.getName() + "闪避失败 ！！！ 他的躲闪率为" + (1f - accuracy) * 100 + "% 他的Dodge为" + p2.getDodge());
             blockPhysic = 1f;
             blockMagic = 1f;
         } else {
-            BattleLog.log(TAG, p2.getName() + "闪避成功 ！！！ 他的躲闪率为" + (1f - accuracy) * 100 + "% 他的Dodge为" + p2.getDodge());
+            BattleLog.log(p2.getName() + "闪避成功 ！！！ 他的躲闪率为" + (1f - accuracy) * 100 + "% 他的Dodge为" + p2.getDodge());
         }
 
         //p1.getSkil
 
         if (p1.getSkillLists() == null) {
             //技能列表为空，则进行普通攻击。
-            BattleLog.log(TAG, p1.getName() + "的物理伤害为" + p1.getPhysicDamage() + " 真实伤害为" + p1.getRealDamage() + " " + p2.getName() + "的护甲为" + p2.getArmor());
+            BattleLog.log(p1.getName() + "的物理伤害为" + p1.getPhysicDamage() + " 真实伤害为" + p1.getRealDamage() + " " + p2.getName() + "的护甲为" + p2.getArmor());
             // 计算敌方需要减少多少生命值
             reduceHP = (int) (attack(p1.getPhysicDamage(), p2.getArmor(), p1.getPhysicsPenetrate()) * blockPhysic) + p1.getRealDamage();
         } else {
@@ -233,9 +231,9 @@ public class BattleEngine {
         int remainHp = p2.getHP() - reduceHP;
         if (remainHp <= 0) {
             remainHp = 0;
-            BattleLog.log(TAG, p2.getName() + "受到了" + reduceHP + "点伤害，死亡了");
+            BattleLog.log(p2.getName() + "受到了" + reduceHP + "点伤害，死亡了");
         } else {
-            BattleLog.log(TAG, p2.getName() + "受到了" + reduceHP + "点伤害，剩下" + remainHp + "生命值");
+            BattleLog.log(p2.getName() + "受到了" + reduceHP + "点伤害，剩下" + remainHp + "生命值");
         }
         p2.setHP(remainHp);
     }
@@ -246,35 +244,29 @@ public class BattleEngine {
      * @param allPlayers
      * @return
      */
-    private PlayerModel getActionPlayer(ArrayList<PlayerModel> allPlayers) {
-        int waitTime = 500;
+    private BattlePerson getActionPlayer(ArrayList<BattlePerson> allPlayers) {
         while (mIsBattleing) {
-            PlayerModel activePlayer = getMaxActionPlayer(allPlayers);
+            BattlePerson activePlayer = getMaxActionPlayer(allPlayers);
             if (activePlayer != null) {
-                BattleLog.log(TAG, activePlayer.getName() + "活跃值满了，可以发起进攻");
+                BattleLog.log(activePlayer.getName() + "活跃值满了，可以发起进攻");
                 try {
-                    Thread.sleep(waitTime);
+                    Thread.sleep(mTimeActionWait);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
                 return activePlayer;
             }
-            try {
-                BattleLog.log(TAG, "所有人都没有达到进攻活跃值，继续等待。。。");
-                for (PlayerModel player : allPlayers) {
-                    BattleLog.log(TAG, player.getName() + "当前的活跃值为" + player.getActiveValues() + " 剩下" + player.getHP() + "生命值。");
-                    SimpleBattleLog.log(TAG, player.getName() + "当前的活跃值为" + player.getActiveValues() + " 剩下" + player.getHP() + "生命值。");
-                }
-                Thread.sleep(TIME_ACTION_WIAT);
-                for (PlayerModel player : allPlayers) {
-                    if (player.getHP() <= 0) continue;
-                    player.setActiveValues(player.getActiveValues() + player.getSpeed());
-                }
-                continue;
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-                activePlayer = null;
+
+            BattleLog.log("所有人都没有达到进攻活跃值，继续等待。。。");
+            for (BattlePerson player : allPlayers) {
+                BattleLog.log(player.getName() + "当前的活跃值为" + player.getActiveValues() + " 剩下" + player.getHP() + "生命值。");
             }
+            for (BattlePerson player : allPlayers) {
+                if (player.getHP() <= 0) continue;
+                player.setActiveValues(player.getActiveValues() + player.getActionSpeed());
+            }
+            continue;
+
         }
         return null;
     }
@@ -285,9 +277,9 @@ public class BattleEngine {
      * @param p
      * @return
      */
-    private static PlayerModel getBeAttackedPlayer(TeamModel p) {
-        ArrayList<PlayerModel> players = p.getmPlayerList();
-        for (PlayerModel player : players) {
+    private static BattlePerson getBeAttackedPlayer(TeamModel p) {
+        ArrayList<BattlePerson> players = p.getmMembersList();
+        for (BattlePerson player : players) {
             if (player.getHP() > 0) {
                 return player;
             }
@@ -302,12 +294,12 @@ public class BattleEngine {
      * @param players 所有存活的武将
      * @return
      */
-    private PlayerModel getMaxActionPlayer(ArrayList<PlayerModel> players) {
+    private BattlePerson getMaxActionPlayer(ArrayList<BattlePerson> players) {
         int maxValues = 0;
-        PlayerModel maxPlayer = null;
+        BattlePerson maxPlayer = null;
 
         // 通过循环，获取行动值最高的武将
-        for (PlayerModel player : players) {
+        for (BattlePerson player : players) {
             if (player.getActiveValues() > maxValues && player.getHP() > 0) {
                 maxValues = player.getActiveValues();
                 maxPlayer = player;
@@ -374,5 +366,21 @@ public class BattleEngine {
      */
     public float dodge(float Accuracy, float Dodge) {
         return Accuracy / (Accuracy + Dodge);
+    }
+
+    public int getmTimePersonAction() {
+        return mTimePersonAction;
+    }
+
+    public void setmTimePersonAction(int mTimePersonAction) {
+        this.mTimePersonAction = mTimePersonAction;
+    }
+
+    public int getmTimeActionWait() {
+        return mTimeActionWait;
+    }
+
+    public void setmTimeActionWait(int mTimeActionWait) {
+        this.mTimeActionWait = mTimeActionWait;
     }
 }

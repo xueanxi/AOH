@@ -5,13 +5,13 @@
         <name>关羽</name>
         <level>1</level>
         <naturetype>1</naturetype>
-        <strength_Initial>17</strength_Initial>
-        <intellect_Initial>13</intellect_Initial>
-        <physique_Initial>16</physique_Initial>
-        <dexterity_Initial>14</dexterity_Initial>
-        <spirit_Initial>14</spirit_Initial>
-        <luck_Initial>12</luck_Initial>
-        <fascination_Initial>18</fascination_Initial>
+        <strength_Raw>17</strength_Raw>
+        <intellect_Raw>13</intellect_Raw>
+        <physique_Raw>16</physique_Raw>
+        <dexterity_Raw>14</dexterity_Raw>
+        <spirit_Raw>14</spirit_Raw>
+        <luck_Raw>12</luck_Raw>
+        <fascination_Raw>18</fascination_Raw>
         <skill_lists>关羽技能</skill_lists>
     </item>
 

@@ -7,8 +7,13 @@ import android.util.Log;
  */
 public class BattleLog {
     static final String TAG = "BattleLog";
+    static boolean mIsSimpleMode = false;
 
-    public static void log(String tag, String content) {
-        Log.d(TAG,  " " + content);
+    public static void log(String content) {
+        if(mIsSimpleMode){
+
+        }else{
+            Log.d(TAG,  " " + content);
+        }
     }
 }

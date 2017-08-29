@@ -1,6 +1,8 @@
 package com.game.xianxue.ashesofhistory.model;
 
 
+import com.game.xianxue.ashesofhistory.model.person.BattlePerson;
+
 import java.io.Serializable;
 
 /**
@@ -26,7 +28,7 @@ public class DamgeModel implements Serializable {
      * @param player
      * @return
      */
-    public int getDamageResult(PlayerModel player) {
+    public int getDamageResult(BattlePerson player) {
         if (DAMGE_TYPE_PHYSICS == damageType) {
             return (int) Math.ceil(player.getPhysicDamage() * damage2 + damage1);
         } else if (DAMGE_TYPE_MAGIC == damageType) {

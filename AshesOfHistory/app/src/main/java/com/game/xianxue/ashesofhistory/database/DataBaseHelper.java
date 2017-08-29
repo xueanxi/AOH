@@ -7,10 +7,11 @@ import android.util.Log;
 
 import com.game.xianxue.ashesofhistory.App;
 import com.game.xianxue.ashesofhistory.constant.Constant;
-import com.game.xianxue.ashesofhistory.model.PlayerModel;
+import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.BasePersonColumn;
+import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.OwnPersonColumn;
+import com.game.xianxue.ashesofhistory.model.person.BasePerson;
 import com.game.xianxue.ashesofhistory.utils.XmlUtils;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 
@@ -44,7 +45,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        Log.d(TAG, "anxi onCreate");
+        Log.d(TAG, " onCreate");
         createTableCharacter(db);
     }
 
@@ -55,50 +56,57 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      */
     private void createTableCharacter(SQLiteDatabase db) {
         //创建一个游戏所有人物数据表
-        db.execSQL("CREATE TABLE " + PlayerModel.Column.tableName_initial
-                + " (" + PlayerModel.Column.id + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + PlayerModel.Column.character_id + " INTEGER,"
-                + PlayerModel.Column.name + " TEXT,"
-                + PlayerModel.Column.sexuality + " INTEGER,"
-                + PlayerModel.Column.aptitude + " REAL,"
-                + PlayerModel.Column.strength_Initial + " INTEGER,"
-                + PlayerModel.Column.intellect_Initial + " INTEGER,"
-                + PlayerModel.Column.dexterity_Initial + " INTEGER,"
-                + PlayerModel.Column.physique_Initial + " INTEGER,"
-                + PlayerModel.Column.spirit_Initial + " INTEGER,"
-                + PlayerModel.Column.luck_Initial + " INTEGER,"
-                + PlayerModel.Column.fascination_Initial + " INTEGER,"
-                + PlayerModel.Column.skill_lists + " TEXT)");
-        insertCharacterInitialData(db);
+        db.execSQL("CREATE TABLE " + BasePersonColumn.tableName
+                + " (" + BasePersonColumn.id + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + BasePersonColumn.personId + " INTEGER,"
+                + BasePersonColumn.name + " TEXT,"
+                + BasePersonColumn.name2 + " TEXT,"
+                + BasePersonColumn.sexuality + " INTEGER,"
+                + BasePersonColumn.aptitude + " REAL,"
+                + BasePersonColumn.strength_Raw + " INTEGER,"
+                + BasePersonColumn.intellect_Raw + " INTEGER,"
+                + BasePersonColumn.dexterity_Raw + " INTEGER,"
+                + BasePersonColumn.physique_Raw + " INTEGER,"
+                + BasePersonColumn.spirit_Raw + " INTEGER,"
+                + BasePersonColumn.luck_Raw + " INTEGER,"
+                + BasePersonColumn.fascination_Raw + " INTEGER,"
+                + BasePersonColumn.skill_lists_Raw + " TEXT)");
+        insertBasePersonData(db);
 
         // 创建一个玩家拥有的 人物 数据表
-        db.execSQL("CREATE TABLE " + PlayerModel.Column.tableName_player
-                + " (" + PlayerModel.Column.id + " INTEGER PRIMARY KEY AUTOINCREMENT,"
-                + PlayerModel.Column.character_id + " INTEGER,"
-                + PlayerModel.Column.name + " TEXT,"
-                + PlayerModel.Column.sexuality + " INTEGER,"
-                + PlayerModel.Column.level + " INTEGER,"            //等级
-                + PlayerModel.Column.aptitude + " REAL,"
-                + PlayerModel.Column.strength_Initial + " INTEGER,"
-                + PlayerModel.Column.intellect_Initial + " INTEGER,"
-                + PlayerModel.Column.dexterity_Initial + " INTEGER,"
-                + PlayerModel.Column.physique_Initial + " INTEGER,"
-                + PlayerModel.Column.spirit_Initial + " INTEGER,"
-                + PlayerModel.Column.luck_Initial + " INTEGER,"
-                + PlayerModel.Column.fascination_Initial + " INTEGER,"
-                + PlayerModel.Column.equipId + " INTEGER,"          // 装备
-                + PlayerModel.Column.treasureId + " INTEGER,"       // 携带宝物
-                + PlayerModel.Column.experience + " INTEGER,"       // 经验
-                + PlayerModel.Column.skill_lists + " TEXT)");
+        db.execSQL("CREATE TABLE " + OwnPersonColumn.tableName
+                + " (" + BasePersonColumn.id + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+
+                + BasePersonColumn.personId + " INTEGER,"
+                + BasePersonColumn.name + " TEXT,"
+                + BasePersonColumn.name2 + " TEXT,"
+                + BasePersonColumn.sexuality + " INTEGER,"
+                + BasePersonColumn.aptitude + " REAL,"
+                + BasePersonColumn.strength_Raw + " INTEGER,"
+                + BasePersonColumn.intellect_Raw + " INTEGER,"
+                + BasePersonColumn.dexterity_Raw + " INTEGER,"
+                + BasePersonColumn.physique_Raw + " INTEGER,"
+                + BasePersonColumn.spirit_Raw + " INTEGER,"
+                + BasePersonColumn.luck_Raw + " INTEGER,"
+                + BasePersonColumn.fascination_Raw + " INTEGER,"
+                + BasePersonColumn.skill_lists_Raw + " TEXT,"
+
+                + OwnPersonColumn.level + " TEXT,"
+                + OwnPersonColumn.weaponId + " TEXT,"
+                + OwnPersonColumn.equipId + " TEXT,"
+                + OwnPersonColumn.treasureId + " TEXT,"
+                + OwnPersonColumn.riderId + " TEXT,"
+                + OwnPersonColumn.experience + " TEXT,"
+                + OwnPersonColumn.skill_lists + " TEXT)");
     }
 
     /**
-     * 插入游戏初始任务数据
+     * 插入游戏初始人物数据
      * INSERT INTO table_name (列1, 列2,...) VALUES (值1, 值2,....)
      */
-    private void insertCharacterInitialData(SQLiteDatabase db) {
+    private void insertBasePersonData(SQLiteDatabase db) {
         // 进行批处理
-        ArrayList<PlayerModel> lists = null;
+        ArrayList<BasePerson> lists = null;
         db.beginTransaction();
         try {
             lists = XmlUtils.getAllCharacter(mContext);
@@ -108,8 +116,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
 
-        for (PlayerModel player : lists) {
-            db.execSQL(PlayerManager.getInsertString(player));
+        for (BasePerson player : lists) {
+            db.execSQL(BasePersonManager.getInsertString(player));
         }
         db.setTransactionSuccessful();
         db.endTransaction();

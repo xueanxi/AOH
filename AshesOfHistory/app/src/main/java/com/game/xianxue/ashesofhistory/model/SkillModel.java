@@ -1,5 +1,7 @@
 package com.game.xianxue.ashesofhistory.model;
 
+import com.game.xianxue.ashesofhistory.model.person.BattlePerson;
+
 import java.io.Serializable;
 
 /**
@@ -45,7 +47,7 @@ public class SkillModel implements Serializable{
      * @param sponsor 技能发起者
      * @param target  技能目标
      */
-    public void getDamage(PlayerModel sponsor, PlayerModel target) {
+    public void getDamage(BattlePerson sponsor, BattlePerson target) {
 
     }
 
@@ -55,7 +57,7 @@ public class SkillModel implements Serializable{
      * @param sponsor 技能发起者
      * @param target  技能目标
      */
-    public void doWork(PlayerModel sponsor, TeamModel target) {
+    public void doWork(BattlePerson sponsor, TeamModel target) {
 
     }
 }

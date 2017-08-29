@@ -1,9 +1,7 @@
 package com.game.xianxue.ashesofhistory.game.skill;
 
 import com.game.xianxue.ashesofhistory.model.DamgeModel;
-import com.game.xianxue.ashesofhistory.model.PlayerModel;
 import com.game.xianxue.ashesofhistory.model.SkillModel;
-import com.game.xianxue.ashesofhistory.model.TeamModel;
 
 /**
  * 普通攻击
@@ -32,7 +30,7 @@ public class Skill_Attack_Physic_01 extends SkillModel {
         MyDamgeMode() {
             damage1 = 0;                            // 技能伤害固定部分
             damage2 = 1.0f;                         // 技能伤害随武将浮动部分,一般是一个百分比浮点数
-            damageType = DAMGE_TYPE_PHYSICS;         // 伤害类型
+            damageType = DAMGE_TYPE_PHYSICS;        // 伤害类型
             time = 1;                               // 伤害持续回合，普通技能一般都是一个回合，除了那些持续类型的伤害
         }
     }

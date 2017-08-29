@@ -5,33 +5,54 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import com.game.xianxue.ashesofhistory.R;
-import com.game.xianxue.ashesofhistory.database.PlayerManager;
-import com.game.xianxue.ashesofhistory.model.PlayerModel;
-import com.game.xianxue.ashesofhistory.model.TeamModel;
 import com.game.xianxue.ashesofhistory.service.MainService;
+import com.game.xianxue.ashesofhistory.utils.ReadThread;
 
-import java.util.ArrayList;
+import static com.game.xianxue.ashesofhistory.R.id.bt_test_thread;
 
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "anxi_MainActivity";
 
     MainService mService = null;
+    boolean isStart = false;
+    boolean isPause = false;
 
+    ReadThread run = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        run = new ReadThread("thread_anxi");
+
+        Button bt = (Button) this.findViewById(R.id.bt_test_thread);
+        bt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isStart){
+                    if(isPause){
+                        run.resume();
+                        isPause = false;
+                    }else{
+                        run.suspend();
+                        isPause = true;
+                    }
+                }else{
+                    run.start();
+                    isStart = true;
+                }
+            }
+        });
 
         //initService();
         //startBattle();
 
-        //PlayerManager.getAllCharacterFromDataBase();
+        //BasePersonManager.getAllPersonFromDataBase();
 
     }
 
@@ -64,46 +85,5 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void startBattle() {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                SystemClock.sleep(2000);
-                PlayerModel play1 = PlayerManager.getCharacterFromDataBaseByName("关羽");
-                PlayerModel play2 = PlayerManager.getCharacterFromDataBaseByName("诸葛亮");
-                //PlayerModel play3 = PlayerManager.getCharacterFromDataBaseByName("张飞");
-                //PlayerModel play4 = PlayerManager.getCharacterFromDataBaseByName("马超");
-                //PlayerModel play5 = PlayerManager.getCharacterFromDataBaseByName("典韦");
-                //PlayerModel play6 = PlayerManager.getCharacterFromDataBaseByName("许诸");
-
-                play1.setLevel(1);
-                play2.setLevel(1);
-                //play3.setLevel(1);
-                //play4.setLevel(1);
-                //play5.setLevel(1);
-                //play6.setLevel(1);
-
-                ArrayList<PlayerModel> ourPlayer = new ArrayList<PlayerModel>();
-                ourPlayer.add(play1);
-                //ourPlayer.add(play2);
-                //ourPlayer.add(play3);
-                TeamModel t1 = new TeamModel(TeamModel.CAMP_LEFT, ourPlayer);
-
-                ArrayList<PlayerModel> enemyPlayer = new ArrayList<PlayerModel>();
-                enemyPlayer.add(play2);
-                //enemyPlayer.add(play5);
-                //enemyPlayer.add(play6);
-                TeamModel t2 = new TeamModel(TeamModel.CAMP_RIGHT, enemyPlayer);
-
-                if (mService != null) {
-                    mService.setTeam(t1, t2);
-                    Intent intentStart = new Intent(MainActivity.this, MainService.class);
-                    intentStart.setAction(MainService.ACTION_START_BATTLE);
-                    startService(intentStart);
-                } else {
-                    Log.e(TAG, "anxi mService = null !!!");
-                }
-            }
-        }).start();
-
     }
 }
