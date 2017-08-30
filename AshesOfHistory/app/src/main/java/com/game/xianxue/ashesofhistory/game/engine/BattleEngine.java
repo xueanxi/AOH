@@ -1,7 +1,7 @@
 package com.game.xianxue.ashesofhistory.game.engine;
 
 import com.game.xianxue.ashesofhistory.Log.BattleLog;
-import com.game.xianxue.ashesofhistory.game.model.ActiveValueModel;
+import com.game.xianxue.ashesofhistory.game.model.ActiveValueManager;
 import com.game.xianxue.ashesofhistory.model.TeamModel;
 import com.game.xianxue.ashesofhistory.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.utils.RandomUtils;
@@ -16,7 +16,7 @@ public class BattleEngine {
     private static final String TAG = "BattleEngine";
     private static final Object mSyncObject = new Object();
     private static BattleEngine mInstance;
-    private ActiveValueModel mActiveMode;
+    private ActiveValueManager mActiveMode;
 
     // 常量
     private int TIME_INTERVAL_INCRESE_ACTIVE = 200;       // 人物每一次增加行动值的时间间隔,默认是 200 ms
@@ -53,27 +53,25 @@ public class BattleEngine {
      */
     public void startBattle() {
         BattleLog.log("开始战斗！！！");
-        mActiveMode = new ActiveValueModel(mInstance, mPersonsList);
+        mActiveMode = new ActiveValueManager(mInstance, mPersonsList);
+
         mLogicThread = new SuspendThread() {
             @Override
             public void runPersonelLogic() {
 
                 // 判断战斗情况，是否要结束战斗
                 if (!mIsBattleing || (isBattleFinish(t1, t2) != 0)) {
-                    mLogicThread.stop();
                     BattleLog.log("检测到战斗已经分出胜负，战斗引擎尝试关闭...");
-                    if(mActiveMode!= null){
-                        mActiveMode.stop();
-                        mActiveMode = null;
-                        mIsBattleing = false;
-                    }
+                    stopBattle();
                     return;
                 }
 
-                // 使用 ActiveValueModel 模型来控制人物的活跃值并发动进攻
+                // 使用 ActiveValueManager 模型来控制人物的活跃值并发动进攻
                 if(mActiveMode.isStart()){
+                    // 如果 actionMode 已经开始 则调用 resume， 让actionMode继续执行
                     mActiveMode.resume();
                 }else{
+                    // 如果 actionMode 没有开始 则调用 start， 让actionMode开始执行
                     mActiveMode.start();
                 }
             }

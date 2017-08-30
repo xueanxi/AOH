@@ -12,11 +12,11 @@ public class SkillModel implements Serializable{
     public static final int SKILL_LIMIT_MINI_LEVEL = 1;     //技能的等级下限
 
     public static final int SKILL_TYPE_DAMGE = 1;           // 技能类型为伤害类型
-    public static final int SKILL_TYPE_Restore = 2;         // 技能类型为恢复类
+    public static final int SKILL_TYPE_RECOVER = 2;         // 技能类型为恢复类
     public static final int SKILL_TYPE_ASSIST = 3;          // 技能伤害为辅助
 
-    public static final int SKILL_NATURE_INITIATIVE = 1;      // 技能性质为主动释放类型
-    public static final int SKILL_NATURE_PASSIVITY = 2;       // 技能性质为被动
+    public static final int SKILL_NATURE_ACTIVE = 1;        // 技能性质为主动释放类型
+    public static final int SKILL_NATURE_PASSIVITY = 2;     // 技能性质为被动
 
     public String name;                        // 技能名字
     public int id;                             // 技能id

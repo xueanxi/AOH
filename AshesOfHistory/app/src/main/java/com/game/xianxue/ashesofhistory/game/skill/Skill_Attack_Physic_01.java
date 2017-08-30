@@ -12,7 +12,7 @@ public class Skill_Attack_Physic_01 extends SkillModel {
     public Skill_Attack_Physic_01() {
         this.id = 0;
         skillType = SKILL_TYPE_DAMGE;
-        naturetype = SKILL_NATURE_INITIATIVE;
+        naturetype = SKILL_NATURE_ACTIVE;
         accuracyRate = -1f;
         triggerProbability = -1f;
         introduce = "进行一次普通攻击";
