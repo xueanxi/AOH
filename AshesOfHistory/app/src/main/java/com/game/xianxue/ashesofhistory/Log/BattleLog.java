@@ -1,7 +1,5 @@
 package com.game.xianxue.ashesofhistory.Log;
 
-import android.util.Log;
-
 /**
  * Created by user on 5/24/17.
  */
@@ -13,7 +11,8 @@ public class BattleLog {
         if(mIsSimpleMode){
 
         }else{
-            Log.d(TAG,  " " + content);
+            //Log.d(TAG,  " " + content);
+            System.out.println(content);
         }
     }
 }

@@ -1,11 +1,13 @@
 package com.game.xianxue.ashesofhistory.model.person;
 
+import java.io.Serializable;
+
 /**
  * 人物的原始模型 只有一些最基础的资料
  * Created by anxi.xue on 8/29/17.
  */
 
-public class BasePerson {
+public class BasePerson implements Serializable{
     // 基础资料
     public int _id;                 // 保存在数据库中的_id
     public int psersonId;           // id唯一标识这个人物

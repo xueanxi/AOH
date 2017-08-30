@@ -47,7 +47,7 @@ public class MainService extends Service {
         if (intent != null && intent.getAction() != null) {
             String action = intent.getAction();
             if (ACTION_START_BATTLE.equals(action)) {
-                startBattle();
+                //startBattle();
             } else if (ACTION_PAUSE_BATTLE.equals(action)) {
 
             } else if (ACTION_STOP_BATTLE.equals(action)) {
@@ -62,9 +62,6 @@ public class MainService extends Service {
         return START_STICKY;
     }
 
-    private void startBattle() {
-        mBattleEngine.startBattle(mT1, mT2);
-    }
 
     public void setTeam(TeamModel t1, TeamModel t2) {
         this.mT1 = t1;

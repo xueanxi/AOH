@@ -71,9 +71,22 @@ public class TeamModel {
     }
 
     /**
-     * 设置队伍的阵营，同时设置队伍里面人员的阵营
+     * 设置队伍的阵营，同时设置队伍里面人员的阵营和这一场战斗的编号
      * @param camp
+     * @param startId 从 startId 开始为编号，开始为每一个人物编号
      */
+    public void setCampAndID(int camp,int startId) {
+        Camp = camp;
+        int battleId = startId;
+        if (mMembersList != null && mMembersList.size() > 0) {
+            for (BattlePerson player : mMembersList) {
+                player.setCamp(camp);
+                player.setBattleId(battleId);
+                battleId++;
+            }
+        }
+    }
+
     public void setCamp(int camp) {
         Camp = camp;
         if (mMembersList != null && mMembersList.size() > 0) {

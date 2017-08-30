@@ -1,17 +1,16 @@
 package com.game.xianxue.ashesofhistory.model.person;
 
 /**
- * 人物普通情况下的模型，包含各种属性，
- * 但是不包含战斗中的各种buff属性
+ * 人物战斗时的模型
+ * 比普通状态下的模型多了一些战斗中才会有的属性
  */
 public class BattlePerson extends NormalPerson {
     private static final String TAG = "BattlePerson";
 
     // 战斗属性，只有在战斗时才会有的属性
-    private int battleId;           // 一场战斗中分配的id
-    private int activeValues;       // 当前的行动值，当行动值达到最大行动值之后，就可以行动。
-    private int camp;               // 阵营
-    private boolean isDie = false;  // 是否阵亡
+    private int battleId;            // 一场战斗中分配的id
+    private int activeValues;        // 当前的行动值，当行动值达到最大行动值之后，就可以行动。
+    private int camp;                // 阵营
 
     public BattlePerson() {}
 
@@ -73,7 +72,7 @@ public class BattlePerson extends NormalPerson {
         block = calculateBlock();                               // 格档值（格档成功只承受30%物理伤害 或者 承受70%魔法伤害）
         actionSpeed = calculateSpeed();                         // 速度
         hpRestore = calculateHpRestore();                       // 发起进攻时，生命恢复
-
+        actionValuesMax = calculateMaxActiveValues();           // 最大行动值是多少，这个值越小越好
         // TODO: 8/29/17 处理其他增幅效果
     }
 
@@ -109,13 +108,30 @@ public class BattlePerson extends NormalPerson {
         this.camp = camp;
     }
 
-    public boolean isDie() {
-        return isDie;
+    /**
+     * 计算当前活跃值的百分比
+     * @return
+     */
+    public float getActiveValuePencent(){
+        return (float)activeValues / (float)actionValuesMax;
     }
 
-    public void setDie(boolean die) {
-        isDie = die;
+    /**
+     * 执行行动之后，需要消耗掉活跃值
+     */
+    public void reduceActiveValue(){
+        int newValues = activeValues - actionValuesMax;
+        if(newValues <= 0 ) newValues = 0;
+        activeValues = newValues;
     }
+
+    /**
+     * 战斗中，隔一段时间会增加活跃值
+     */
+    public void increaseActiveValues(){
+        activeValues += actionSpeed;
+    }
+
 
     @Override
     public String toString() {
@@ -162,7 +178,6 @@ public class BattlePerson extends NormalPerson {
                 ", battleId=" + battleId +
                 ", activeValues=" + activeValues +
                 ", camp=" + camp +
-                ", isDie=" + isDie +
                 '}';
     }
 }

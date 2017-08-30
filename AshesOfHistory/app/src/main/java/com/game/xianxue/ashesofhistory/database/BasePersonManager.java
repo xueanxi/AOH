@@ -57,17 +57,15 @@ public class BasePersonManager {
                 person.getSkillLists());
     }
 
-    public static void getAllPersonFromDataBase() {
+    public static ArrayList<BasePerson> getAllPersonFromDataBase() {
         DataBaseHelper helper = new DataBaseHelper();
-        if (helper == null) return;
+        if (helper == null) return null;
         SQLiteDatabase db = helper.getReadableDatabase();
         String sql = "SELECT * FROM " + BasePersonColumn.tableName;
         Cursor cursor = db.rawQuery(sql, null);
-        if (cursor == null) return;
-        while (cursor.moveToNext()) {
-            String name2 = cursor.getString(cursor.getColumnIndex(BasePersonColumn.name2));
-            Log.d(TAG, "anxi name2" + name2);
-        }
+        if (cursor == null) return null;
+        ArrayList<BasePerson> arrays = cursorToPersons(cursor);
+        return arrays;
     }
 
     public static void showAllPersonFromDataBase() {

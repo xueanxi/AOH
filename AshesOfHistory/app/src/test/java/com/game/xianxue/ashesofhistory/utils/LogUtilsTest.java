@@ -16,7 +16,7 @@ public class LogUtilsTest {
 
     @Test
     public void log() throws Exception {
-       // ReadThread
+
     }
 
 

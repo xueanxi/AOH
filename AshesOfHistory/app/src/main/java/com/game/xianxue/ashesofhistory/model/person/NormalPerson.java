@@ -96,7 +96,7 @@ public class NormalPerson extends BasePerson {
      * @param level
      * @param basePerson
      */
-    public NormalPerson(BasePerson basePerson,int level) {
+    public NormalPerson(BasePerson basePerson, int level) {
         // 原始资料
         this.psersonId = basePerson.getPsersonId();                 // id唯一标识这个人物
         this.aptitude = basePerson.getAptitude();                   // 资质（影响每次升级 基础属性的增加数量 资质取值为1～5 1为庸碌无为 5为天神下凡）
@@ -146,6 +146,7 @@ public class NormalPerson extends BasePerson {
         block = calculateBlock();                               // 格档值（格档成功只承受30%物理伤害 或者 承受70%魔法伤害）
         actionSpeed = calculateSpeed();                         // 速度
         hpRestore = calculateHpRestore();                       // 发起进攻时，生命恢复
+        actionValuesMax = calculateMaxActiveValues();
 
 
         // TODO: 8/29/17 处理其他增幅效果
@@ -209,6 +210,10 @@ public class NormalPerson extends BasePerson {
 
     protected int calculateHpRestore() {
         return strength + physique * 3 + spirit;
+    }
+
+    protected int calculateMaxActiveValues() {
+        return 1000;
     }
 
 
