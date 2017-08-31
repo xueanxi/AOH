@@ -17,14 +17,18 @@ import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.R;
 import com.game.xianxue.ashesofhistory.database.BasePersonManager;
 import com.game.xianxue.ashesofhistory.game.engine.BattleEngine;
+import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 import com.game.xianxue.ashesofhistory.model.TeamModel;
 import com.game.xianxue.ashesofhistory.model.person.BasePerson;
 import com.game.xianxue.ashesofhistory.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.model.person.NormalPerson;
 import com.game.xianxue.ashesofhistory.service.MainService;
 import com.game.xianxue.ashesofhistory.game.engine.SuspendThread;
+import com.game.xianxue.ashesofhistory.utils.XmlUtils;
 
 import java.util.ArrayList;
+
+import static com.game.xianxue.ashesofhistory.utils.XmlUtils.getAllSkill;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -42,6 +46,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         requestPermission();
+
+
 
     }
 

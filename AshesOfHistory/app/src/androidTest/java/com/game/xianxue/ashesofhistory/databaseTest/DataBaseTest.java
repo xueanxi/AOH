@@ -6,14 +6,18 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.database.BasePersonManager;
+import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 import com.game.xianxue.ashesofhistory.model.TeamModel;
 import com.game.xianxue.ashesofhistory.model.person.BasePerson;
 import com.game.xianxue.ashesofhistory.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.model.person.NormalPerson;
+import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 import com.game.xianxue.ashesofhistory.utils.XmlUtils;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
@@ -45,14 +49,14 @@ public class DataBaseTest {
     public void TestgetPlayerByName() {
         init();
         BasePerson p1 = BasePersonManager.getPersonFromDataBaseByPinyin("guanyu");
-        if(p1 == null){
-            SimpleLog.loge(TAG,"TestgetPlayerByName() : p1 == null");
-        }else{
-            NormalPerson normalPerson = new NormalPerson(p1,5);
-            SimpleLog.logd(TAG,normalPerson.toString());
+        if (p1 == null) {
+            SimpleLog.loge(TAG, "TestgetPlayerByName() : p1 == null");
+        } else {
+            NormalPerson normalPerson = new NormalPerson(p1, 5);
+            SimpleLog.logd(TAG, normalPerson.toString());
 
             BattlePerson battlePerson = new BattlePerson(normalPerson, TeamModel.CAMP_LEFT);
-            SimpleLog.logd(TAG,battlePerson.toString());
+            SimpleLog.logd(TAG, battlePerson.toString());
         }
     }
 
@@ -61,6 +65,22 @@ public class DataBaseTest {
         init();
         try {
             XmlUtils.getAllCharacter(mContext);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void TestXmlUtilGetAllSkill() {
+        init();
+        try {
+            ArrayList<SkillBase> skillList = null;
+            try {
+                skillList = XmlUtils.getAllSkill(mContext);
+                ShowUtils.showArrays(TAG,skillList);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

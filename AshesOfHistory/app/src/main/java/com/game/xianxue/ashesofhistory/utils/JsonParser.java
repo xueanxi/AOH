@@ -2,7 +2,7 @@ package com.game.xianxue.ashesofhistory.utils;
 
 import android.content.Context;
 
-import com.game.xianxue.ashesofhistory.model.SkillModel;
+import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -19,13 +19,13 @@ import java.util.ArrayList;
 
 public class JsonParser {
 
-    public static final ArrayList<SkillModel> loadSkillLists(Context context, String fileName) {
+    public static final ArrayList<SkillBase> loadSkillLists(Context context, String fileName) {
         try {
             InputStream is = context.getAssets().open(fileName);
             BufferedReader br = new BufferedReader(new InputStreamReader(is));
             Gson gson = new Gson();
-            ArrayList<SkillModel> itemInfos =
-                    gson.fromJson(br, new TypeToken<ArrayList<SkillModel>>() {
+            ArrayList<SkillBase> itemInfos =
+                    gson.fromJson(br, new TypeToken<ArrayList<SkillBase>>() {
                     }.getType());
             return itemInfos;
         } catch (IOException e) {
@@ -39,10 +39,10 @@ public class JsonParser {
      * @param text
      * @return
      */
-    public static final ArrayList<SkillModel> loadSkillListFromString(String text) {
+    public static final ArrayList<SkillBase> loadSkillListFromString(String text) {
         Gson gson = new Gson();
-        ArrayList<SkillModel> itemInfos =
-                gson.fromJson(text, new TypeToken<ArrayList<SkillModel>>() {
+        ArrayList<SkillBase> itemInfos =
+                gson.fromJson(text, new TypeToken<ArrayList<SkillBase>>() {
                 }.getType());
         return itemInfos;
     }
@@ -52,7 +52,7 @@ public class JsonParser {
      * @param infos
      * @return
      */
-    public static final String getJsonStringFromObject(ArrayList<SkillModel> infos) {
+    public static final String getJsonStringFromObject(ArrayList<SkillBase> infos) {
         Gson gson = new Gson();
         return gson.toJson(infos);
     }

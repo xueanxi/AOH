@@ -1,18 +1,112 @@
-<?xml version="1.0" encoding="utf-8"?>
-<all_character>
+<?xml version="1.0" encoding="utf-8"?><!--
+0 辅助效果：无
+1 辅助效果：速度提升
+2 辅助效果：速度下降
+3 辅助效果：攻击提升
+4 辅助效果：攻击下降
+5 辅助效果：防御提升
+6 辅助效果：防御下降
+7 辅助效果：力量提升
+8 辅助效果：力量下降
+9 辅助效果：智力提升
+10 辅助效果：智力下降
+11 辅助效果：敏捷提升
+12 辅助效果：敏捷下降
+13 辅助效果：体制提升
+14 辅助效果：体质下降
+15 辅助效果：精神提升
+16 辅助效果：精神下降
+17 辅助效果：魅力提升
+18 辅助效果：魅力下降
+19 辅助效果：幸运提升
+20 辅助效果：幸运下降
+-->
+<all_skill>
     <item>
-        <skill_id>0</skill_id>
-        <name>关羽</name>
-        <level>1</level>
-        <naturetype>1</naturetype>
-        <strength_Raw>17</strength_Raw>
-        <intellect_Raw>13</intellect_Raw>
-        <physique_Raw>16</physique_Raw>
-        <dexterity_Raw>14</dexterity_Raw>
-        <spirit_Raw>14</spirit_Raw>
-        <luck_Raw>12</luck_Raw>
-        <fascination_Raw>18</fascination_Raw>
-        <skill_lists>关羽技能</skill_lists>
+        <skill_id>0</skill_id><!--技能ID,唯一标识这个技能-->
+        <name>普通攻击</name><!--技能名字-->
+        <introduce>进行普通物理攻击</introduce><!--技能描述-->
+        <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
+        <nature_type>0</nature_type><!--技能性质：0主动 1恢复 2被动-->
+        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_constant>0</damage_constant><!--技能伤害固定部分-->
+        <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
+        <accuracy_rate>1</accuracy_rate><!--技能命中率 浮点数 0～1.0 1.0为本身人物的命中率 2.0为必中-->
+        <effect_rate>0</effect_rate><!--技能附加效果触发几率 0～1.0-->
+        <cd_time>0</cd_time><!--技能冷却时间0～+ -->
+        <time>0</time><!--技能持续时间，0一次性的伤害 1～5后续伤害持续回合 10无限时间 -->
+        <range>1</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
+        <effect_number>1</effect_number><!--技能攻击人数，0～10 （0的意思对全场AOE） -->
+        <level>0</level><!--技能等级 0～5-->
+        <effect_up>0.2</effect_up><!--技能升级效果提升 浮点数 0～5.0 -->
+        <effect_camp>0</effect_camp><!--技能目标阵营 0：敌人 1：友方-->
+        <effect_target>0</effect_target><!--技能作用目标 0随机目标 1血最少的 2血最多的 3最进的 4最远的-->
+        <assist_effect>0</assist_effect><!-- 技能辅助效果 具体查看顶部介绍-->
     </item>
 
-</all_character>
+    <item>
+        <skill_id>1</skill_id><!--技能ID,唯一标识这个技能-->
+        <name>精神攻击</name><!--技能名字-->
+        <introduce>进行普通魔法攻击</introduce><!--技能描述-->
+        <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
+        <nature_type>0</nature_type><!--技能性质：0主动 1恢复 2被动-->
+        <damage_type>1</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_constant>100</damage_constant><!--技能伤害固定部分-->
+        <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
+        <accuracy_rate>1</accuracy_rate><!--技能命中率 浮点数 0～1.0 1.0为本身人物的命中率 2.0为必中-->
+        <effect_rate>0</effect_rate><!--技能附加效果触发几率 0～1.0-->
+        <cd_time>0</cd_time><!--技能冷却时间0～+ -->
+        <time>0</time><!--技能持续时间，一般是恢复和辅助才有这个属性 -->
+        <range>2</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
+        <effect_number>1</effect_number><!--技能攻击人数，0～10 （0的意思对全场AOE） -->
+        <level>0</level><!--技能等级 0～5-->
+        <effect_up>0.2</effect_up><!--技能升级效果提升 浮点数 0～5.0 -->
+        <effect_camp>0</effect_camp><!--技能目标 0：敌人 1：友方-->
+        <effect_target>0</effect_target><!--技能作用目标 0随机目标 1血最少的 2血最多的 3最进的 4最远的-->
+        <assist_effect>0</assist_effect><!-- 技能辅助效果 具体查看顶部介绍-->
+    </item>
+
+    <item>
+        <skill_id>2</skill_id><!--技能ID,唯一标识这个技能-->
+        <name>武圣</name><!--技能名字-->
+        <introduce>被动：全基础属性提升</introduce><!--技能描述-->
+        <skill_type>2</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
+        <nature_type>1</nature_type><!--技能性质：0主动 1被动-->
+        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_constant>0</damage_constant><!--技能伤害固定部分-->
+        <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
+        <accuracy_rate>2.0</accuracy_rate><!--技能命中率 浮点数 0～1.0 1.0为本身人物的命中率 2.0为必中-->
+        <effect_rate>0</effect_rate><!--技能附加效果触发几率 0～1.0-->
+        <cd_time>0</cd_time><!--技能冷却时间0～+ -->
+        <time>10</time><!--技能持续时间，一般是恢复和辅助才有这个属性 -->
+        <range>0</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
+        <effect_number>1</effect_number><!--技能攻击人数，0～10 （0的意思对全场AOE） -->
+        <level>0</level><!--技能等级 0～5-->
+        <effect_up>0.1</effect_up><!--技能升级效果提升 浮点数 0～5.0 -->
+        <effect_camp>1</effect_camp><!--技能目标 0：敌人 1：友方-->
+        <effect_target>0</effect_target><!--技能作用目标 0随机目标 1血最少的 2血最多的 3最进的 4最远的-->
+        <assist_effect>7,9,11,13,15,17,19</assist_effect><!-- 技能辅助效果 具体查看顶部介绍-->
+    </item>
+
+    <item>
+        <skill_id>3</skill_id><!--技能ID,唯一标识这个技能-->
+        <name>暗杀</name><!--技能名字-->
+        <introduce>对生命最低的敌人进行一次高伤害的物理攻击</introduce><!--技能描述-->
+        <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
+        <nature_type>0</nature_type><!--技能性质：0主动 1被动-->
+        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_constant>0</damage_constant><!--技能伤害固定部分-->
+        <damage_fluctuate>2</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
+        <accuracy_rate>1.0</accuracy_rate><!--技能命中率 浮点数 0～1.0 1.0为本身人物的命中率 2.0为必中-->
+        <effect_rate>0</effect_rate><!--技能附加效果触发几率 0～1.0-->
+        <cd_time>1</cd_time><!--技能冷却时间0～+ -->
+        <time>0</time><!--技能持续时间，一般是恢复和辅助才有这个属性 -->
+        <range>3</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
+        <effect_number>1</effect_number><!--技能攻击人数，0～10 （0的意思对全场AOE） -->
+        <level>0</level><!--技能等级 0～5-->
+        <effect_up>0.5</effect_up><!--技能升级效果提升 浮点数 0～5.0 -->
+        <effect_camp>0</effect_camp><!--技能目标 0：敌人 1：友方-->
+        <effect_target>1</effect_target><!--技能作用目标 0随机目标 1血最少的 2血最多的 3最进的 4最远的-->
+        <assist_effect>0</assist_effect><!-- 技能辅助效果 具体查看顶部介绍-->
+    </item>
+</all_skill>

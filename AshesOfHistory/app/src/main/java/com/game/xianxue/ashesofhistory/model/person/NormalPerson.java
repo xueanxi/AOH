@@ -1,6 +1,6 @@
 package com.game.xianxue.ashesofhistory.model.person;
 
-import com.game.xianxue.ashesofhistory.model.SkillModel;
+import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 
 import java.util.ArrayList;
 
@@ -39,7 +39,7 @@ public class NormalPerson extends BasePerson {
     /**
      * 当前拥有的技能，包括天赋技能 和 其他途径获得的技能
      */
-    ArrayList<SkillModel> skillArrays = null;
+    ArrayList<SkillBase> skillArrays = null;
 
     /**
      * 面板属性
@@ -481,7 +481,7 @@ public class NormalPerson extends BasePerson {
         return level;
     }
 
-    public ArrayList<SkillModel> getSkillArrays() {
+    public ArrayList<SkillBase> getSkillArrays() {
         if (skillLists == null || skillLists.length() < 1) {
             return null;
         } else {
@@ -491,7 +491,7 @@ public class NormalPerson extends BasePerson {
         return skillArrays;
     }
 
-    public void setSkillArrays(ArrayList<SkillModel> skillArrays) {
+    public void setSkillArrays(ArrayList<SkillBase> skillArrays) {
         this.skillArrays = skillArrays;
     }
 

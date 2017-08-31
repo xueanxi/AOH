@@ -7,8 +7,10 @@ import android.util.Log;
 
 import com.game.xianxue.ashesofhistory.App;
 import com.game.xianxue.ashesofhistory.constant.Constant;
+import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.BasePersonColumn;
 import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.OwnPersonColumn;
+import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.SkillColumn;
 import com.game.xianxue.ashesofhistory.model.person.BasePerson;
 import com.game.xianxue.ashesofhistory.utils.XmlUtils;
 
@@ -47,6 +49,57 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, " onCreate");
         createTableCharacter(db);
+        createTableSkill(db);
+    }
+
+    private void createTableSkill(SQLiteDatabase db) {
+        //创建一个游戏所有技能的表格
+        db.execSQL("CREATE TABLE " + SkillColumn.tableName
+                + " (" + SkillColumn.id + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + SkillColumn.skillId + " INTEGER,"
+                + SkillColumn.name + " TEXT,"
+                + SkillColumn.introduce + " TEXT,"
+                + SkillColumn.skillType + " INTEGER,"
+                + SkillColumn.naturetype + " INTEGER,"
+                + SkillColumn.accuracyRate + " REAL,"
+                + SkillColumn.effectRate + " REAL,"
+                + SkillColumn.cdTime + " INTEGER,"
+                + SkillColumn.time + " INTEGER,"
+                + SkillColumn.range + " INTEGER,"
+                + SkillColumn.effectNumber + " INTEGER,"
+                + SkillColumn.effectUp + " REAL,"
+                + SkillColumn.damageType + " INTEGER,"
+                + SkillColumn.effectCamp + " INTEGER,"
+                + SkillColumn.damageConstant + " INTEGER,"
+                + SkillColumn.damageFluctuate + " REAL,"
+                + SkillColumn.assisteffect + " TEXT,"
+                + SkillColumn.effectTarget + " INTEGER)");
+        insertSkillData(db);
+    }
+
+    /**
+     * 插入所有技能数据
+     * @param db
+     */
+    private void insertSkillData(SQLiteDatabase db) {
+        // 进行批处理
+        ArrayList<SkillBase> lists = null;
+        db.beginTransaction();
+        try {
+            lists = XmlUtils.getAllSkill(mContext);
+            if (lists == null) return;
+        } catch (Exception e) {
+            Log.d(TAG, "anxi Fail !!! Exception e:" + e);
+            e.printStackTrace();
+        }
+
+        for (SkillBase skill : lists) {
+            db.execSQL(SkillBaseManager.getInsertString(skill));
+        }
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        lists.clear();
+        lists = null;
     }
 
     /**
