@@ -36,16 +36,45 @@ public class RandomUtils {
 
     /**
      * 返回 left ～ right之间 随机的数字
+     *
      * @param left
      * @param right
      * @return
      */
-    public static float getRandombetween(float left, float right) {
-        int Ileft = (int)(left*100f);
-        int Iright = (int)(right*100f);
+    public static float getRandomNumberbetween(float left, float right) {
+        int Ileft = (int) (left * 100f);
+        int Iright = (int) (right * 100f);
         int range = Iright - Ileft;
         Random random = new Random();
-        int randomInt = random.nextInt(range)+Ileft;
-        return (randomInt/100f);
+        int randomInt = random.nextInt(range) + Ileft;
+        return (randomInt / 100f);
+    }
+
+    /**
+     * 参数传进来 N 个浮点数，代表各自被选中的概率。
+     * 结果返回被选中的索引值。
+     *
+     * @param args
+     * @return
+     */
+    public static int selectOneByProbability(float[] args) {
+        int result = -1;
+        float total = 0;
+        for (int i = 0; i < args.length; i++) {
+            total += args[i];
+        }
+        float random = new Random().nextFloat();
+        float values = random * total;
+
+        float temp = 0;
+        for (int i = 0; i < args.length; i++) {
+            if (values >= temp && values < (temp + args[i])) {
+                result = i;
+                break;
+            } else {
+                temp += args[i];
+            }
+        }
+        return result;
     }
 }

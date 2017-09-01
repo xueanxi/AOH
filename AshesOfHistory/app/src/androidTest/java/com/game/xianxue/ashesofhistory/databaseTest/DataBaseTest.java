@@ -6,6 +6,8 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.database.BasePersonManager;
+import com.game.xianxue.ashesofhistory.database.DataBaseHelper;
+import com.game.xianxue.ashesofhistory.database.SkillDataManager;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 import com.game.xianxue.ashesofhistory.model.TeamModel;
 import com.game.xianxue.ashesofhistory.model.person.BasePerson;
@@ -45,6 +47,9 @@ public class DataBaseTest {
         BasePersonManager.showAllPersonFromDataBase();
     }
 
+    /**
+     * 测试数据库获取武将
+     */
     @Test
     public void TestgetPlayerByName() {
         init();
@@ -60,6 +65,9 @@ public class DataBaseTest {
         }
     }
 
+    /**
+     * 测试XML解析所有人物
+     */
     @Test
     public void TestXmlUtilGetAll() {
         init();
@@ -70,6 +78,9 @@ public class DataBaseTest {
         }
     }
 
+    /**
+     * 测试XML解析所有节能
+     */
     @Test
     public void TestXmlUtilGetAllSkill() {
         init();
@@ -86,5 +97,27 @@ public class DataBaseTest {
         }
     }
 
+    /**
+     * 测试获取所有技能
+     */
+    @Test
+    public void TestXmlUtilGetAllSkillFromDataBase() {
+        init();
+        try {
+            SkillDataManager.getAllSkillFromDataBase();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
+    /**
+     * 测试通过id 获取一个技能
+     */
+    @Test
+    public void TestgetSkillByIdFormDataBase() {
+        init();
+        SkillDataManager.getSkillFromDataBaseById(0);
+        SkillDataManager.getSkillFromDataBaseById(3);
+        SkillDataManager.getSkillFromDataBaseById(1);
+    }
 }

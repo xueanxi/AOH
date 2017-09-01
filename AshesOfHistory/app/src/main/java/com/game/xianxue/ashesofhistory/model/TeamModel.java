@@ -19,7 +19,7 @@ public class TeamModel {
 
 
     private ArrayList<BattlePerson> mMembersList; // 成员列表
-    private ZhenFaModel mZhenfa;                 // 阵法
+    private LineUpMode mZhenfa;                 // 阵法
     private int Camp = CAMP_NEUTRAL;             // 阵营，对战的两方 (左方 1，右方 2)
 
     /**
@@ -58,11 +58,11 @@ public class TeamModel {
         this.mMembersList = mMembersList;
     }
 
-    public ZhenFaModel getmZhenfa() {
+    public LineUpMode getmZhenfa() {
         return mZhenfa;
     }
 
-    public void setmZhenfa(ZhenFaModel mZhenfa) {
+    public void setmZhenfa(LineUpMode mZhenfa) {
         this.mZhenfa = mZhenfa;
     }
 

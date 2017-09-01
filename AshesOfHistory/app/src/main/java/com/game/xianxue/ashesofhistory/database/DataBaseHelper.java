@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.game.xianxue.ashesofhistory.App;
+import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.constant.Constant;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.BasePersonColumn;
@@ -19,6 +20,17 @@ import java.util.ArrayList;
 
 /**
  * Created by user on 5/25/17.
+ *
+ *
+ * 一些语句：
+ * select * from calc_history;
+ * select * from calc_history order by _id desc  ;
+ * select name from calc_history group by calc_value  having count(*)>1  ;
+ * select * from calc_history  limit 5 offset 3  ;
+ * select * from calc_history limit 3,5 ;
+ * insert into calc_history (calc_value) values('1+1=2') ;
+ * update calc_history set calc_value=‘2+2=4‘ where _id=1 ;
+ * delete from calc_history where id=1;
  */
 public class DataBaseHelper extends SQLiteOpenHelper {
     private static final String TAG = "DataBaseHelper";
@@ -48,14 +60,20 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, " onCreate");
-        createTableCharacter(db);
+        createTablePerson(db);
+        SimpleLog.logd(TAG,"create person over");
         createTableSkill(db);
+        SimpleLog.logd(TAG,"create skill over");
     }
 
-    private void createTableSkill(SQLiteDatabase db) {
-        //创建一个游戏所有技能的表格
-        db.execSQL("CREATE TABLE " + SkillColumn.tableName
-                + " (" + SkillColumn.id + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+    /**
+     * 创建一个游戏所有技能的表格
+     *
+     * @param db
+     */
+    public void createTableSkill(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + SkillColumn.tableName+ " ( "
+                + SkillColumn.id + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + SkillColumn.skillId + " INTEGER,"
                 + SkillColumn.name + " TEXT,"
                 + SkillColumn.introduce + " TEXT,"
@@ -67,6 +85,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + SkillColumn.time + " INTEGER,"
                 + SkillColumn.range + " INTEGER,"
                 + SkillColumn.effectNumber + " INTEGER,"
+                + SkillColumn.level + " INTEGER,"
                 + SkillColumn.effectUp + " REAL,"
                 + SkillColumn.damageType + " INTEGER,"
                 + SkillColumn.effectCamp + " INTEGER,"
@@ -79,6 +98,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     /**
      * 插入所有技能数据
+     *
      * @param db
      */
     private void insertSkillData(SQLiteDatabase db) {
@@ -94,7 +114,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
 
         for (SkillBase skill : lists) {
-            db.execSQL(SkillBaseManager.getInsertString(skill));
+            db.execSQL(SkillDataManager.getInsertString(skill));
         }
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -107,7 +127,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      *
      * @param db
      */
-    private void createTableCharacter(SQLiteDatabase db) {
+    private void createTablePerson(SQLiteDatabase db) {
         //创建一个游戏所有人物数据表
         db.execSQL("CREATE TABLE " + BasePersonColumn.tableName
                 + " (" + BasePersonColumn.id + " INTEGER PRIMARY KEY AUTOINCREMENT,"

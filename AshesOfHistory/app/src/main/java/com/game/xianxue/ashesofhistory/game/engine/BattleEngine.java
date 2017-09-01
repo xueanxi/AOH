@@ -299,7 +299,7 @@ public class BattleEngine {
     public int attack(float PhysicDamage, float Armor, float Penetrate) {
         Armor -= Penetrate;
         float result = PhysicDamage * (1f - (Armor / (Armor + 200f)));
-        result = result * RandomUtils.getRandombetween(0.95f, 1.05f);// 造成的伤害随机波动
+        result = result * RandomUtils.getRandomNumberbetween(0.95f, 1.05f);// 造成的伤害随机波动
         return ((int) (Math.ceil(result)));
     }
 
@@ -314,7 +314,7 @@ public class BattleEngine {
     public int attackWithPercent(float PhysicDamage, float Armor, float Penetrate) {
         Armor = Armor * (1f - Penetrate);
         float result = PhysicDamage * (1f - (Armor / (Armor + 200f)));
-        result = result * RandomUtils.getRandombetween(0.95f, 1.05f);// 造成的伤害随机波动
+        result = result * RandomUtils.getRandomNumberbetween(0.95f, 1.05f);// 造成的伤害随机波动
         return ((int) (Math.ceil(result)));
     }
 

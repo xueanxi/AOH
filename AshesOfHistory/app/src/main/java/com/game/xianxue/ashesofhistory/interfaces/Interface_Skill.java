@@ -1,4 +1,4 @@
-package com.game.xianxue.ashesofhistory.game.interfaces;
+package com.game.xianxue.ashesofhistory.interfaces;
 
 import com.game.xianxue.ashesofhistory.model.TeamModel;
 import com.game.xianxue.ashesofhistory.model.person.BattlePerson;

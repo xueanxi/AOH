@@ -1,6 +1,6 @@
 package com.game.xianxue.ashesofhistory.game.skill;
 
-import com.game.xianxue.ashesofhistory.game.interfaces.Interface_Skill;
+import com.game.xianxue.ashesofhistory.interfaces.Interface_Skill;
 import com.game.xianxue.ashesofhistory.model.TeamModel;
 import com.game.xianxue.ashesofhistory.model.person.BattlePerson;
 
@@ -11,10 +11,10 @@ public class SkillBase implements Interface_Skill {
     public int skillId;                             // 技能id
     public String name;                             // 技能名字
     public String introduce;                        // 技能说明
-    public int naturetype = SKILL_NATURE_ACTIVE;    // 技能的性质       (分为主动技能和被动技能)
-    public int skillType = SKILL_TYPE_DAMGE;        // 技能类型        （分为攻击技能，辅助技能，恢复技能）
-    public float accuracyRate = 1.0f;               // 技能命中率        (如果为1.0则默认使用武将本身的命中率，如果必中为2.0,其他0～1.0为普通命中率
-    public float effectRate = 1.0f;                 // 技能额外效果触发概率 (如果为1.0则默认使用武将本身的命中率，如果必中为2.0,其他0～1.0为普通命中率
+    public int naturetype = SKILL_NATURE_ACTIVE;    // 技能的性质   (分为主动技能和被动技能)
+    public int skillType = SKILL_TYPE_DAMGE;        // 技能类型    （分为攻击技能，辅助技能，恢复技能）
+    public float accuracyRate = 1.0f;               // 技能命中率   (如果为1.0则默认使用武将本身的命中率，如果必中为2.0,其他0～1.0为普通命中率
+    public float effectRate = 1.0f;                 // 技能触发概率 ( 当有多个技能的时候，技能触发的概率）
     public int cdTime = 0;                          // 技能的冷却回合数
     public int time = SKILL_LAST_TIME_0;            // 伤害持续回合，普通技能一般都是0个回合，除了那些持续类型的伤害
     public int range = SKILL_RANGE_1;               // 技能的影响范围
@@ -114,7 +114,6 @@ public class SkillBase implements Interface_Skill {
                 break;
         }
     }
-
 
     public int getSkillId() {
         return skillId;
