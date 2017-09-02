@@ -50,23 +50,34 @@ public class LineUpMode {
         initLineUp(lineup);
     }
 
+    /**
+     * 初始化阵型
+     * @param lineup
+     */
     private void initLineUp(long lineup) {
-
         lineupList = new ArrayList<Uint>();
         String lineupCode = null;
         char last;
+        maxPerson = 0;
+        int index = 0;
+        Uint unit = null;
         for(int i=LINEUP_MAX_ROW -1;i>=0;i--){
             for(int j =LINEUP_MAX_ROW -1;j>=0;j--){
                 lineupCode = Long.toBinaryString(lineup);
                 last = lineupCode.charAt(lineupCode.length() - 1);
+                unit = new Uint();
                 if (last == '1') {
-                    maxPlayer++;
+                    maxPerson++;
+                    unit.x = i;
+                    unit.y = j;
+
+
                 } else {
 
                 }
 
 
-                        lineup = lineup>>1;
+                lineup = lineup>>1;
 
             }
         }

@@ -27,7 +27,7 @@
         <name>普通攻击</name><!--技能名字-->
         <introduce>进行普通物理攻击</introduce><!--技能描述-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <nature_type>0</nature_type><!--技能性质：0主动 1恢复 2被动-->
+        <buff_nature>0</buff_nature><!--技能性质：0主动 1恢复 2被动-->
         <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
         <damage_constant>0</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
@@ -49,7 +49,7 @@
         <name>精神攻击</name><!--技能名字-->
         <introduce>进行普通魔法攻击</introduce><!--技能描述-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <nature_type>0</nature_type><!--技能性质：0主动 1恢复 2被动-->
+        <buff_nature>0</buff_nature><!--技能性质：0主动 1恢复 2被动-->
         <damage_type>1</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
         <damage_constant>100</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
@@ -71,7 +71,7 @@
         <name>武圣</name><!--技能名字-->
         <introduce>被动：全基础属性提升</introduce><!--技能描述-->
         <skill_type>2</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <nature_type>1</nature_type><!--技能性质：0主动 1被动-->
+        <buff_nature>1</buff_nature><!--技能性质：0主动 1被动-->
         <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
         <damage_constant>0</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
@@ -93,7 +93,7 @@
         <name>暗杀</name><!--技能名字-->
         <introduce>对生命最低的敌人进行一次高伤害的物理攻击</introduce><!--技能描述-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <nature_type>0</nature_type><!--技能性质：0主动 1被动-->
+        <buff_nature>0</buff_nature><!--技能性质：0主动 1被动-->
         <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
         <damage_constant>0</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>2</damage_fluctuate><!--技能伤害浮动部分 浮点数-->

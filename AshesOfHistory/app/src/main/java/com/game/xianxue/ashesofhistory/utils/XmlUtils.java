@@ -4,9 +4,11 @@ import android.content.Context;
 import android.util.Xml;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
+import com.game.xianxue.ashesofhistory.game.buff.BuffBase;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.BasePersonColumn;
 import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.SkillColumn;
+import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.BuffColumn;
 import com.game.xianxue.ashesofhistory.model.person.BasePerson;
 
 import org.xmlpull.v1.XmlPullParser;
@@ -20,6 +22,7 @@ public class XmlUtils {
     private static final String TAG = "XmlUtils";
     private static final String DEFAULT_PAGE_TAG = "all_character.xml";
     private static final String SKILL_PAGE_TAG = "all_skills.xml";
+    private static final String BUFF_PAGE_TAG = "all_buff.xml";
 
     /**
      * 从 xml 文件 解析 所有人物出来
@@ -162,6 +165,68 @@ public class XmlUtils {
         }
         SimpleLog.logd(TAG, "解析所有技能使用的时间:" + (System.currentTimeMillis() - startTime));
         return skillLists;
+    }
+
+
+    /**
+     * 从 xml 文件 解析 技能出来
+     *
+     * @param context
+     * @return
+     * @throws Exception
+     */
+    public static ArrayList<BuffBase> getAllBuff(Context context) throws Exception {
+        BuffBase buff = null;
+        ArrayList<BuffBase> buffLists = null;
+        XmlPullParser pullParser = Xml.newPullParser();
+        pullParser.setInput(context.getAssets().open(BUFF_PAGE_TAG), "UTF-8");
+        int event = pullParser.getEventType();// 觸發第一個事件
+        long startTime = System.currentTimeMillis();
+
+        while (event != XmlPullParser.END_DOCUMENT) {
+            switch (event) {
+                case XmlPullParser.START_DOCUMENT:
+                    buffLists = new ArrayList<BuffBase>();
+                    break;
+                case XmlPullParser.START_TAG:
+                    String tag = pullParser.getName();
+                    if ("item".equals(tag)) {
+                        buff = new BuffBase();
+                    } else if (BuffColumn.buff_id.equals(tag)) {
+                        buff.setBuffId(Integer.valueOf(pullParser.nextText()));
+                    } else if (BuffColumn.name.equals(tag)) {
+                        buff.setName(pullParser.nextText());
+                    } else if (BuffColumn.introduce.equals(tag)) {
+                        buff.setIntroduce(pullParser.nextText());
+                    } else if (BuffColumn.buff_type.equals(tag)) {
+                        buff.setBuff_type(Integer.valueOf(pullParser.nextText()));
+                    } else if (BuffColumn.buff_nature.equals(tag)) {
+                        buff.setBuff_nature(Integer.valueOf(pullParser.nextText()));
+                    } else if (BuffColumn.buff_constant.equals(tag)) {
+                        buff.setBuff_constant(Integer.valueOf(pullParser.nextText()));
+                    } else if (BuffColumn.buff_fluctuate.equals(tag)) {
+                        buff.setBuff_fluctuate(Float.valueOf(pullParser.nextText()));
+                    } else if (BuffColumn.time.equals(tag)) {
+                        buff.setTime(Integer.valueOf(pullParser.nextText()));
+                    } else if (BuffColumn.range.equals(tag)) {
+                        buff.setRange(Integer.valueOf(pullParser.nextText()));
+                    } else if (BuffColumn.level.equals(tag)) {
+                        buff.setLevel(Integer.valueOf(pullParser.nextText()));
+                    } else if (BuffColumn.effect_up.equals(tag)) {
+                        buff.setEffect_up(Float.valueOf(pullParser.nextText()));
+                    }
+                    break;
+                case XmlPullParser.END_TAG:
+                    if ("item".equals(pullParser.getName())) {
+                        buffLists.add(buff);
+                        buff = null;
+                    }
+                    break;
+            }
+            event = pullParser.next();
+        }
+        SimpleLog.logd(TAG, "解析所有buff使用的时间:" + (System.currentTimeMillis() - startTime));
+        return buffLists;
     }
 }
 

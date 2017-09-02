@@ -8,10 +8,12 @@ import android.util.Log;
 import com.game.xianxue.ashesofhistory.App;
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.constant.Constant;
+import com.game.xianxue.ashesofhistory.game.buff.BuffBase;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.BasePersonColumn;
 import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.OwnPersonColumn;
 import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.SkillColumn;
+import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.BuffColumn;
 import com.game.xianxue.ashesofhistory.model.person.BasePerson;
 import com.game.xianxue.ashesofhistory.utils.XmlUtils;
 
@@ -20,8 +22,8 @@ import java.util.ArrayList;
 
 /**
  * Created by user on 5/25/17.
- *
- *
+ * <p>
+ * <p>
  * 一些语句：
  * select * from calc_history;
  * select * from calc_history order by _id desc  ;
@@ -38,32 +40,62 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private static Context mContext = App.getInstance().getApplicationContext();
     private static final String DB_NAME = Constant.GAME_NAME + ".db";
     private static final int DB_VERSION = 1;
-    //private static DataBaseHelper sDatabaseHelper = null;
-
-    /*public static synchronized DataBaseHelper getInstance() {
-        Log.d(TAG, "");
-        if (sDatabaseHelper == null) {
-            Log.d(TAG, "anxi new");
-            sDatabaseHelper = new DataBaseHelper(mContext);
-            if(sDatabaseHelper == null){
-                Log.d(TAG,"anxi but sDatabaseHelper is null");
-            }
-        }
-        return sDatabaseHelper;
-    }*/
 
     public DataBaseHelper() {
         super(mContext, DB_NAME, null, DB_VERSION);
     }
 
-
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, " onCreate");
         createTablePerson(db);
-        SimpleLog.logd(TAG,"create person over");
+        SimpleLog.logd(TAG, "create person over");
         createTableSkill(db);
-        SimpleLog.logd(TAG,"create skill over");
+        SimpleLog.logd(TAG, "create skill over");
+        createTableBuff(db);
+    }
+
+    /**
+     * 创建一张Buff的表
+     *
+     * @param db
+     */
+    private void createTableBuff(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + BuffColumn.tableName + " ( "
+                + BuffColumn.id + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + BuffColumn.buff_id + " INTEGER,"
+                + BuffColumn.name + " TEXT,"
+                + BuffColumn.introduce + " TEXT,"
+                + BuffColumn.buff_type + " INTEGER,"
+                + BuffColumn.buff_nature + " INTEGER,"
+                + BuffColumn.buff_constant + " INTEGER,"
+                + BuffColumn.buff_fluctuate + " REAL,"
+                + BuffColumn.time + " INTEGER,"
+                + BuffColumn.range + " INTEGER,"
+                + BuffColumn.level + " INTEGER,"
+                + BuffColumn.effect_up + " REAL)");
+        insertBuffData(db);
+    }
+
+    private void insertBuffData(SQLiteDatabase db) {
+        // 进行批处理
+        ArrayList<BuffBase> lists = null;
+        db.beginTransaction();
+        try {
+            lists = XmlUtils.getAllBuff(mContext);
+            if (lists == null) return;
+        } catch (Exception e) {
+            Log.d(TAG, " Fail !!! Exception e:" + e);
+            e.printStackTrace();
+        }
+
+        for (BuffBase data : lists) {
+            db.execSQL(BuffDataManager.getInsertString(data));
+        }
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        lists.clear();
+        lists = null;
     }
 
     /**
@@ -72,7 +104,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * @param db
      */
     public void createTableSkill(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE " + SkillColumn.tableName+ " ( "
+        db.execSQL("CREATE TABLE " + SkillColumn.tableName + " ( "
                 + SkillColumn.id + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                 + SkillColumn.skillId + " INTEGER,"
                 + SkillColumn.name + " TEXT,"

@@ -6,6 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.database.BasePersonManager;
+import com.game.xianxue.ashesofhistory.database.BuffDataManager;
 import com.game.xianxue.ashesofhistory.database.DataBaseHelper;
 import com.game.xianxue.ashesofhistory.database.SkillDataManager;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
@@ -78,6 +79,21 @@ public class DataBaseTest {
         }
     }
 
+
+    /**
+     * 测试XML解析所有人物
+     */
+    @Test
+    public void TestXmlUtilGetAllBuff() {
+        init();
+        try {
+            XmlUtils.getAllBuff(mContext);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
     /**
      * 测试XML解析所有节能
      */
@@ -119,5 +135,17 @@ public class DataBaseTest {
         SkillDataManager.getSkillFromDataBaseById(0);
         SkillDataManager.getSkillFromDataBaseById(3);
         SkillDataManager.getSkillFromDataBaseById(1);
+    }
+
+    /**
+     * 测试通过id 获取一个技能
+     */
+    @Test
+    public void TestgetbuffByIdFormDataBase() {
+        init();
+        BuffDataManager.getBuffFromDataBaseById(0);
+        BuffDataManager.getBuffFromDataBaseById(3);
+        //BuffDataManager.getBuffFromDataBaseById(1);
+        //BuffDataManager.getAllBuffFromDataBase();
     }
 }

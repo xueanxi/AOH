@@ -54,7 +54,7 @@ public class ConstantColumn {
         public static final String skillId = "skill_id";            // 唯一标识这个技能的id
         public static final String name = "name";                   // 技能名字
         public static final String introduce = "introduce";         // 技能介绍
-        public static final String naturetype = "nature_type";      // 技能的性质（主动，被动）
+        public static final String naturetype = "buff_nature";      // 技能的性质（主动，被动）
         public static final String skillType = "skill_type";        // 技能类型(攻击，恢复，辅助)
         public static final String accuracyRate = "accuracy_rate";  // 命中率
         public static final String effectRate = "effect_rate";      // 效果触发几率
@@ -70,5 +70,24 @@ public class ConstantColumn {
         public static final String damageConstant = "damage_constant"; // 技能固定伤害
         public static final String damageFluctuate = "damage_fluctuate"; // 技能波动伤害
         public static final String assisteffect = "assist_effect";  //辅助效果
+    }
+
+    /**
+     *  Buff 数据库表格的 列属性
+     */
+    public static class BuffColumn{
+        public static final String tableName = "buff";
+        public static final String id = "_id";                          // 数据库id
+        public static final String buff_id = "buff_id";                 // 唯一标识这个技能的id
+        public static final String name = "name";                       // 名字
+        public static final String introduce = "introduce";             // buff介绍
+        public static final String buff_type = "buff_type";             // buff的类型（攻击，恢复，辅助）
+        public static final String buff_nature = "buff_nature";         // buff的性质（主动，被动）
+        public static final String buff_constant = "buff_constant";     // buff固定影响
+        public static final String buff_fluctuate = "buff_fluctuate";   // buff的浮动影响
+        public static final String time = "time";                       // buff的持续时间
+        public static final String range = "range";                     // buff的范围
+        public static final String level = "level";                     // 等级
+        public static final String effect_up = "effect_up";             // 每升一级提高的百分比
     }
 }
