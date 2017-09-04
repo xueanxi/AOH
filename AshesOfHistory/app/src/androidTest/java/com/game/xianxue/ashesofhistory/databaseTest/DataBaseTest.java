@@ -7,13 +7,13 @@ import android.support.test.runner.AndroidJUnit4;
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.database.BasePersonManager;
 import com.game.xianxue.ashesofhistory.database.BuffDataManager;
-import com.game.xianxue.ashesofhistory.database.DataBaseHelper;
+import com.game.xianxue.ashesofhistory.database.LineUpDataManager;
 import com.game.xianxue.ashesofhistory.database.SkillDataManager;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
-import com.game.xianxue.ashesofhistory.model.TeamModel;
-import com.game.xianxue.ashesofhistory.model.person.BasePerson;
-import com.game.xianxue.ashesofhistory.model.person.BattlePerson;
-import com.game.xianxue.ashesofhistory.model.person.NormalPerson;
+import com.game.xianxue.ashesofhistory.game.model.TeamModel;
+import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
+import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
+import com.game.xianxue.ashesofhistory.game.model.person.NormalPerson;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 import com.game.xianxue.ashesofhistory.utils.XmlUtils;
 
@@ -137,6 +137,18 @@ public class DataBaseTest {
         SkillDataManager.getSkillFromDataBaseById(1);
     }
 
+
+    /**
+     * 测试通过id 获取一个技能
+     */
+    @Test
+    public void TestgetbuffByIdFormDataBase2() {
+        init();
+        BuffDataManager.getBuffFromDataBaseById(0);
+        BuffDataManager.getBuffFromDataBaseById(3);
+        //BuffDataManager.getBuffFromDataBaseById(1);
+        //BuffDataManager.getAllBuffFromDataBase();
+    }
     /**
      * 测试通过id 获取一个技能
      */
@@ -145,6 +157,29 @@ public class DataBaseTest {
         init();
         BuffDataManager.getBuffFromDataBaseById(0);
         BuffDataManager.getBuffFromDataBaseById(3);
+        //BuffDataManager.getBuffFromDataBaseById(1);
+        //BuffDataManager.getAllBuffFromDataBase();
+    }
+
+
+    /**
+     * 测试通过id 获取一个技能
+     */
+    @Test
+    public void TestParseLineUpdata() throws Exception {
+        init();
+        XmlUtils.getAllLineUp(mContext);
+        //BuffDataManager.getBuffFromDataBaseById(1);
+        //BuffDataManager.getAllBuffFromDataBase();
+    }
+
+    /**
+     * 测试通过id 获取一个技能
+     */
+    @Test
+    public void TestgetLineupdata() throws Exception {
+        init();
+        LineUpDataManager.getAllDataFromDataBase();
         //BuffDataManager.getBuffFromDataBaseById(1);
         //BuffDataManager.getAllBuffFromDataBase();
     }

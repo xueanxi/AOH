@@ -1,8 +1,8 @@
 package com.game.xianxue.ashesofhistory.game.skill;
 
 import com.game.xianxue.ashesofhistory.interfaces.Interface_Skill;
-import com.game.xianxue.ashesofhistory.model.TeamModel;
-import com.game.xianxue.ashesofhistory.model.person.BattlePerson;
+import com.game.xianxue.ashesofhistory.game.model.TeamModel;
+import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 
 /**
  * 技能实体类 模型

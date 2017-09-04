@@ -1,4 +1,4 @@
-package com.game.xianxue.ashesofhistory.model.constant;
+package com.game.xianxue.ashesofhistory.game.model.constant;
 
 /**
  * 列属性
@@ -89,5 +89,19 @@ public class ConstantColumn {
         public static final String range = "range";                     // buff的范围
         public static final String level = "level";                     // 等级
         public static final String effect_up = "effect_up";             // 每升一级提高的百分比
+    }
+
+    /**
+     *  阵型 数据库表格的 列属性
+     */
+    public static class LineUpColumn{
+        public static final String tableName = "lineup";
+        public static final String id = "_id";                          // 数据库id
+        public static final String lineup_id = "lineup_id";             // 唯一标识这个阵型的id
+        public static final String name = "name";                       // 名字
+        public static final String introduce = "introduce";             // 介绍
+        public static final String max_person = "max_person";           // 介绍
+        public static final String lineup_json = "lineup_json";         // 容纳最大人数
+        public static final String unit = "unit";                       // 阵型中的每一个单位，这个不存在数据库中，只是当成常量来使用
     }
 }

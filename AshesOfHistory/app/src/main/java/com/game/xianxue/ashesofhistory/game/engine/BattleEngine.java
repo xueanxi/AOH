@@ -1,9 +1,8 @@
 package com.game.xianxue.ashesofhistory.game.engine;
 
 import com.game.xianxue.ashesofhistory.Log.BattleLog;
-import com.game.xianxue.ashesofhistory.game.model.ActiveValueManager;
-import com.game.xianxue.ashesofhistory.model.TeamModel;
-import com.game.xianxue.ashesofhistory.model.person.BattlePerson;
+import com.game.xianxue.ashesofhistory.game.model.TeamModel;
+import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.utils.RandomUtils;
 
 import java.util.ArrayList;

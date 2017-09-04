@@ -1,6 +1,6 @@
 package com.game.xianxue.ashesofhistory.utils;
 
-import com.game.xianxue.ashesofhistory.model.person.BasePerson;
+import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -8,9 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by user on 8/30/17.

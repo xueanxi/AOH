@@ -1,6 +1,6 @@
 package com.game.xianxue.ashesofhistory.interfaces;
 
-import com.game.xianxue.ashesofhistory.model.person.BattlePerson;
+import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 
 /**
  * 战斗接口

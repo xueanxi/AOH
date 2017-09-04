@@ -6,15 +6,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.game.xianxue.ashesofhistory.App;
-import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.constant.Constant;
 import com.game.xianxue.ashesofhistory.game.buff.BuffBase;
+import com.game.xianxue.ashesofhistory.game.model.LineUpMode;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
-import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.BasePersonColumn;
-import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.OwnPersonColumn;
-import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.SkillColumn;
-import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.BuffColumn;
-import com.game.xianxue.ashesofhistory.model.person.BasePerson;
+import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.*;
+import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
 import com.game.xianxue.ashesofhistory.utils.XmlUtils;
 
 import java.util.ArrayList;
@@ -48,11 +45,51 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.d(TAG, " onCreate");
-        createTablePerson(db);
-        SimpleLog.logd(TAG, "create person over");
-        createTableSkill(db);
-        SimpleLog.logd(TAG, "create skill over");
         createTableBuff(db);
+        createTableLineUp(db);
+        createTableSkill(db);
+        createTablePerson(db);
+    }
+
+    /**
+     * 创建一张 阵型 的表格
+     *
+     * @param db
+     */
+    private void createTableLineUp(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE " + LineUpColumn.tableName + " ( "
+                + LineUpColumn.id + " INTEGER PRIMARY KEY AUTOINCREMENT,"
+                + LineUpColumn.lineup_id + " INTEGER,"
+                + LineUpColumn.name + " TEXT,"
+                + LineUpColumn.introduce + " TEXT,"
+                + LineUpColumn.max_person + " INTEGER,"
+                + LineUpColumn.lineup_json + " TEXT)");
+        insertLineUpData(db);
+    }
+
+    /**
+     * 插入阵型数据到数据库
+     * @param db
+     */
+    private void insertLineUpData(SQLiteDatabase db) {
+        // 进行批处理
+        ArrayList<LineUpMode> lists = null;
+        db.beginTransaction();
+        try {
+            lists = XmlUtils.getAllLineUp(mContext);
+            if (lists == null) return;
+        } catch (Exception e) {
+            Log.d(TAG, " Fail !!! Exception e:" + e);
+            e.printStackTrace();
+        }
+
+        for (LineUpMode data : lists) {
+            db.execSQL(LineUpDataManager.getInsertString(data));
+        }
+        db.setTransactionSuccessful();
+        db.endTransaction();
+        lists.clear();
+        lists = null;
     }
 
     /**

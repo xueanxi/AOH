@@ -5,9 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
-import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn;
-import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.SkillColumn;
-import com.game.xianxue.ashesofhistory.model.person.BasePerson;
+import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.SkillColumn;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 
 import java.util.ArrayList;

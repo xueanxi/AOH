@@ -1,12 +1,9 @@
-package com.game.xianxue.ashesofhistory.game.model;
+package com.game.xianxue.ashesofhistory.game.engine;
 
 import com.game.xianxue.ashesofhistory.Log.BattleLog;
-import com.game.xianxue.ashesofhistory.game.engine.BattleEngine;
-import com.game.xianxue.ashesofhistory.model.person.BasePerson;
-import com.game.xianxue.ashesofhistory.model.person.BattlePerson;
+import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * 这是模拟人物行动值变化的模型

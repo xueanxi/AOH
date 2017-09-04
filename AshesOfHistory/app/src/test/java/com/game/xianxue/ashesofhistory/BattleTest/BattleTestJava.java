@@ -1,10 +1,10 @@
 package com.game.xianxue.ashesofhistory.BattleTest;
 
 import com.game.xianxue.ashesofhistory.game.engine.BattleEngine;
-import com.game.xianxue.ashesofhistory.model.TeamModel;
-import com.game.xianxue.ashesofhistory.model.person.BasePerson;
-import com.game.xianxue.ashesofhistory.model.person.BattlePerson;
-import com.game.xianxue.ashesofhistory.model.person.NormalPerson;
+import com.game.xianxue.ashesofhistory.game.model.TeamModel;
+import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
+import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
+import com.game.xianxue.ashesofhistory.game.model.person.NormalPerson;
 import com.game.xianxue.ashesofhistory.utils.SerializableUtils;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 

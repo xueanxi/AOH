@@ -2,10 +2,9 @@ package com.game.xianxue.ashesofhistory.database;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
-import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.BasePersonColumn;
-import com.game.xianxue.ashesofhistory.model.person.BasePerson;
+import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.BasePersonColumn;
+import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 
 import java.util.ArrayList;

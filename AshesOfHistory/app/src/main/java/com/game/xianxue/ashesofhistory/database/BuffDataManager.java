@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.game.buff.BuffBase;
-import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.BuffColumn;
+import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.BuffColumn;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 
 import java.util.ArrayList;

@@ -7,7 +7,7 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 
 import com.game.xianxue.ashesofhistory.game.engine.BattleEngine;
-import com.game.xianxue.ashesofhistory.model.TeamModel;
+import com.game.xianxue.ashesofhistory.game.model.TeamModel;
 
 /**
  * Created by user on 5/25/17.

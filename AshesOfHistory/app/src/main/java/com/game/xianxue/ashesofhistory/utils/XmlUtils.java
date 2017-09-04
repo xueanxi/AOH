@@ -5,11 +5,14 @@ import android.util.Xml;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.game.buff.BuffBase;
+import com.game.xianxue.ashesofhistory.game.model.LineUpMode;
+import com.game.xianxue.ashesofhistory.game.model.LineupUnit;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
-import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.BasePersonColumn;
-import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.SkillColumn;
-import com.game.xianxue.ashesofhistory.model.constant.ConstantColumn.BuffColumn;
-import com.game.xianxue.ashesofhistory.model.person.BasePerson;
+import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.BasePersonColumn;
+import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.SkillColumn;
+import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.BuffColumn;
+import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.LineUpColumn;
+import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
 
 import org.xmlpull.v1.XmlPullParser;
 
@@ -23,6 +26,7 @@ public class XmlUtils {
     private static final String DEFAULT_PAGE_TAG = "all_character.xml";
     private static final String SKILL_PAGE_TAG = "all_skills.xml";
     private static final String BUFF_PAGE_TAG = "all_buff.xml";
+    private static final String LINE_UP_PAGE_TAG = "all_lineup.xml";
 
     /**
      * 从 xml 文件 解析 所有人物出来
@@ -227,6 +231,65 @@ public class XmlUtils {
         }
         SimpleLog.logd(TAG, "解析所有buff使用的时间:" + (System.currentTimeMillis() - startTime));
         return buffLists;
+    }
+
+
+    /**
+     * 从 xml 文件 解析 技能出来
+     *
+     * @param context
+     * @return
+     * @throws Exception
+     */
+    public static ArrayList<LineUpMode> getAllLineUp(Context context) throws Exception {
+
+        ArrayList<LineUpMode> dataLists = null;
+        LineUpMode lineup = null;
+        ArrayList<LineupUnit> units = null;
+        LineupUnit unit = null;
+
+        XmlPullParser pullParser = Xml.newPullParser();
+        pullParser.setInput(context.getAssets().open(LINE_UP_PAGE_TAG), "UTF-8");
+        int event = pullParser.getEventType();// 觸發第一個事件
+        long startTime = System.currentTimeMillis();
+
+        while (event != XmlPullParser.END_DOCUMENT) {
+            switch (event) {
+                case XmlPullParser.START_DOCUMENT:
+                    dataLists = new ArrayList<LineUpMode>();
+                    break;
+                case XmlPullParser.START_TAG:
+                    String tag = pullParser.getName();
+                    if ("item".equals(tag)) {
+                        lineup = new LineUpMode();
+                        units = new ArrayList<LineupUnit>();
+                    } else if (LineUpColumn.lineup_id.equals(tag)) {
+                        lineup.setLineup_id(Integer.valueOf(pullParser.nextText()));
+                    } else if (LineUpColumn.name.equals(tag)) {
+                        lineup.setName(pullParser.nextText());
+                    } else if (LineUpColumn.introduce.equals(tag)) {
+                        lineup.setIntroduce(pullParser.nextText());
+                    } else if (LineUpColumn.max_person.equals(tag)) {
+                        lineup.setMaxPerson(Integer.valueOf(pullParser.nextText()));
+                    } else if (LineUpColumn.unit.equals(tag)) {
+                        unit = new LineupUnit(pullParser.nextText());
+                        units.add(unit);
+                    }
+                    break;
+                case XmlPullParser.END_TAG:
+                    if ("item".equals(pullParser.getName())) {
+                        lineup.setLineupJson(LineupUnit.toJsonString(units));
+                        dataLists.add(lineup);
+                        units = null;
+                        lineup = null;
+                    }
+                    break;
+            }
+            event = pullParser.next();
+        }
+        ShowUtils.showArrays("anxii",dataLists);
+        SimpleLog.logd(TAG, "解析所有阵型使用的时间:" + (System.currentTimeMillis() - startTime));
+        return dataLists;
     }
 }
 

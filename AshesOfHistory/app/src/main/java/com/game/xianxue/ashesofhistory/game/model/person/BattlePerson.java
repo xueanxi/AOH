@@ -1,4 +1,4 @@
-package com.game.xianxue.ashesofhistory.model.person;
+package com.game.xianxue.ashesofhistory.game.model.person;
 
 /**
  * 人物战斗时的模型
