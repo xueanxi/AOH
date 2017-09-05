@@ -174,7 +174,7 @@ public class DataBaseTest {
     }
 
     /**
-     * 测试通过id 获取一个技能
+     * 测试通过id 获取一个阵型
      */
     @Test
     public void TestgetLineupdata() throws Exception {

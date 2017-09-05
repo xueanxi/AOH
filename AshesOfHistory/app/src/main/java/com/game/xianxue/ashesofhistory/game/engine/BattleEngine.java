@@ -65,14 +65,8 @@ public class BattleEngine {
                     return;
                 }
 
-                // 使用 ActiveValueManager 模型来控制人物的活跃值并发动进攻
-                if(mActiveMode.isStart()){
-                    // 如果 actionMode 已经开始 则调用 resume， 让actionMode继续执行
-                    mActiveMode.resume();
-                }else{
-                    // 如果 actionMode 没有开始 则调用 start， 让actionMode开始执行
-                    mActiveMode.start();
-                }
+                mActiveMode.resume();
+
             }
         };
         mLogicThread.start(mTimePerAction);

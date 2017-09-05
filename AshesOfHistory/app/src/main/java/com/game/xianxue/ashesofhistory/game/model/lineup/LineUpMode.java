@@ -1,4 +1,4 @@
-package com.game.xianxue.ashesofhistory.game.model;
+package com.game.xianxue.ashesofhistory.game.model.lineup;
 
 import java.util.ArrayList;
 
@@ -17,12 +17,12 @@ public class LineUpMode {
     int LINEUP_MAX_COL = 6;     // 阵型最大列数
 
     // 阵法类型，不同类型的阵法站位不同，加成效果不同。
-    int lineup_id;                      // 阵法id
-    String name;                        // 阵法名字
-    String introduce;                   // 阵法介绍
-    int maxPerson;                      // 阵法可以容纳的人数
-    ArrayList<LineupUnit> lineupList;   // 阵行数组
-    String lineupJson;                  // 把lineupList 变成json字符串，方便存储在数据库中
+    int lineup_id;                              // 阵法id
+    String name;                                // 阵法名字
+    String introduce;                           // 阵法介绍
+    int maxPerson;                              // 阵法可以容纳的人数
+    ArrayList<LineupUnitBase> lineupList;       // 阵行数组
+    String lineupJson;                          // 把lineupList 变成json字符串，方便存储在数据库中
 
     /**
      * 阵型 类型是一个整数
@@ -41,7 +41,7 @@ public class LineUpMode {
     }
 
 
-    public LineUpMode(int lineup_id, String name, String introduce, int maxPerson, ArrayList<LineupUnit> lineupList, String lineupJson){
+    public LineUpMode(int lineup_id, String name, String introduce, int maxPerson, ArrayList<LineupUnitBase> lineupList, String lineupJson){
         this.lineup_id = lineup_id;
         this.name = name;
         this.introduce = introduce;
@@ -83,11 +83,11 @@ public class LineUpMode {
         this.maxPerson = maxPerson;
     }
 
-    public ArrayList<LineupUnit> getLineupList() {
+    public ArrayList<LineupUnitBase> getLineupList() {
         return lineupList;
     }
 
-    public void setLineupList(ArrayList<LineupUnit> lineupList) {
+    public void setLineupList(ArrayList<LineupUnitBase> lineupList) {
         this.lineupList = lineupList;
     }
 

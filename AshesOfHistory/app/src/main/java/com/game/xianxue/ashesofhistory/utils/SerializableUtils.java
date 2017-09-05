@@ -77,4 +77,30 @@ public class SerializableUtils {
         }
         return result;
     }
+
+    public static <T> ArrayList<T> readObjectFromFileForTest2(String fileName) {
+        File file = new File(fileName);
+        ObjectInputStream in = null;
+        ArrayList<T> result = null;
+        try {
+            in = new ObjectInputStream(new FileInputStream(file));
+            result = (ArrayList<T>) in.readObject();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    public static <T> void writeObjectToFileForTest2(ArrayList<T> datas,String fileName) {
+        File file = new File(fileName);
+        ObjectOutputStream out = null;
+        try {
+            out = new ObjectOutputStream(new FileOutputStream(file));
+            out.writeObject(datas);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

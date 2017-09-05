@@ -152,9 +152,13 @@ public class ActiveValueManager implements Runnable {
      * 继续
      */
     public void resume() {
-        synchronized (lock) {
-            suspended = false;
-            lock.notify();
+        if(isStart()){
+            synchronized (lock) {
+                suspended = false;
+                lock.notify();
+            }
+        }else{
+            start();
         }
     }
 

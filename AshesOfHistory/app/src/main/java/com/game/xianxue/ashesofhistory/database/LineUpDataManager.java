@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
-import com.game.xianxue.ashesofhistory.game.model.LineUpMode;
+import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpMode;
 import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.LineUpColumn;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 

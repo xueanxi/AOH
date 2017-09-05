@@ -5,8 +5,8 @@ import android.util.Xml;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.game.buff.BuffBase;
-import com.game.xianxue.ashesofhistory.game.model.LineUpMode;
-import com.game.xianxue.ashesofhistory.game.model.LineupUnit;
+import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpMode;
+import com.game.xianxue.ashesofhistory.game.model.lineup.LineupUnitBase;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.BasePersonColumn;
 import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.SkillColumn;
@@ -245,8 +245,8 @@ public class XmlUtils {
 
         ArrayList<LineUpMode> dataLists = null;
         LineUpMode lineup = null;
-        ArrayList<LineupUnit> units = null;
-        LineupUnit unit = null;
+        ArrayList<LineupUnitBase> units = null;
+        LineupUnitBase unit = null;
 
         XmlPullParser pullParser = Xml.newPullParser();
         pullParser.setInput(context.getAssets().open(LINE_UP_PAGE_TAG), "UTF-8");
@@ -262,7 +262,7 @@ public class XmlUtils {
                     String tag = pullParser.getName();
                     if ("item".equals(tag)) {
                         lineup = new LineUpMode();
-                        units = new ArrayList<LineupUnit>();
+                        units = new ArrayList<LineupUnitBase>();
                     } else if (LineUpColumn.lineup_id.equals(tag)) {
                         lineup.setLineup_id(Integer.valueOf(pullParser.nextText()));
                     } else if (LineUpColumn.name.equals(tag)) {
@@ -272,13 +272,13 @@ public class XmlUtils {
                     } else if (LineUpColumn.max_person.equals(tag)) {
                         lineup.setMaxPerson(Integer.valueOf(pullParser.nextText()));
                     } else if (LineUpColumn.unit.equals(tag)) {
-                        unit = new LineupUnit(pullParser.nextText());
+                        unit = new LineupUnitBase(pullParser.nextText());
                         units.add(unit);
                     }
                     break;
                 case XmlPullParser.END_TAG:
                     if ("item".equals(pullParser.getName())) {
-                        lineup.setLineupJson(LineupUnit.toJsonString(units));
+                        lineup.setLineupJson(LineupUnitBase.toJsonString(units));
                         dataLists.add(lineup);
                         units = null;
                         lineup = null;

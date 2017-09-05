@@ -1,4 +1,4 @@
-package com.game.xianxue.ashesofhistory.game.model;
+package com.game.xianxue.ashesofhistory.game.model.lineup;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
@@ -11,48 +11,48 @@ import java.util.ArrayList;
  * 阵型中的每一个基本单位
  * Created by user on 9/4/17.
  */
-
-public class LineupUnit {
-    private static final String TAG = "=LineupUnit";
+public class LineupUnitBase {
+    private static final String TAG = "=LineupUnitBase";
 
     int x = 0;                      // x 坐标，以左上角为原点
     int y = 0;                      // y 坐标，以左上角为原点
-    ArrayList<Integer> buffIDs;
+    ArrayList<Integer> buffIDs;     // 阵型中这个位置能获得哪些Buff的加成
     boolean canSetPerson = true;
     //BattlePerson person = null;
 
 
-    public LineupUnit() {
+    public LineupUnitBase() {
 
     }
 
     /**
-     * 通过一个包含 LineupUnit 信息的字符串来初始化
+     * 通过一个包含 LineupUnitBase 信息的字符串来初始化
      * initString 可能是这样的："1,2,3" 表示 x = 1,y = 2 ,作用的buff id为 3
      * initString 可能是这样的："1,2,3,4,5,6" 表示 x = 1,y = 2 ,作用的 buff 有多个分别为3,4,5,6
+     *
      * @param initString
      */
-    public LineupUnit(String initString) {
-        if(initString == null || initString.length() <5){
-            SimpleLog.loge(TAG,"Error !!! 初始化LineupUint失败");
+    public LineupUnitBase(String initString) {
+        if (initString == null || initString.length() < 5) {
+            SimpleLog.loge(TAG, "Error !!! 初始化LineupUint失败");
         }
 
         this.x = Integer.valueOf((initString.split(",")[0]));
         this.y = Integer.valueOf((initString.split(",")[1]));
 
-        initString = initString.substring(4,initString.length());
+        initString = initString.substring(4, initString.length());
         String[] buffid = initString.split(",");
         buffIDs = new ArrayList<>();
-        for(int i =0;i<buffid.length;i++){
+        for (int i = 0; i < buffid.length; i++) {
             buffIDs.add(Integer.valueOf(buffid[i]));
         }
         this.canSetPerson = true;
     }
 
-    public LineupUnit(int x, int y, ArrayList<Integer>  buff_IDs, boolean canSetPerson) {
+    public LineupUnitBase(int x, int y, ArrayList<Integer> buffIdArrays, boolean canSetPerson) {
         this.x = x;
         this.y = y;
-        this.buffIDs = buff_IDs;
+        this.buffIDs = buffIdArrays;
         this.canSetPerson = canSetPerson;
     }
 
@@ -61,25 +61,25 @@ public class LineupUnit {
     }
 
     /**
-     * 把 ArrayList<LineupUnit>数据 转化成 json字符串
+     * 把 ArrayList<LineupUnitBase>数据 转化成 json字符串
      *
-     * @param lineupUnits
+     * @param lineupUnitBases
      * @return
      */
-    public static String toJsonString(ArrayList<LineupUnit> lineupUnits) {
+    public static String toJsonString(ArrayList<LineupUnitBase> lineupUnitBases) {
         Gson gson = new Gson();
-        return gson.toJson(lineupUnits);
+        return gson.toJson(lineupUnitBases);
     }
 
     /**
-     * 把 Json 字符串转换成 ArrayList<QuickShareInfo>
+     * 把 Json 字符串转换成 ArrayList<LineupUnitBase>
      *
      * @param jsonString
      * @return
      */
-    public static final ArrayList<LineupUnit> toDataLists(String jsonString) {
+    public static final ArrayList<LineupUnitBase> toDataLists(String jsonString) {
         Gson gson = new Gson();
-        ArrayList<LineupUnit> itemInfos = gson.fromJson(jsonString, new TypeToken<ArrayList<LineupUnit>>() {
+        ArrayList<LineupUnitBase> itemInfos = gson.fromJson(jsonString, new TypeToken<ArrayList<LineupUnitBase>>() {
         }.getType());
         return itemInfos;
     }
@@ -127,7 +127,7 @@ public class LineupUnit {
 
     @Override
     public String toString() {
-        return "LineupUnit{" +
+        return "LineupUnitBase{" +
                 "x=" + x +
                 ", y=" + y +
                 ", buffIDs=" + buffIDs +
