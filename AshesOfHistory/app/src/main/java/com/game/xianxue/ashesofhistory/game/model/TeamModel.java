@@ -2,7 +2,7 @@ package com.game.xianxue.ashesofhistory.game.model;
 
 import com.game.xianxue.ashesofhistory.Log.BattleLog;
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
-import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpMode;
+import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpBase;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 
 import java.util.ArrayList;
@@ -18,10 +18,10 @@ public class TeamModel {
     public static final int CAMP_LEFT = 1;          // 阵营 左方
     public static final int CAMP_RIGHT = 2;         // 阵营 右方
 
-
     private ArrayList<BattlePerson> mMembersList;   // 成员列表
-    private LineUpMode mLineup;                     // 阵法
     private int Camp = CAMP_NEUTRAL;                // 阵营，对战的两方 (左方 1，右方 2)
+    private LineUpBase mLineup;                     // 阵法
+
 
     /**
      * 构造函数
@@ -30,6 +30,16 @@ public class TeamModel {
      */
     public TeamModel(int camp,ArrayList<BattlePerson> membersList){
         this.mMembersList = membersList;
+        setCamp(camp);
+    }
+
+    /**
+     * 构造函数
+     * @param camp
+     * @param lineup
+     */
+    public TeamModel(int camp,LineUpBase lineup){
+        this.mLineup = lineup;
         setCamp(camp);
     }
 
@@ -63,11 +73,11 @@ public class TeamModel {
         this.mMembersList = mMembersList;
     }
 
-    public LineUpMode getmLineup() {
+    public LineUpBase getmLineup() {
         return mLineup;
     }
 
-    public void setmLineup(LineUpMode mLineup) {
+    public void setmLineup(LineUpBase mLineup) {
         this.mLineup = mLineup;
     }
 

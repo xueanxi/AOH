@@ -8,7 +8,7 @@ import android.util.Log;
 import com.game.xianxue.ashesofhistory.App;
 import com.game.xianxue.ashesofhistory.constant.Constant;
 import com.game.xianxue.ashesofhistory.game.buff.BuffBase;
-import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpMode;
+import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpBase;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.*;
 import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
@@ -73,7 +73,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      */
     private void insertLineUpData(SQLiteDatabase db) {
         // 进行批处理
-        ArrayList<LineUpMode> lists = null;
+        ArrayList<LineUpBase> lists = null;
         db.beginTransaction();
         try {
             lists = XmlUtils.getAllLineUp(mContext);
@@ -83,7 +83,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             e.printStackTrace();
         }
 
-        for (LineUpMode data : lists) {
+        for (LineUpBase data : lists) {
             db.execSQL(LineUpDataManager.getInsertString(data));
         }
         db.setTransactionSuccessful();

@@ -8,12 +8,20 @@ public class BattlePerson extends NormalPerson {
     private static final String TAG = "BattlePerson";
 
     // 战斗属性，只有在战斗时才会有的属性
-    private int battleId;            // 一场战斗中分配的id
-    private int activeValues;        // 当前的行动值，当行动值达到最大行动值之后，就可以行动。
-    private int camp;                // 阵营
+    private int battleId;                   // 一场战斗中分配的id
+    private int lineupId;                   // 在阵型中的位置id
+    private int activeValues;               // 当前的行动值，当行动值达到最大行动值之后，就可以行动。
+    private int camp;                       // 阵营
+    private boolean isLeader = false;       // 是否统帅
+    private boolean isCounsellor = false;   // 是否军师
 
     public BattlePerson() {}
 
+    /**
+     * 构造函数 2
+     * @param person
+     * @param camp
+     */
     public BattlePerson(NormalPerson person,int camp) {
 
         // 原始资料
@@ -38,6 +46,35 @@ public class BattlePerson extends NormalPerson {
 
         this.activeValues = 0;
         this.camp = camp;
+    }
+
+    /**
+     * 构造函数 2
+     * @param person
+     */
+    public BattlePerson(NormalPerson person) {
+
+        // 原始资料
+        this.psersonId = person.getPsersonId();                 // id唯一标识这个人物
+        this.aptitude = person.getAptitude();                   // 资质（影响每次升级 基础属性的增加数量 资质取值为1～5 1为庸碌无为 5为天神下凡）
+        this.name = person.getName();                           // 名字
+        this.name2 = person.getName2();                         // 名字拼音
+        this.sexuality = person.getSexuality();                 // 男1 女0
+
+        // 获得原始属性
+        this.strength_Raw = person.getStrength_Raw();           // 原始力量
+        this.intellect_Raw = person.getIntellect_Raw();         // 原始智力
+        this.dexterity_Raw = person.getDexterity_Raw();         // 原始敏捷
+        this.physique_Raw = person.getPhysique_Raw();           // 原始体质
+        this.spirit_Raw = person.getSpirit_Raw();               // 原始精神
+        this.fascination_Raw = person.getFascination_Raw();     // 原始魅力
+        this.luck_Raw = person.getLuck_Raw();                   // 原始运气
+
+        this.level = person.level;
+
+        setLevel(level);
+
+        this.activeValues = 0;
     }
 
     /**
@@ -132,6 +169,29 @@ public class BattlePerson extends NormalPerson {
         activeValues += actionSpeed;
     }
 
+    public int getLineupId() {
+        return lineupId;
+    }
+
+    public void setLineupId(int lineupId) {
+        this.lineupId = lineupId;
+    }
+
+    public boolean isLeader() {
+        return isLeader;
+    }
+
+    public void setLeader(boolean leader) {
+        isLeader = leader;
+    }
+
+    public boolean isCounsellor() {
+        return isCounsellor;
+    }
+
+    public void setCounsellor(boolean counsellor) {
+        isCounsellor = counsellor;
+    }
 
     @Override
     public String toString() {

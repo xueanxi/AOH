@@ -6,8 +6,11 @@ import android.support.test.runner.AndroidJUnit4;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.database.BasePersonManager;
+import com.game.xianxue.ashesofhistory.database.LineUpDataManager;
 import com.game.xianxue.ashesofhistory.game.engine.BattleEngine;
 import com.game.xianxue.ashesofhistory.game.model.TeamModel;
+import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpBase;
+import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpBattle;
 import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.game.model.person.NormalPerson;
@@ -72,6 +75,84 @@ public class BattleEngineTest {
         engine.setmTimePerAction(500);
         engine.setBattleTeam(t1, t2);
         engine.startBattle();
+
+
+    }
+
+    @Test
+    public void TestStartBattle2() {
+        init();
+
+        // 初始化人物
+        // 第一队
+        BasePerson play1 = BasePersonManager.getPersonFromDataBaseByPinyin("guanyu");
+        BasePerson play2 = BasePersonManager.getPersonFromDataBaseByPinyin("zhangfei");
+        BasePerson play3 = BasePersonManager.getPersonFromDataBaseByPinyin("liubei");
+        BasePerson play4 = BasePersonManager.getPersonFromDataBaseByPinyin("zhaoyun");
+        BasePerson play5 = BasePersonManager.getPersonFromDataBaseByPinyin("zhugeliang");
+
+        BattlePerson b1 = new BattlePerson(new NormalPerson(play1));
+        BattlePerson b2 = new BattlePerson(new NormalPerson(play2));
+        BattlePerson b3 = new BattlePerson(new NormalPerson(play3));
+        BattlePerson b4 = new BattlePerson(new NormalPerson(play4));
+        BattlePerson b5 = new BattlePerson(new NormalPerson(play5));
+
+        b3.setLeader(true);
+        b5.setCounsellor(true);
+
+        ArrayList<BattlePerson> playerList1 = new ArrayList<BattlePerson>();
+        playerList1.add(b1);
+        playerList1.add(b2);
+        playerList1.add(b3);
+        playerList1.add(b4);
+        playerList1.add(b5);
+
+        // 第二队
+        BasePerson play6 = BasePersonManager.getPersonFromDataBaseByPinyin("caocao");
+        BasePerson play7 = BasePersonManager.getPersonFromDataBaseByPinyin("caoren");
+        BasePerson play8 = BasePersonManager.getPersonFromDataBaseByPinyin("dianwei");
+        BasePerson play9 = BasePersonManager.getPersonFromDataBaseByPinyin("zhangliao");
+        BasePerson play10 = BasePersonManager.getPersonFromDataBaseByPinyin("xvchu");
+        BasePerson play11 = BasePersonManager.getPersonFromDataBaseByPinyin("gongjianbing");
+        BasePerson play12 = BasePersonManager.getPersonFromDataBaseByPinyin("bubing");
+
+        BattlePerson b6 = new BattlePerson(new NormalPerson(play6));
+        BattlePerson b7 = new BattlePerson(new NormalPerson(play7));
+        BattlePerson b8 = new BattlePerson(new NormalPerson(play8));
+        BattlePerson b9 = new BattlePerson(new NormalPerson(play9));
+        BattlePerson b10 = new BattlePerson(new NormalPerson(play10));
+        BattlePerson b11 = new BattlePerson(new NormalPerson(play11));
+        BattlePerson b12 = new BattlePerson(new NormalPerson(play12));
+        b7.setLeader(true);
+        b6.setCounsellor(true);
+        ArrayList<BattlePerson> playerList2 = new ArrayList<BattlePerson>();
+        playerList2.add(b6);
+        playerList2.add(b7);
+        playerList2.add(b8);
+        playerList2.add(b9);
+        playerList2.add(b10);
+        playerList2.add(b11);
+        playerList2.add(b12);
+
+        // 初始化阵容
+        LineUpBase lineUp1 = LineUpDataManager.getDataFromDataBaseById(0);//普通阵容
+        LineUpBattle lb1 = new LineUpBattle(lineUp1,playerList1);
+
+        LineUpBase lineUp2 = LineUpDataManager.getDataFromDataBaseById(1);//长蛇阵
+        LineUpBattle lb2 = new LineUpBattle(lineUp2,playerList2);
+
+        lb1.displayLineUp();
+        lb2.displayLineUp();
+
+
+        /*TeamModel t1 = new TeamModel(TeamModel.CAMP_LEFT, playerList1);
+        TeamModel t2 = new TeamModel(TeamModel.CAMP_RIGHT, playerList2);
+
+        BattleEngine engine = BattleEngine.getInstance();
+        engine.setmTimeIncreseActive(1000);
+        engine.setmTimePerAction(500);
+        engine.setBattleTeam(t1, t2);
+        engine.startBattle();*/
 
 
     }

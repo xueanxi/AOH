@@ -3,15 +3,10 @@ package com.game.xianxue.ashesofhistory.game.model.lineup;
 import java.util.ArrayList;
 
 /**
-普通阵法
-一字阵法
-龙飞阵
-铁甲阵
-雁行阵
-鱼鳞阵
+ * 阵型的基础类，这个类只包含了阵型的基本信息，在战斗中的阵型比这个复杂一点，继承这个类进行扩展
  */
-public class LineUpMode {
-    final static String TAG = "LineUpMode";
+public class LineUpBase {
+    final static String TAG = "LineUpBase";
 
     int LINEUP_MAX_ROW = 6;     // 阵型最大行数
     int LINEUP_MAX_COL = 6;     // 阵型最大列数
@@ -21,35 +16,19 @@ public class LineUpMode {
     String name;                                // 阵法名字
     String introduce;                           // 阵法介绍
     int maxPerson;                              // 阵法可以容纳的人数
-    ArrayList<LineupUnitBase> lineupList;       // 阵行数组
     String lineupJson;                          // 把lineupList 变成json字符串，方便存储在数据库中
 
-    /**
-     * 阵型 类型是一个整数
-     * 使用 Integer.toBinaryString 转化为一个25位二进制数，把二进制数
-     * 从左到右，从上到下排列，可以得到如下一个阵型，1表示可以放置武将，0表示不可以放置武将
-     * 这样一个整数就可以表示一个阵型了。
-     * 1 0 0 0 0 0
-     * 0 1 0 0 0 0
-     * 0 0 1 0 0 0
-     * 0 1 0 0 0 0
-     * 1 0 0 0 0 0
-     */
-
-    public LineUpMode(){
+    public LineUpBase() {
 
     }
 
-
-    public LineUpMode(int lineup_id, String name, String introduce, int maxPerson, ArrayList<LineupUnitBase> lineupList, String lineupJson){
+    public LineUpBase(int lineup_id, String name, String introduce, int maxPerson, String lineupJson) {
         this.lineup_id = lineup_id;
         this.name = name;
         this.introduce = introduce;
         this.maxPerson = maxPerson;
-        this.lineupList = lineupList;
         this.lineupJson = lineupJson;
     }
-
 
     public int getLineup_id() {
         return lineup_id;
@@ -83,14 +62,6 @@ public class LineUpMode {
         this.maxPerson = maxPerson;
     }
 
-    public ArrayList<LineupUnitBase> getLineupList() {
-        return lineupList;
-    }
-
-    public void setLineupList(ArrayList<LineupUnitBase> lineupList) {
-        this.lineupList = lineupList;
-    }
-
     public String getLineupJson() {
         return lineupJson;
     }
@@ -101,12 +72,11 @@ public class LineUpMode {
 
     @Override
     public String toString() {
-        return "LineUpMode{" +
+        return "LineUpBase{" +
                 "lineup_id=" + lineup_id +
                 ", name='" + name + '\'' +
                 ", introduce='" + introduce + '\'' +
                 ", maxPerson=" + maxPerson +
-                ", lineupList=" + lineupList +
                 ", lineupJson='" + lineupJson + '\'' +
                 '}';
     }

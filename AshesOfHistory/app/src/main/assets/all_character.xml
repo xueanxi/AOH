@@ -161,6 +161,54 @@
     </item>
 
     <item>
+        <personId>10</personId>
+        <name>曹操</name>
+        <name2>caocao</name2>
+        <sexuality>0</sexuality>
+        <aptitude>3.5</aptitude>
+        <strength_Raw>12</strength_Raw>
+        <intellect_Raw>17</intellect_Raw>
+        <physique_Raw>12</physique_Raw>
+        <dexterity_Raw>12</dexterity_Raw>
+        <spirit_Raw>15</spirit_Raw>
+        <luck_Raw>16</luck_Raw>
+        <fascination_Raw>18</fascination_Raw>
+        <skill_lists>曹操技能</skill_lists>
+    </item>
+
+    <item>
+        <personId>11</personId>
+        <name>曹仁</name>
+        <name2>caoren</name2>
+        <sexuality>0</sexuality>
+        <aptitude>3.2</aptitude>
+        <strength_Raw>14</strength_Raw>
+        <intellect_Raw>8</intellect_Raw>
+        <physique_Raw>14</physique_Raw>
+        <dexterity_Raw>10</dexterity_Raw>
+        <spirit_Raw>11</spirit_Raw>
+        <luck_Raw>12</luck_Raw>
+        <fascination_Raw>8</fascination_Raw>
+        <skill_lists>曹仁技能</skill_lists>
+    </item>
+
+    <item>
+        <personId>12</personId>
+        <name>张辽</name>
+        <name2>zhangliao</name2>
+        <sexuality>0</sexuality>
+        <aptitude>3.8</aptitude>
+        <strength_Raw>16</strength_Raw>
+        <intellect_Raw>12</intellect_Raw>
+        <physique_Raw>16</physique_Raw>
+        <dexterity_Raw>16</dexterity_Raw>
+        <spirit_Raw>14</spirit_Raw>
+        <luck_Raw>13</luck_Raw>
+        <fascination_Raw>13</fascination_Raw>
+        <skill_lists>张辽技能</skill_lists>
+    </item>
+
+    <item>
         <personId>100</personId>
         <name>步兵</name>
         <name2>bubing</name2>

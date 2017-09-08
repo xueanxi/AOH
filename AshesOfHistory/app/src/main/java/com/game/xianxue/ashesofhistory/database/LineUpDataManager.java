@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
-import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpMode;
+import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpBase;
 import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.LineUpColumn;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 
@@ -25,7 +25,7 @@ public class LineUpDataManager {
      * @param data
      * @return
      */
-    public static String getInsertString(LineUpMode data) {
+    public static String getInsertString(LineUpBase data) {
         String format = "INSERT INTO " + LineUpColumn.tableName + " ("
                 + LineUpColumn.lineup_id + " ,"
                 + LineUpColumn.name + " ,"
@@ -50,14 +50,14 @@ public class LineUpDataManager {
      * 从数据库里面读出所有的阵法
      * @return
      */
-    public static ArrayList<LineUpMode>getAllDataFromDataBase() {
+    public static ArrayList<LineUpBase>getAllDataFromDataBase() {
         DataBaseHelper helper = new DataBaseHelper();
         if (helper == null) return null;
         SQLiteDatabase db = helper.getReadableDatabase();
         String sql = "SELECT * FROM " + LineUpColumn.tableName;
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor == null) return null;
-        ArrayList<LineUpMode> arrays = cursorToBuffs(cursor);
+        ArrayList<LineUpBase> arrays = cursorToBuffs(cursor);
         cursor.close();
         db.close();
         ShowUtils.showArrays(TAG, arrays);
@@ -69,14 +69,14 @@ public class LineUpDataManager {
      * @param id
      * @return
      */
-    public static LineUpMode getDataFromDataBaseById(int id) {
+    public static LineUpBase getDataFromDataBaseById(int id) {
         DataBaseHelper helper = new DataBaseHelper();
         if (helper == null) return null;
         SQLiteDatabase db = helper.getReadableDatabase();
         String sql = "SELECT * FROM " + LineUpColumn.tableName + " WHERE " + LineUpColumn.lineup_id + " = " + id;
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor == null) return null;
-        LineUpMode data = cursorToBuff(cursor);
+        LineUpBase data = cursorToBuff(cursor);
         cursor.close();
         db.close();
         SimpleLog.logd(TAG, data.toString());
@@ -89,14 +89,14 @@ public class LineUpDataManager {
      * @param c
      * @return
      */
-    private static ArrayList<LineUpMode> cursorToBuffs(Cursor c) {
-        ArrayList<LineUpMode> lists = null;
-        LineUpMode data = null;
+    private static ArrayList<LineUpBase> cursorToBuffs(Cursor c) {
+        ArrayList<LineUpBase> lists = null;
+        LineUpBase data = null;
         if (c == null) return lists;
         if (c.getCount() > 0) {
-            lists = new ArrayList<LineUpMode>();
+            lists = new ArrayList<LineUpBase>();
             while (c.moveToNext()) {
-                data = new LineUpMode();
+                data = new LineUpBase();
                 data.setLineup_id(c.getInt(c.getColumnIndex(LineUpColumn.lineup_id)));
                 data.setName(c.getString(c.getColumnIndex(LineUpColumn.name)));
                 data.setIntroduce(c.getString(c.getColumnIndex(LineUpColumn.introduce)));
@@ -114,14 +114,14 @@ public class LineUpDataManager {
      * @param c
      * @return
      */
-    private static LineUpMode cursorToBuff(Cursor c) {
-        LineUpMode data = null;
+    private static LineUpBase cursorToBuff(Cursor c) {
+        LineUpBase data = null;
         if (c == null) return data;
         if (c.getCount() <= 0) {
             return null;
         }
         c.moveToNext();
-        data = new LineUpMode();
+        data = new LineUpBase();
         data.setLineup_id(c.getInt(c.getColumnIndex(LineUpColumn.lineup_id)));
         data.setName(c.getString(c.getColumnIndex(LineUpColumn.name)));
         data.setIntroduce(c.getString(c.getColumnIndex(LineUpColumn.introduce)));
