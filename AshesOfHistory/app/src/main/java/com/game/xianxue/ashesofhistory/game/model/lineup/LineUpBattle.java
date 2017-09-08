@@ -1,6 +1,7 @@
 package com.game.xianxue.ashesofhistory.game.model.lineup;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
+import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 
@@ -39,8 +40,11 @@ public class LineUpBattle extends LineUpBase {
         }
         this.lineupList = new ArrayList<UnitBattle>();
         for (UnitBase data : rawUnitLists) {
-            lineupList.add(new UnitBattle(data));
+            this.lineupList.add(new UnitBattle(data));
         }
+
+
+
 
         initLineUp();
     }
@@ -58,7 +62,7 @@ public class LineUpBattle extends LineUpBase {
             return;
         }
         // 遍历队伍成员，获得军师和统帅的索引，并且判断队伍是否合法
-        for (int i = 0; i < membersList.size(); i++) {
+       for (int i = 0; i < membersList.size(); i++) {
             if (membersList.get(i).isCounsellor()) {
                 counsellorIndex = i;
             } else if (membersList.get(i).isLeader()) {
@@ -70,27 +74,35 @@ public class LineUpBattle extends LineUpBase {
             return;
         }
         // 开始往阵型里面塞人
-        int memberIndex = 0;
-        for (int i = 0; i < lineupList.size(); i++) {
-            UnitBattle unit = lineupList.get(i);
-            if (unit.isCounsellor()) {
-                unit.setPersonIndex(counsellorIndex);
 
-            } else if (unit.isLeader()) {
-                unit.setPersonIndex(leaderIndex);
-            } else {
-                if (memberIndex == counsellorIndex || memberIndex == leaderIndex) {
-                    memberIndex++;
-                    continue;
+        for(int i =0 ;i<membersList.size();i++){
+            BattlePerson person = membersList.get(i);
+            if(person.isLeader()){
+                for(int j =0;j<lineupList.size();j++){
+                    UnitBattle unit = lineupList.get(j);
+                    if(unit.isLeader()){
+                        SimpleLog.logd(TAG,"i = "+i+" j ="+j);
+                        unit.setPersonIndex(i);
+                        SimpleLog.logd(TAG,"unit 1 = "+unit);
+                        break;
+                    }
                 }
-                unit.setPersonIndex(memberIndex);
-                memberIndex++;
+            }else if(person.isCounsellor()){
+                for(UnitBattle unit:lineupList){
+                    if(unit.isCounsellor()){
+                        unit.setPersonIndex(i);
+                        SimpleLog.logd(TAG,"unit 2 = "+unit);
+                        break;
+                    }
+                }
             }
         }
+
+        //ShowUtils.showArrays(TAG, lineupList);
     }
 
-    public void displayLineUp(){
-        ShowUtils.showArrays(TAG,lineupList);
+    public void displayLineUp() {
+        ShowUtils.showArrays(TAG, lineupList);
     }
 
     /**

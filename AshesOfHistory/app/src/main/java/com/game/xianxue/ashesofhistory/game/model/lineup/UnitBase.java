@@ -140,6 +140,8 @@ public class UnitBase {
                 ", y=" + y +
                 ", buffIDs=" + buffIDs +
                 ", canSetPerson=" + canSetPerson +
+                ", isCounsellor=" + isCounsellor +
+                ", isLeader=" + isLeader +
                 '}';
     }
 }

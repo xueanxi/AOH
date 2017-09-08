@@ -238,6 +238,8 @@ public class BattlePerson extends NormalPerson {
                 ", battleId=" + battleId +
                 ", activeValues=" + activeValues +
                 ", camp=" + camp +
+                ", isCounsellor=" + isCounsellor +
+                ", isLeader=" + isLeader +
                 '}';
     }
 }

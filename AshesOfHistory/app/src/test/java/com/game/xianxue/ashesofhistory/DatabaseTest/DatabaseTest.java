@@ -1,8 +1,12 @@
 package com.game.xianxue.ashesofhistory.DatabaseTest;
 
 import com.game.xianxue.ashesofhistory.game.model.lineup.UnitBase;
+import com.game.xianxue.ashesofhistory.utils.SerializableUtils;
+import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 
 import org.junit.Test;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
@@ -23,5 +27,9 @@ public class DatabaseTest {
     public void test01(){
         int a = 10;
         System.out.println("a = "+a);
+    }
+    @Test
+    public void test02(){
+
     }
 }

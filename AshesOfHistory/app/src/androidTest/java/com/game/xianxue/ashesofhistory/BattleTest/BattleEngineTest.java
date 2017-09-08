@@ -11,6 +11,7 @@ import com.game.xianxue.ashesofhistory.game.engine.BattleEngine;
 import com.game.xianxue.ashesofhistory.game.model.TeamModel;
 import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpBase;
 import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpBattle;
+import com.game.xianxue.ashesofhistory.game.model.lineup.UnitBase;
 import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.game.model.person.NormalPerson;
@@ -75,8 +76,6 @@ public class BattleEngineTest {
         engine.setmTimePerAction(500);
         engine.setBattleTeam(t1, t2);
         engine.startBattle();
-
-
     }
 
     @Test
@@ -96,7 +95,6 @@ public class BattleEngineTest {
         BattlePerson b3 = new BattlePerson(new NormalPerson(play3));
         BattlePerson b4 = new BattlePerson(new NormalPerson(play4));
         BattlePerson b5 = new BattlePerson(new NormalPerson(play5));
-
         b3.setLeader(true);
         b5.setCounsellor(true);
 
@@ -125,6 +123,7 @@ public class BattleEngineTest {
         BattlePerson b12 = new BattlePerson(new NormalPerson(play12));
         b7.setLeader(true);
         b6.setCounsellor(true);
+
         ArrayList<BattlePerson> playerList2 = new ArrayList<BattlePerson>();
         playerList2.add(b6);
         playerList2.add(b7);
@@ -134,15 +133,15 @@ public class BattleEngineTest {
         playerList2.add(b11);
         playerList2.add(b12);
 
+        ShowUtils.showArrays(TAG,playerList1);
+        ShowUtils.showArrays(TAG,playerList2);
+
         // 初始化阵容
         LineUpBase lineUp1 = LineUpDataManager.getDataFromDataBaseById(0);//普通阵容
         LineUpBattle lb1 = new LineUpBattle(lineUp1,playerList1);
 
         LineUpBase lineUp2 = LineUpDataManager.getDataFromDataBaseById(1);//长蛇阵
         LineUpBattle lb2 = new LineUpBattle(lineUp2,playerList2);
-
-        lb1.displayLineUp();
-        lb2.displayLineUp();
 
 
         /*TeamModel t1 = new TeamModel(TeamModel.CAMP_LEFT, playerList1);
@@ -153,8 +152,6 @@ public class BattleEngineTest {
         engine.setmTimePerAction(500);
         engine.setBattleTeam(t1, t2);
         engine.startBattle();*/
-
-
     }
 
     @Test
@@ -190,4 +187,6 @@ public class BattleEngineTest {
         list = SerializableUtils.readObjectFromFile("baseperson");
         ShowUtils.showArrays(TAG, list);
     }
+
+
 }
