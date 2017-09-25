@@ -24,8 +24,8 @@ public class BattleEngine {
     // 变量
     private boolean mIsBattleing = false;                // 是否正在战斗
 
-    private int mTimePerAction = TIME_INTERVAL_PER_ATION;              // 人物进攻花费的时间，默认是 TIME_INTERVAL_PER_ATION
-    private int mTimeIncreseActive = TIME_INTERVAL_INCRESE_ACTIVE;     // 人物每一次增加行动值的时间间隔
+    private int mTimePersonAction = TIME_INTERVAL_PER_ATION;              // 人物进攻花费的时间，默认是 TIME_INTERVAL_PER_ATION
+    private int mTimeActiveIncrese = TIME_INTERVAL_INCRESE_ACTIVE;     // 人物每一次增加行动值的时间间隔
 
     // 执行游戏逻辑的可控制线程
     SuspendThread mLogicThread = null;
@@ -53,6 +53,7 @@ public class BattleEngine {
     public void startBattle() {
         BattleLog.log("开始战斗！！！");
         mActiveMode = new ActiveValueManager(mInstance, mPersonsList);
+        mActiveMode.setTimeActiveInterval(mTimeActiveIncrese);
 
         mLogicThread = new SuspendThread() {
             @Override
@@ -66,10 +67,9 @@ public class BattleEngine {
                 }
 
                 mActiveMode.resume();
-
             }
         };
-        mLogicThread.start(mTimePerAction);
+        mLogicThread.start(mTimePersonAction);
     }
 
     /**
@@ -96,11 +96,11 @@ public class BattleEngine {
      */
     private ArrayList<BattlePerson> prepareBattle(TeamModel t1, TeamModel t2) {
         ArrayList<BattlePerson> playerLists = new ArrayList<BattlePerson>();
-        playerLists.addAll(t1.getmMembersList());
-        playerLists.addAll(t2.getmMembersList());
+        playerLists.addAll(t1.getMembersList());
+        playerLists.addAll(t2.getMembersList());
 
-        t1.setCampAndID(TeamModel.CAMP_LEFT, 0);
-        t2.setCampAndID(TeamModel.CAMP_RIGHT, t1.getmMembersList().size());
+        t1.setmCamp(TeamModel.CAMP_LEFT);
+        t2.setmCamp(TeamModel.CAMP_RIGHT);
 
         mIsBattleing = true;
         return playerLists;
@@ -115,11 +115,11 @@ public class BattleEngine {
     private static int isBattleFinish(TeamModel t1, TeamModel t2) {
         boolean isLeftFail = false;
         boolean isRightFail = false;
-        if (t1.isACE()) {
+        if (t1.isAllDie()) {
             isLeftFail = true;
         }
 
-        if (t2.isACE()) {
+        if (t2.isAllDie()) {
             isRightFail = true;
         }
         if (!isLeftFail && !isRightFail) {
@@ -141,7 +141,7 @@ public class BattleEngine {
         // 进攻
         int currentActionCamp = actionPerson.getCamp();
         try {
-            if (currentActionCamp == t1.getCamp()) {
+            if (currentActionCamp == t1.getmCamp()) {
                 attack(actionPerson, t1, t2);
             } else {
                 attack(actionPerson, t2, t1);
@@ -272,7 +272,7 @@ public class BattleEngine {
      * @return
      */
     private static BattlePerson getBeAttackedPlayer(TeamModel p) {
-        ArrayList<BattlePerson> players = p.getmMembersList();
+        ArrayList<BattlePerson> players = p.getMembersList();
         for (BattlePerson player : players) {
             if (player.getHP() > 0) {
                 return player;
@@ -333,20 +333,20 @@ public class BattleEngine {
         return Accuracy / (Accuracy + Dodge);
     }
 
-    public int getmTimePerAction() {
-        return mTimePerAction;
+    public int getmTimePersonAction() {
+        return mTimePersonAction;
     }
 
-    public void setmTimePerAction(int mTimePerAction) {
-        this.mTimePerAction = mTimePerAction;
+    public void setmTimePersonAction(int mTimePersonAction) {
+        this.mTimePersonAction = mTimePersonAction;
     }
 
-    public int getmTimeIncreseActive() {
-        return mTimeIncreseActive;
+    public int getmTimeActiveIncrese() {
+        return mTimeActiveIncrese;
     }
 
-    public void setmTimeIncreseActive(int mTimeIncreseActive) {
-        this.mTimeIncreseActive = mTimeIncreseActive;
+    public void setmTimeActiveIncrese(int mTimeActiveIncrese) {
+        this.mTimeActiveIncrese = mTimeActiveIncrese;
     }
 
     public TeamModel getT1() {

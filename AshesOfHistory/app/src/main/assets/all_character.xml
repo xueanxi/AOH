@@ -6,13 +6,13 @@
         <name2>guanyu</name2>
         <sexuality>0</sexuality>
         <aptitude>4.5</aptitude>
-        <strength_Raw>17</strength_Raw>
-        <intellect_Raw>13</intellect_Raw>
-        <physique_Raw>16</physique_Raw>
-        <dexterity_Raw>14</dexterity_Raw>
-        <spirit_Raw>14</spirit_Raw>
-        <luck_Raw>12</luck_Raw>
-        <fascination_Raw>18</fascination_Raw>
+        <strength_raw>17</strength_raw>
+        <intellect_raw>13</intellect_raw>
+        <physique_raw>16</physique_raw>
+        <dexterity_raw>14</dexterity_raw>
+        <spirit_raw>14</spirit_raw>
+        <luck_raw>12</luck_raw>
+        <fascination_raw>18</fascination_raw>
         <skill_lists>关羽技能</skill_lists>
     </item>
 
@@ -22,13 +22,13 @@
         <name2>zhangfei</name2>
         <sexuality>0</sexuality>
         <aptitude>4.3</aptitude>
-        <strength_Raw>18</strength_Raw>
-        <intellect_Raw>10</intellect_Raw>
-        <physique_Raw>17</physique_Raw>
-        <dexterity_Raw>13</dexterity_Raw>
-        <spirit_Raw>13</spirit_Raw>
-        <luck_Raw>13</luck_Raw>
-        <fascination_Raw>10</fascination_Raw>
+        <strength_raw>18</strength_raw>
+        <intellect_raw>10</intellect_raw>
+        <physique_raw>17</physique_raw>
+        <dexterity_raw>13</dexterity_raw>
+        <spirit_raw>13</spirit_raw>
+        <luck_raw>13</luck_raw>
+        <fascination_raw>10</fascination_raw>
         <skill_lists>张飞技能</skill_lists>
     </item>
 
@@ -38,13 +38,13 @@
         <name2>liubei</name2>
         <sexuality>0</sexuality>
         <aptitude>2.5</aptitude>
-        <strength_Raw>12</strength_Raw>
-        <intellect_Raw>15</intellect_Raw>
-        <physique_Raw>12</physique_Raw>
-        <dexterity_Raw>13</dexterity_Raw>
-        <spirit_Raw>17</spirit_Raw>
-        <luck_Raw>19</luck_Raw>
-        <fascination_Raw>16</fascination_Raw>
+        <strength_raw>12</strength_raw>
+        <intellect_raw>15</intellect_raw>
+        <physique_raw>12</physique_raw>
+        <dexterity_raw>13</dexterity_raw>
+        <spirit_raw>17</spirit_raw>
+        <luck_raw>19</luck_raw>
+        <fascination_raw>16</fascination_raw>
         <skill_lists>刘备技能</skill_lists>
     </item>
 
@@ -54,13 +54,13 @@
         <name2>zhaoyun</name2>
         <sexuality>0</sexuality>
         <aptitude>4.2</aptitude>
-        <strength_Raw>15</strength_Raw>
-        <intellect_Raw>14</intellect_Raw>
-        <physique_Raw>17</physique_Raw>
-        <dexterity_Raw>19</dexterity_Raw>
-        <spirit_Raw>17</spirit_Raw>
-        <luck_Raw>16</luck_Raw>
-        <fascination_Raw>18</fascination_Raw>
+        <strength_raw>15</strength_raw>
+        <intellect_raw>14</intellect_raw>
+        <physique_raw>17</physique_raw>
+        <dexterity_raw>19</dexterity_raw>
+        <spirit_raw>17</spirit_raw>
+        <luck_raw>16</luck_raw>
+        <fascination_raw>18</fascination_raw>
         <skill_lists>赵云技能</skill_lists>
     </item>
 
@@ -70,13 +70,13 @@
         <name2>machao</name2>
         <sexuality>0</sexuality>
         <aptitude>4.5</aptitude>
-        <strength_Raw>17</strength_Raw>
-        <intellect_Raw>11</intellect_Raw>
-        <physique_Raw>18</physique_Raw>
-        <dexterity_Raw>15</dexterity_Raw>
-        <spirit_Raw>15</spirit_Raw>
-        <luck_Raw>13</luck_Raw>
-        <fascination_Raw>17</fascination_Raw>
+        <strength_raw>17</strength_raw>
+        <intellect_raw>11</intellect_raw>
+        <physique_raw>18</physique_raw>
+        <dexterity_raw>15</dexterity_raw>
+        <spirit_raw>15</spirit_raw>
+        <luck_raw>13</luck_raw>
+        <fascination_raw>17</fascination_raw>
         <skill_lists>马超技能</skill_lists>
     </item>
 
@@ -86,13 +86,13 @@
         <name2>xvchu</name2>
         <sexuality>0</sexuality>
         <aptitude>4.3</aptitude>
-        <strength_Raw>20</strength_Raw>
-        <intellect_Raw>7</intellect_Raw>
-        <physique_Raw>18</physique_Raw>
-        <dexterity_Raw>10</dexterity_Raw>
-        <spirit_Raw>16</spirit_Raw>
-        <luck_Raw>14</luck_Raw>
-        <fascination_Raw>10</fascination_Raw>
+        <strength_raw>20</strength_raw>
+        <intellect_raw>7</intellect_raw>
+        <physique_raw>18</physique_raw>
+        <dexterity_raw>10</dexterity_raw>
+        <spirit_raw>16</spirit_raw>
+        <luck_raw>14</luck_raw>
+        <fascination_raw>10</fascination_raw>
         <skill_lists>许诸技能</skill_lists>
     </item>
 
@@ -102,13 +102,13 @@
         <name2>dianwei</name2>
         <sexuality>0</sexuality>
         <aptitude>4.4</aptitude>
-        <strength_Raw>18</strength_Raw>
-        <intellect_Raw>10</intellect_Raw>
-        <physique_Raw>18</physique_Raw>
-        <dexterity_Raw>14</dexterity_Raw>
-        <spirit_Raw>16</spirit_Raw>
-        <luck_Raw>15</luck_Raw>
-        <fascination_Raw>12</fascination_Raw>
+        <strength_raw>18</strength_raw>
+        <intellect_raw>10</intellect_raw>
+        <physique_raw>18</physique_raw>
+        <dexterity_raw>14</dexterity_raw>
+        <spirit_raw>16</spirit_raw>
+        <luck_raw>15</luck_raw>
+        <fascination_raw>12</fascination_raw>
         <skill_lists>许诸技能</skill_lists>
     </item>
 
@@ -118,13 +118,13 @@
         <name2>lvbu</name2>
         <sexuality>0</sexuality>
         <aptitude>5</aptitude>
-        <strength_Raw>20</strength_Raw>
-        <intellect_Raw>8</intellect_Raw>
-        <physique_Raw>20</physique_Raw>
-        <dexterity_Raw>20</dexterity_Raw>
-        <spirit_Raw>20</spirit_Raw>
-        <luck_Raw>14</luck_Raw>
-        <fascination_Raw>19</fascination_Raw>
+        <strength_raw>20</strength_raw>
+        <intellect_raw>8</intellect_raw>
+        <physique_raw>20</physique_raw>
+        <dexterity_raw>20</dexterity_raw>
+        <spirit_raw>20</spirit_raw>
+        <luck_raw>14</luck_raw>
+        <fascination_raw>19</fascination_raw>
         <skill_lists>吕布技能</skill_lists>
     </item>
 
@@ -134,13 +134,13 @@
         <name2>zhugeliang</name2>
         <sexuality>0</sexuality>
         <aptitude>4.6</aptitude>
-        <strength_Raw>10</strength_Raw>
-        <intellect_Raw>20</intellect_Raw>
-        <physique_Raw>10</physique_Raw>
-        <dexterity_Raw>12</dexterity_Raw>
-        <spirit_Raw>20</spirit_Raw>
-        <luck_Raw>18</luck_Raw>
-        <fascination_Raw>16</fascination_Raw>
+        <strength_raw>10</strength_raw>
+        <intellect_raw>20</intellect_raw>
+        <physique_raw>10</physique_raw>
+        <dexterity_raw>12</dexterity_raw>
+        <spirit_raw>20</spirit_raw>
+        <luck_raw>18</luck_raw>
+        <fascination_raw>16</fascination_raw>
         <skill_lists>诸葛亮技能</skill_lists>
     </item>
 
@@ -150,13 +150,13 @@
         <name2>xvyou</name2>
         <sexuality>0</sexuality>
         <aptitude>2.8</aptitude>
-        <strength_Raw>8</strength_Raw>
-        <intellect_Raw>15</intellect_Raw>
-        <physique_Raw>7</physique_Raw>
-        <dexterity_Raw>8</dexterity_Raw>
-        <spirit_Raw>12</spirit_Raw>
-        <luck_Raw>13</luck_Raw>
-        <fascination_Raw>8</fascination_Raw>
+        <strength_raw>8</strength_raw>
+        <intellect_raw>15</intellect_raw>
+        <physique_raw>7</physique_raw>
+        <dexterity_raw>8</dexterity_raw>
+        <spirit_raw>12</spirit_raw>
+        <luck_raw>13</luck_raw>
+        <fascination_raw>8</fascination_raw>
         <skill_lists>许攸技能</skill_lists>
     </item>
 
@@ -166,13 +166,13 @@
         <name2>caocao</name2>
         <sexuality>0</sexuality>
         <aptitude>3.5</aptitude>
-        <strength_Raw>12</strength_Raw>
-        <intellect_Raw>17</intellect_Raw>
-        <physique_Raw>12</physique_Raw>
-        <dexterity_Raw>12</dexterity_Raw>
-        <spirit_Raw>15</spirit_Raw>
-        <luck_Raw>16</luck_Raw>
-        <fascination_Raw>18</fascination_Raw>
+        <strength_raw>12</strength_raw>
+        <intellect_raw>17</intellect_raw>
+        <physique_raw>12</physique_raw>
+        <dexterity_raw>12</dexterity_raw>
+        <spirit_raw>15</spirit_raw>
+        <luck_raw>16</luck_raw>
+        <fascination_raw>18</fascination_raw>
         <skill_lists>曹操技能</skill_lists>
     </item>
 
@@ -182,13 +182,13 @@
         <name2>caoren</name2>
         <sexuality>0</sexuality>
         <aptitude>3.2</aptitude>
-        <strength_Raw>14</strength_Raw>
-        <intellect_Raw>8</intellect_Raw>
-        <physique_Raw>14</physique_Raw>
-        <dexterity_Raw>10</dexterity_Raw>
-        <spirit_Raw>11</spirit_Raw>
-        <luck_Raw>12</luck_Raw>
-        <fascination_Raw>8</fascination_Raw>
+        <strength_raw>14</strength_raw>
+        <intellect_raw>8</intellect_raw>
+        <physique_raw>14</physique_raw>
+        <dexterity_raw>10</dexterity_raw>
+        <spirit_raw>11</spirit_raw>
+        <luck_raw>12</luck_raw>
+        <fascination_raw>8</fascination_raw>
         <skill_lists>曹仁技能</skill_lists>
     </item>
 
@@ -198,13 +198,13 @@
         <name2>zhangliao</name2>
         <sexuality>0</sexuality>
         <aptitude>3.8</aptitude>
-        <strength_Raw>16</strength_Raw>
-        <intellect_Raw>12</intellect_Raw>
-        <physique_Raw>16</physique_Raw>
-        <dexterity_Raw>16</dexterity_Raw>
-        <spirit_Raw>14</spirit_Raw>
-        <luck_Raw>13</luck_Raw>
-        <fascination_Raw>13</fascination_Raw>
+        <strength_raw>16</strength_raw>
+        <intellect_raw>12</intellect_raw>
+        <physique_raw>16</physique_raw>
+        <dexterity_raw>16</dexterity_raw>
+        <spirit_raw>14</spirit_raw>
+        <luck_raw>13</luck_raw>
+        <fascination_raw>13</fascination_raw>
         <skill_lists>张辽技能</skill_lists>
     </item>
 
@@ -214,13 +214,13 @@
         <name2>bubing</name2>
         <sexuality>0</sexuality>
         <aptitude>1.5</aptitude>
-        <strength_Raw>6</strength_Raw>
-        <intellect_Raw>5</intellect_Raw>
-        <physique_Raw>6</physique_Raw>
-        <dexterity_Raw>5</dexterity_Raw>
-        <spirit_Raw>5</spirit_Raw>
-        <luck_Raw>5</luck_Raw>
-        <fascination_Raw>5</fascination_Raw>
+        <strength_raw>6</strength_raw>
+        <intellect_raw>5</intellect_raw>
+        <physique_raw>6</physique_raw>
+        <dexterity_raw>5</dexterity_raw>
+        <spirit_raw>5</spirit_raw>
+        <luck_raw>5</luck_raw>
+        <fascination_raw>5</fascination_raw>
         <skill_lists>步兵技能</skill_lists>
     </item>
 
@@ -230,13 +230,13 @@
         <name2>qibing</name2>
         <sexuality>0</sexuality>
         <aptitude>1.8</aptitude>
-        <strength_Raw>8</strength_Raw>
-        <intellect_Raw>6</intellect_Raw>
-        <physique_Raw>7</physique_Raw>
-        <dexterity_Raw>10</dexterity_Raw>
-        <spirit_Raw>7</spirit_Raw>
-        <luck_Raw>7</luck_Raw>
-        <fascination_Raw>7</fascination_Raw>
+        <strength_raw>8</strength_raw>
+        <intellect_raw>6</intellect_raw>
+        <physique_raw>7</physique_raw>
+        <dexterity_raw>10</dexterity_raw>
+        <spirit_raw>7</spirit_raw>
+        <luck_raw>7</luck_raw>
+        <fascination_raw>7</fascination_raw>
         <skill_lists>骑兵技能</skill_lists>
     </item>
 
@@ -246,13 +246,13 @@
         <name2>gongjianbing</name2>
         <sexuality>0</sexuality>
         <aptitude>1.5</aptitude>
-        <strength_Raw>4</strength_Raw>
-        <intellect_Raw>6</intellect_Raw>
-        <physique_Raw>5</physique_Raw>
-        <dexterity_Raw>8</dexterity_Raw>
-        <spirit_Raw>6</spirit_Raw>
-        <luck_Raw>8</luck_Raw>
-        <fascination_Raw>6</fascination_Raw>
+        <strength_raw>4</strength_raw>
+        <intellect_raw>6</intellect_raw>
+        <physique_raw>5</physique_raw>
+        <dexterity_raw>8</dexterity_raw>
+        <spirit_raw>6</spirit_raw>
+        <luck_raw>8</luck_raw>
+        <fascination_raw>6</fascination_raw>
         <skill_lists>弓箭兵技能</skill_lists>
     </item>
 </all_character>

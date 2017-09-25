@@ -1,6 +1,7 @@
 package com.game.xianxue.ashesofhistory.BattleTest;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -11,7 +12,6 @@ import com.game.xianxue.ashesofhistory.game.engine.BattleEngine;
 import com.game.xianxue.ashesofhistory.game.model.TeamModel;
 import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpBase;
 import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpBattle;
-import com.game.xianxue.ashesofhistory.game.model.lineup.UnitBase;
 import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.game.model.person.NormalPerson;
@@ -72,14 +72,14 @@ public class BattleEngineTest {
         TeamModel t2 = new TeamModel(TeamModel.CAMP_RIGHT, playerList2);
 
         BattleEngine engine = BattleEngine.getInstance();
-        engine.setmTimeIncreseActive(1000);
-        engine.setmTimePerAction(500);
+        engine.setmTimeActiveIncrese(1000);
+        engine.setmTimePersonAction(500);
         engine.setBattleTeam(t1, t2);
         engine.startBattle();
     }
 
     @Test
-    public void TestStartBattle2() {
+    public void TestLineUp() {
         init();
 
         // 初始化人物
@@ -89,12 +89,14 @@ public class BattleEngineTest {
         BasePerson play3 = BasePersonManager.getPersonFromDataBaseByPinyin("liubei");
         BasePerson play4 = BasePersonManager.getPersonFromDataBaseByPinyin("zhaoyun");
         BasePerson play5 = BasePersonManager.getPersonFromDataBaseByPinyin("zhugeliang");
+        SimpleLog.logd("TestPerson","play5 = "+play5);
 
         BattlePerson b1 = new BattlePerson(new NormalPerson(play1));
         BattlePerson b2 = new BattlePerson(new NormalPerson(play2));
         BattlePerson b3 = new BattlePerson(new NormalPerson(play3));
         BattlePerson b4 = new BattlePerson(new NormalPerson(play4));
         BattlePerson b5 = new BattlePerson(new NormalPerson(play5));
+        SimpleLog.logd("TestPerson","b5 = "+b5);
         b3.setLeader(true);
         b5.setCounsellor(true);
 
@@ -136,22 +138,28 @@ public class BattleEngineTest {
         ShowUtils.showArrays(TAG,playerList1);
         ShowUtils.showArrays(TAG,playerList2);
 
-        // 初始化阵容
+        // 初始化阵型1
         LineUpBase lineUp1 = LineUpDataManager.getDataFromDataBaseById(0);//普通阵容
         LineUpBattle lb1 = new LineUpBattle(lineUp1,playerList1);
-
+        // 初始化阵型2
         LineUpBase lineUp2 = LineUpDataManager.getDataFromDataBaseById(1);//长蛇阵
         LineUpBattle lb2 = new LineUpBattle(lineUp2,playerList2);
 
-
-        /*TeamModel t1 = new TeamModel(TeamModel.CAMP_LEFT, playerList1);
-        TeamModel t2 = new TeamModel(TeamModel.CAMP_RIGHT, playerList2);
+        // 初始化阵营
+        TeamModel t1 = new TeamModel(TeamModel.CAMP_LEFT, lb1);
+        TeamModel t2 = new TeamModel(TeamModel.CAMP_RIGHT, lb2);
 
         BattleEngine engine = BattleEngine.getInstance();
-        engine.setmTimeIncreseActive(1000);
-        engine.setmTimePerAction(500);
+        engine.setmTimeActiveIncrese(50);
+        engine.setmTimePersonAction(50);
         engine.setBattleTeam(t1, t2);
-        engine.startBattle();*/
+        engine.startBattle();
+
+        try {
+            Thread.sleep(999999);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Test

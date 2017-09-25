@@ -1,7 +1,5 @@
 package com.game.xianxue.ashesofhistory.game.model.lineup;
 
-import java.util.ArrayList;
-
 /**
  * 阵型的基础类，这个类只包含了阵型的基本信息，在战斗中的阵型比这个复杂一点，继承这个类进行扩展
  */
@@ -12,11 +10,11 @@ public class LineUpBase {
     int LINEUP_MAX_COL = 6;     // 阵型最大列数
 
     // 阵法类型，不同类型的阵法站位不同，加成效果不同。
-    int lineup_id;                              // 阵法id
-    String name;                                // 阵法名字
-    String introduce;                           // 阵法介绍
-    int maxPerson;                              // 阵法可以容纳的人数
-    String lineupJson;                          // 把lineupList 变成json字符串，方便存储在数据库中
+    protected int lineup_id;                              // 阵法id
+    protected String name;                                // 阵法名字
+    protected String introduce;                           // 阵法介绍
+    protected int maxPerson;                              // 阵法可以容纳的人数
+    protected String lineupJson;                          // 把lineupList 变成json字符串，方便存储在数据库中
 
     public LineUpBase() {
 

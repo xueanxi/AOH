@@ -158,6 +158,7 @@ public class BasePersonManager {
             c.moveToNext();
             person = new BasePerson();
             person.setName(c.getString(c.getColumnIndex(BasePersonColumn.name)));
+            person.setName2(c.getString(c.getColumnIndex(BasePersonColumn.name2)));
             person.setStrength_Raw(c.getInt(c.getColumnIndex(BasePersonColumn.strength_Raw)));
             person.setIntellect_Raw(c.getInt(c.getColumnIndex(BasePersonColumn.intellect_Raw)));
             person.setPhysique_Raw(c.getInt(c.getColumnIndex(BasePersonColumn.physique_Raw)));

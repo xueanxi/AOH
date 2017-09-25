@@ -1,7 +1,6 @@
 package com.game.xianxue.ashesofhistory.game.model.lineup;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
-import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 
@@ -43,9 +42,6 @@ public class LineUpBattle extends LineUpBase {
             this.lineupList.add(new UnitBattle(data));
         }
 
-
-
-
         initLineUp();
     }
 
@@ -62,7 +58,7 @@ public class LineUpBattle extends LineUpBase {
             return;
         }
         // 遍历队伍成员，获得军师和统帅的索引，并且判断队伍是否合法
-       for (int i = 0; i < membersList.size(); i++) {
+        for (int i = 0; i < membersList.size(); i++) {
             if (membersList.get(i).isCounsellor()) {
                 counsellorIndex = i;
             } else if (membersList.get(i).isLeader()) {
@@ -73,36 +69,39 @@ public class LineUpBattle extends LineUpBase {
             SimpleLog.loge(TAG, "Error !!! initLineUp faile. 队伍成员里面缺少军师和统帅");
             return;
         }
-        // 开始往阵型里面塞人
 
-        for(int i =0 ;i<membersList.size();i++){
+        // 开始往阵型里面填充人
+        for (int i = 0; i < membersList.size(); i++) {
             BattlePerson person = membersList.get(i);
-            if(person.isLeader()){
-                for(int j =0;j<lineupList.size();j++){
-                    UnitBattle unit = lineupList.get(j);
-                    if(unit.isLeader()){
-                        SimpleLog.logd(TAG,"i = "+i+" j ="+j);
+            // 填充团长
+            if (person.isLeader()) {
+                for (UnitBattle unit : lineupList) {
+                    if (unit.isLeader()) {
                         unit.setPersonIndex(i);
-                        SimpleLog.logd(TAG,"unit 1 = "+unit);
+                        unit.setEmpty(false);
                         break;
                     }
                 }
-            }else if(person.isCounsellor()){
-                for(UnitBattle unit:lineupList){
-                    if(unit.isCounsellor()){
+            } else if (person.isCounsellor()) {
+                // 填充军师
+                for (UnitBattle unit : lineupList) {
+                    if (unit.isCounsellor()) {
                         unit.setPersonIndex(i);
-                        SimpleLog.logd(TAG,"unit 2 = "+unit);
+                        unit.setEmpty(false);
+                        break;
+                    }
+                }
+            } else if (!person.isLeader() && !person.isCounsellor()) {
+                // 填充其他
+                for (UnitBattle unit : lineupList) {
+                    if (unit.isEmpty() && !unit.isCounsellor() && !unit.isLeader()) {
+                        unit.setPersonIndex(i);
+                        unit.setEmpty(false);
                         break;
                     }
                 }
             }
         }
-
-        //ShowUtils.showArrays(TAG, lineupList);
-    }
-
-    public void displayLineUp() {
-        ShowUtils.showArrays(TAG, lineupList);
     }
 
     /**
@@ -111,4 +110,35 @@ public class LineUpBattle extends LineUpBase {
     private void initLineupList() {
     }
 
+    /**
+     * 判断是否团灭
+     * @return
+     */
+    public boolean isAllDie(){
+        boolean isAllDie = true;
+        if(membersList == null || membersList.size()==0){
+            SimpleLog.loge(TAG,"isAllDie() membersList = null OR size =0");
+            return isAllDie;
+        }
+        for(BattlePerson person:membersList){
+            if(person.getHP()>0){
+                isAllDie = false;
+                break;
+            }
+        }
+        SimpleLog.loge(TAG,"isAllDie = "+isAllDie);
+        return isAllDie;
+    }
+
+    /**
+     * 返回阵型中的人员
+     * @return
+     */
+    public ArrayList<BattlePerson> getMemberList(){
+        if(membersList == null || membersList.size()==0) {
+            SimpleLog.loge(TAG,"getMemberList() membersList = null OR size =0");
+            return null;
+        }
+        return membersList;
+    }
 }

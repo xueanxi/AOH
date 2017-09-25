@@ -18,7 +18,7 @@ public class UnitBase {
     int x = 0;                      // x 坐标，以左上角为原点
     int y = 0;                      // y 坐标，以左上角为原点
     ArrayList<Integer> buffIDs;     // 阵型中这个位置能获得哪些Buff的加成
-    boolean canSetPerson = false;   // 是否统帅的位置
+    boolean canSetPerson = false;   // 是否能站人
     boolean isCounsellor = false;   // 是否军师的位置
     boolean isLeader = false;       // 是否统帅的位置
 

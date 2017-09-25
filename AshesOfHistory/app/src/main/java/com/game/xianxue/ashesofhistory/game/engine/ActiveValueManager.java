@@ -1,5 +1,7 @@
 package com.game.xianxue.ashesofhistory.game.engine;
 
+import android.os.SystemClock;
+
 import com.game.xianxue.ashesofhistory.Log.BattleLog;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 
@@ -11,11 +13,16 @@ import java.util.ArrayList;
  */
 
 public class ActiveValueManager implements Runnable {
+    private static final String TAG = "ActiveValueManager";
+
+    int mTimeActiveInterval = 100;          // 活跃值增加的时间间隔
+
     Thread innerThread = null;
     ArrayList<BattlePerson> personLists = null;
     ArrayList<BattlePerson> personMaxActive = null;
     Object lock;
     BattleEngine mBattleEngine;
+
 
     boolean isStart = false;
     boolean isOver = false;
@@ -43,22 +50,24 @@ public class ActiveValueManager implements Runnable {
             // 每一个人增加行动值，并且把行动值到达最大的人物，添加到 personMaxActive 列表中
             StringBuilder sb = new StringBuilder();
             for (BattlePerson person : personLists) {
-                if(person.getHP()> 0){
+                if (person.getHP() > 0) {
                     person.increaseActiveValues();
                 }
-                if (person.getActiveValuePencent() >= 1.0f ) {
+                if (person.getActiveValuePencent() >= 1.0f) {
                     personMaxActive.add(person);
                 }
 
-                sb.append(person.getName()+" HP:"+person.getHP() +" Active:"+person.getActiveValuePencent()+"\n");
+                sb.append(person.getName() + " HP:" + person.getHP() + " Active:" + person.getActiveValuePencent() + "\n");
             }
+
+            SystemClock.sleep(mTimeActiveInterval);
 
 
             BattleLog.log(sb.toString());
 
             // 处理行动值满了的人物行动
             while (personMaxActive != null && personMaxActive.size() > 0) {
-                BattleLog.log("有"+ personMaxActive.size() +"人蓄气完成。");
+                BattleLog.log("有" + personMaxActive.size() + "人蓄气完成。");
                 if (personMaxActive.size() >= 1) {
                     // 先查看是否有行动值已经满的家伙,如果有，从中挑选当前百分比最高的人
                     int index = getMaxActivePersonIndex(personMaxActive);
@@ -81,9 +90,9 @@ public class ActiveValueManager implements Runnable {
                     personMaxActive.remove(index);
 
                     // 一个人物进攻完了之后，需要检查其他蓄气满的人生命值是否为0，需要移除。
-                    for (BattlePerson person : personMaxActive) {
-                        if (person.getHP() <= 0) {
-                            personMaxActive.remove(person);
+                    for (int i = 0; i < personMaxActive.size(); i++) {
+                        if (personMaxActive.get(i).getHP() <= 0) {
+                            personMaxActive.remove(i);
                         }
                     }
                 }
@@ -152,12 +161,12 @@ public class ActiveValueManager implements Runnable {
      * 继续
      */
     public void resume() {
-        if(isStart()){
+        if (isStart()) {
             synchronized (lock) {
                 suspended = false;
                 lock.notify();
             }
-        }else{
+        } else {
             start();
         }
     }
@@ -168,5 +177,9 @@ public class ActiveValueManager implements Runnable {
 
     public void setStart(boolean start) {
         isStart = start;
+    }
+
+    public void setTimeActiveInterval(int mTimeActiveInterval) {
+        this.mTimeActiveInterval = mTimeActiveInterval;
     }
 }
