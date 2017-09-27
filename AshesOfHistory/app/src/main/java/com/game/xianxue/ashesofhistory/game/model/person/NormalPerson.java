@@ -146,10 +146,11 @@ public class NormalPerson extends BasePerson {
         block = calculateBlock();                               // 格档值（格档成功只承受30%物理伤害 或者 承受70%魔法伤害）
         actionSpeed = calculateSpeed();                         // 速度
         hpRestore = calculateHpRestore();                       // 发起进攻时，生命恢复
-        actionValuesMax = calculateMaxActiveValues();
+        actionValuesMax = calculateMaxActiveValues();           // 执行一次行动，需要的行动值（越少越好）
 
 
         // TODO: 8/29/17 处理其他增幅效果
+
     }
 
     protected int calculateHp() {

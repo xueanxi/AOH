@@ -87,9 +87,10 @@ public class ConstantColumn {
         public static final String buff_fluctuate = "buff_fluctuate";   // buff的浮动影响
         public static final String time = "time";                       // buff的持续时间
         public static final String range = "range";                     // buff的范围
-        public static final String level = "level";                     // 等级
-        public static final String effect_up = "effect_up";             // 每升一级提高的百分比
+        public static final String constant_up = "effect_constant_up";             // 每升一级 固定部分 提高的百分比
+        public static final String fluctuate_up = "effect_fluctuate_up";           // 每升一级 浮动部分 提高的百分比
     }
+
 
     /**
      *  阵型 数据库表格的 列属性

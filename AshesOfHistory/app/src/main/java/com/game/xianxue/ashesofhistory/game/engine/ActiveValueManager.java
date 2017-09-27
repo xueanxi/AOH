@@ -60,10 +60,8 @@ public class ActiveValueManager implements Runnable {
                 sb.append(person.getName() + " HP:" + person.getHP() + " Active:" + person.getActiveValuePencent() + "\n");
             }
 
-            SystemClock.sleep(mTimeActiveInterval);
-
-
             BattleLog.log(sb.toString());
+            SystemClock.sleep(mTimeActiveInterval);
 
             // 处理行动值满了的人物行动
             while (personMaxActive != null && personMaxActive.size() > 0) {

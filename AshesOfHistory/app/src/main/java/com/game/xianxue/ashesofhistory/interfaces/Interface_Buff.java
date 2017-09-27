@@ -3,7 +3,7 @@ package com.game.xianxue.ashesofhistory.interfaces;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 
 /**
- * 战斗接口
+ * Buff接口
  * Created by anxi.xue on 8/30/17.
  */
 
@@ -20,14 +20,6 @@ public interface Interface_Buff {
     public int BUFF_LEVEL_LIMIT_MAX  = 5;       // buff最高等级限制
     public int BUFF_LEVEL_LIMIT_MINI = 1;       // buff最低等级限制
 
-    /**
-     * Buff 对一个目标开始生效
-     */
-     void start(BattlePerson person);
-
-    /**
-     * Buff 对一个目标作用停止
-     * @param remove
-     */
-    void stop(BattlePerson remove);
+    void start();
+    void stop();
 }

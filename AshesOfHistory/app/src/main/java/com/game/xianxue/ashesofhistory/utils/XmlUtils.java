@@ -4,7 +4,7 @@ import android.content.Context;
 import android.util.Xml;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
-import com.game.xianxue.ashesofhistory.game.buff.BuffBase;
+import com.game.xianxue.ashesofhistory.game.model.buff.BuffBase;
 import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpBase;
 import com.game.xianxue.ashesofhistory.game.model.lineup.UnitBase;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
@@ -214,14 +214,15 @@ public class XmlUtils {
                         buff.setTime(Integer.valueOf(pullParser.nextText()));
                     } else if (BuffColumn.range.equals(tag)) {
                         buff.setRange(Integer.valueOf(pullParser.nextText()));
-                    } else if (BuffColumn.level.equals(tag)) {
-                        buff.setLevel(Integer.valueOf(pullParser.nextText()));
-                    } else if (BuffColumn.effect_up.equals(tag)) {
-                        buff.setEffect_up(Float.valueOf(pullParser.nextText()));
+                    } else if (BuffColumn.constant_up.equals(tag)) {
+                        buff.setEffect_constant_up(Float.valueOf(pullParser.nextText()));
+                    } else if (BuffColumn.fluctuate_up.equals(tag)) {
+                        buff.setEffect_fluctuate_up(Float.valueOf(pullParser.nextText()));
                     }
                     break;
                 case XmlPullParser.END_TAG:
                     if ("item".equals(pullParser.getName())) {
+                        SimpleLog.logd(TAG,"buff === "+buff);
                         buffLists.add(buff);
                         buff = null;
                     }
@@ -287,7 +288,7 @@ public class XmlUtils {
             }
             event = pullParser.next();
         }
-        ShowUtils.showArrays("anxii",dataLists);
+        ShowUtils.showArrays("anxii", dataLists);
         SimpleLog.logd(TAG, "解析所有阵型使用的时间:" + (System.currentTimeMillis() - startTime));
         return dataLists;
     }

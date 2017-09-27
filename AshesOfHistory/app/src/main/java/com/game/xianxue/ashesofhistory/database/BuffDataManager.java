@@ -4,7 +4,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
-import com.game.xianxue.ashesofhistory.game.buff.BuffBase;
+import com.game.xianxue.ashesofhistory.game.model.buff.BuffBase;
 import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.BuffColumn;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 
@@ -17,6 +17,7 @@ import java.util.ArrayList;
 public class BuffDataManager {
 
     private static final String TAG = "BuffDataManager";
+
 
 
     /**
@@ -36,10 +37,10 @@ public class BuffDataManager {
                 + BuffColumn.buff_fluctuate + " ,"
                 + BuffColumn.time + " ,"
                 + BuffColumn.range + " ,"
-                + BuffColumn.level + " ,"
-                + BuffColumn.effect_up + " )"
+                + BuffColumn.constant_up + " ,"
+                + BuffColumn.fluctuate_up + " )"
                 + " VALUES ("
-                + " '%d','%s','%s','%d','%d','%d','%f','%d','%d','%d','%f'"
+                + " '%d','%s','%s','%d','%d','%d','%f','%d','%d','%f','%f'"
                 + " )";
 
         return String.format(format,
@@ -52,8 +53,8 @@ public class BuffDataManager {
                 buff.getBuff_fluctuate(),
                 buff.getTime(),
                 buff.getRange(),
-                buff.getLevel(),
-                buff.getEffect_up()
+                buff.getEffect_constant_up(),
+                buff.getEffect_fluctuate_up()
         );
     }
 
@@ -82,7 +83,7 @@ public class BuffDataManager {
         BuffBase buff = cursorToBuff(cursor);
         cursor.close();
         db.close();
-        SimpleLog.logd(TAG,buff.toString());
+        SimpleLog.logd(TAG, buff.toString());
         return buff;
     }
 
@@ -109,8 +110,8 @@ public class BuffDataManager {
                 buff.setBuff_fluctuate(c.getFloat(c.getColumnIndex(BuffColumn.buff_fluctuate)));
                 buff.setTime(c.getInt(c.getColumnIndex(BuffColumn.time)));
                 buff.setRange(c.getInt(c.getColumnIndex(BuffColumn.range)));
-                buff.setLevel(c.getInt(c.getColumnIndex(BuffColumn.level)));
-                buff.setEffect_up(c.getFloat(c.getColumnIndex(BuffColumn.effect_up)));
+                buff.setEffect_constant_up(c.getFloat(c.getColumnIndex(BuffColumn.constant_up)));
+                buff.setEffect_fluctuate_up(c.getFloat(c.getColumnIndex(BuffColumn.fluctuate_up)));
                 lists.add(buff);
             }
         }
@@ -140,8 +141,8 @@ public class BuffDataManager {
         buff.setBuff_fluctuate(c.getFloat(c.getColumnIndex(BuffColumn.buff_fluctuate)));
         buff.setTime(c.getInt(c.getColumnIndex(BuffColumn.time)));
         buff.setRange(c.getInt(c.getColumnIndex(BuffColumn.range)));
-        buff.setLevel(c.getInt(c.getColumnIndex(BuffColumn.level)));
-        buff.setEffect_up(c.getFloat(c.getColumnIndex(BuffColumn.effect_up)));
+        buff.setEffect_constant_up(c.getInt(c.getColumnIndex(BuffColumn.constant_up)));
+        buff.setEffect_fluctuate_up(c.getFloat(c.getColumnIndex(BuffColumn.fluctuate_up)));
         return buff;
     }
 }

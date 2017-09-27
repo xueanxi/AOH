@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.game.xianxue.ashesofhistory.App;
 import com.game.xianxue.ashesofhistory.constant.Constant;
-import com.game.xianxue.ashesofhistory.game.buff.BuffBase;
+import com.game.xianxue.ashesofhistory.game.model.buff.BuffBase;
 import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpBase;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.*;
@@ -109,8 +109,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + BuffColumn.buff_fluctuate + " REAL,"
                 + BuffColumn.time + " INTEGER,"
                 + BuffColumn.range + " INTEGER,"
-                + BuffColumn.level + " INTEGER,"
-                + BuffColumn.effect_up + " REAL)");
+                + BuffColumn.constant_up + " REAL,"
+                + BuffColumn.fluctuate_up + " REAL)");
         insertBuffData(db);
     }
 

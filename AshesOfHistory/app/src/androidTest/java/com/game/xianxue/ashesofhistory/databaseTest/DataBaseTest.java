@@ -9,6 +9,7 @@ import com.game.xianxue.ashesofhistory.database.BasePersonManager;
 import com.game.xianxue.ashesofhistory.database.BuffDataManager;
 import com.game.xianxue.ashesofhistory.database.LineUpDataManager;
 import com.game.xianxue.ashesofhistory.database.SkillDataManager;
+import com.game.xianxue.ashesofhistory.game.model.buff.BuffBase;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 import com.game.xianxue.ashesofhistory.game.model.TeamModel;
 import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
@@ -179,8 +180,18 @@ public class DataBaseTest {
     @Test
     public void TestgetLineupdata() throws Exception {
         init();
-        LineUpDataManager.getAllDataFromDataBase();
+        //LineUpDataManager.getAllDataFromDataBase();
+        XmlUtils.getAllBuff(mContext);
         //BuffDataManager.getBuffFromDataBaseById(1);
         //BuffDataManager.getAllBuffFromDataBase();
+    }
+
+    /**
+     * 测试通过id 获取一个阵型
+     */
+    @Test
+    public void TestgetBuffdata() throws Exception {
+        init();
+        ArrayList<BuffBase> datas = BuffDataManager.getAllBuffFromDataBase();
     }
 }
