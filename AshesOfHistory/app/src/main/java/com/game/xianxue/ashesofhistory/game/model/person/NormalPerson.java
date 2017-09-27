@@ -16,8 +16,8 @@ public class NormalPerson extends BasePerson {
     public static final int DEFAULT_ACTIVE_VALUES_MAX = 100;   //最大行动值，当行动值到达最大，就可以发动进攻
 
     /**
-     * 面板属性
-     * 每升一级会获得五项基础属性的提升
+     * 基础属性
+     * 每升一级会获得五项基础属性的提升（基础属性由 1级时的基础属性值 等级 天赋 决定）
      * 提升的公式为：
      * newValues = oldVaules + ( Values_Raw * 0.5 + aptitude*1 )
      * 文字描述： 新属性 = 旧属性 + （ 0.5乘以 该属性的初始属性 + 资质 乘以 1）
@@ -32,14 +32,20 @@ public class NormalPerson extends BasePerson {
     public int luck;           // 运气  （影响 暴击率、被暴击率、格档概率、闪避概率、命中率、优秀装备和物品的爆率）
     public int fascination;    // 魅力  （影响 收服武将的概率、商品购买和出售的价格、增加对异性的伤害、增加对异性的闪避）
 
+    public int database_id = -1;    // 保存在数据库中的id
+    public int level = 1;           // 等级
 
-    public int _id = -1;                            // 保存在数据库中的id
-    public int level = 0;                          // 等级
+    // 武器装备
+    public int weaponId = -1;       // 武器id
+    public int equipId = -1;        // 装备id
+    public int treasureId = -1;     // 宝物id
+    public int riderId = -1;        // 坐骑id
 
-    /**
-     * 当前拥有的技能，包括天赋技能 和 其他途径获得的技能
-     */
-    ArrayList<SkillBase> skillArrays = null;
+    // 经验
+    public int experience ;         // 拥有经验
+    public int experience_max ;     // 升级总经验
+
+    ArrayList<SkillBase> skillArrays = null;       // 当前拥有的技能，包括天赋技能 和 其他途径获得的技能
 
     /**
      * 面板属性
@@ -119,7 +125,7 @@ public class NormalPerson extends BasePerson {
 
     /**
      * 刷新属性
-     * 在设置等级，穿了装备等操作之后需要刷属性
+     * 在设置等级，穿了装备等操作之后需要刷新属性
      */
     public void updateAttribute() {
         strength = getNewAttribute(strength_Raw, level);
@@ -128,7 +134,9 @@ public class NormalPerson extends BasePerson {
         physique = getNewAttribute(physique_Raw, level);
         spirit = getNewAttribute(spirit_Raw, level);
 
-        // TODO: 8/29/17 处理影响基础属性的效果比如增加力量的装备等等
+        // TODO: 8/29/17 处理影响 基础属性 的效果比如增加力量的装备等等
+        // TODO： 处理基础属性 包括 被动技能中涉及基础属性的部分、武器装备中涉及基础属性的部分、阵型中涉及基础属性的部分
+
 
         HP = calculateHp();                                     // 生命值
         experiencePoint = 0;                                    // 经验值
@@ -149,9 +157,11 @@ public class NormalPerson extends BasePerson {
         actionValuesMax = calculateMaxActiveValues();           // 执行一次行动，需要的行动值（越少越好）
 
 
-        // TODO: 8/29/17 处理其他增幅效果
+        // TODO: 8/29/17 处理 面板属性 的效果
 
     }
+
+
 
     protected int calculateHp() {
         return strength * 3 + physique * 6 + spirit * 1;

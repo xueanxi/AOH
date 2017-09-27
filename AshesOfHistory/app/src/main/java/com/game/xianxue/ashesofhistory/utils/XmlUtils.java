@@ -202,6 +202,8 @@ public class XmlUtils {
                         buff.setName(pullParser.nextText());
                     } else if (BuffColumn.introduce.equals(tag)) {
                         buff.setIntroduce(pullParser.nextText());
+                    } else if (BuffColumn.buff_effect.equals(tag)) {
+                        buff.setBuff_effect(Integer.valueOf(pullParser.nextText()));
                     } else if (BuffColumn.buff_type.equals(tag)) {
                         buff.setBuff_type(Integer.valueOf(pullParser.nextText()));
                     } else if (BuffColumn.buff_nature.equals(tag)) {
@@ -214,15 +216,19 @@ public class XmlUtils {
                         buff.setTime(Integer.valueOf(pullParser.nextText()));
                     } else if (BuffColumn.range.equals(tag)) {
                         buff.setRange(Integer.valueOf(pullParser.nextText()));
-                    } else if (BuffColumn.constant_up.equals(tag)) {
-                        buff.setEffect_constant_up(Float.valueOf(pullParser.nextText()));
-                    } else if (BuffColumn.fluctuate_up.equals(tag)) {
-                        buff.setEffect_fluctuate_up(Float.valueOf(pullParser.nextText()));
+                    } else if (BuffColumn.level_up_constant.equals(tag)) {
+                        buff.setLevel_up_constant(Float.valueOf(pullParser.nextText()));
+                    } else if (BuffColumn.level_up_fluctuate.equals(tag)) {
+                        buff.setLevel_up_fluctuate(Float.valueOf(pullParser.nextText()));
+                    } else if (BuffColumn.level_up_range.equals(tag)) {
+                        buff.setLevel_up_range(Float.valueOf(pullParser.nextText()));
+                    } else if (BuffColumn.level_up_time.equals(tag)) {
+                        buff.setLevel_up_time(Float.valueOf(pullParser.nextText()));
                     }
                     break;
                 case XmlPullParser.END_TAG:
                     if ("item".equals(pullParser.getName())) {
-                        SimpleLog.logd(TAG,"buff === "+buff);
+                        SimpleLog.logd(TAG, "buff === " + buff);
                         buffLists.add(buff);
                         buff = null;
                     }

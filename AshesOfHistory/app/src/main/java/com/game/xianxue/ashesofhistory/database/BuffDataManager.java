@@ -31,30 +31,36 @@ public class BuffDataManager {
                 + BuffColumn.buff_id + " ,"
                 + BuffColumn.name + " ,"
                 + BuffColumn.introduce + " ,"
+                + BuffColumn.buff_effect + " ,"
                 + BuffColumn.buff_type + " ,"
                 + BuffColumn.buff_nature + " ,"
                 + BuffColumn.buff_constant + " ,"
                 + BuffColumn.buff_fluctuate + " ,"
                 + BuffColumn.time + " ,"
                 + BuffColumn.range + " ,"
-                + BuffColumn.constant_up + " ,"
-                + BuffColumn.fluctuate_up + " )"
+                + BuffColumn.level_up_constant + " ,"
+                + BuffColumn.level_up_fluctuate + " ,"
+                + BuffColumn.level_up_range + " ,"
+                + BuffColumn.level_up_time + " )"
                 + " VALUES ("
-                + " '%d','%s','%s','%d','%d','%d','%f','%d','%d','%f','%f'"
+                + " '%d','%s','%s','%d','%d','%d','%d','%f','%d','%d','%f','%f','%f','%f'"
                 + " )";
 
         return String.format(format,
                 buff.getBuffId(),
                 buff.getName(),
                 buff.getIntroduce(),
+                buff.getBuff_effect(),
                 buff.getBuff_type(),
                 buff.getBuff_nature(),
                 buff.getBuff_constant(),
                 buff.getBuff_fluctuate(),
                 buff.getTime(),
                 buff.getRange(),
-                buff.getEffect_constant_up(),
-                buff.getEffect_fluctuate_up()
+                buff.getLevel_up_constant(),
+                buff.getLevel_up_fluctuate(),
+                buff.getLevel_up_range(),
+                buff.getLevel_up_time()
         );
     }
 
@@ -104,14 +110,17 @@ public class BuffDataManager {
                 buff.setBuffId(c.getInt(c.getColumnIndex(BuffColumn.buff_id)));
                 buff.setName(c.getString(c.getColumnIndex(BuffColumn.name)));
                 buff.setIntroduce(c.getString(c.getColumnIndex(BuffColumn.introduce)));
+                buff.setBuff_effect(c.getInt(c.getColumnIndex(BuffColumn.buff_effect)));
                 buff.setBuff_type(c.getInt(c.getColumnIndex(BuffColumn.buff_type)));
                 buff.setBuff_nature(c.getInt(c.getColumnIndex(BuffColumn.buff_nature)));
                 buff.setBuff_constant(c.getInt(c.getColumnIndex(BuffColumn.buff_constant)));
                 buff.setBuff_fluctuate(c.getFloat(c.getColumnIndex(BuffColumn.buff_fluctuate)));
                 buff.setTime(c.getInt(c.getColumnIndex(BuffColumn.time)));
                 buff.setRange(c.getInt(c.getColumnIndex(BuffColumn.range)));
-                buff.setEffect_constant_up(c.getFloat(c.getColumnIndex(BuffColumn.constant_up)));
-                buff.setEffect_fluctuate_up(c.getFloat(c.getColumnIndex(BuffColumn.fluctuate_up)));
+                buff.setLevel_up_constant(c.getFloat(c.getColumnIndex(BuffColumn.level_up_constant)));
+                buff.setLevel_up_fluctuate(c.getFloat(c.getColumnIndex(BuffColumn.level_up_fluctuate)));
+                buff.setLevel_up_range(c.getFloat(c.getColumnIndex(BuffColumn.level_up_range)));
+                buff.setLevel_up_time(c.getFloat(c.getColumnIndex(BuffColumn.level_up_time)));
                 lists.add(buff);
             }
         }
@@ -135,14 +144,17 @@ public class BuffDataManager {
         buff.setBuffId(c.getInt(c.getColumnIndex(BuffColumn.buff_id)));
         buff.setName(c.getString(c.getColumnIndex(BuffColumn.name)));
         buff.setIntroduce(c.getString(c.getColumnIndex(BuffColumn.introduce)));
+        buff.setBuff_effect(c.getInt(c.getColumnIndex(BuffColumn.buff_effect)));
         buff.setBuff_type(c.getInt(c.getColumnIndex(BuffColumn.buff_type)));
         buff.setBuff_nature(c.getInt(c.getColumnIndex(BuffColumn.buff_nature)));
         buff.setBuff_constant(c.getInt(c.getColumnIndex(BuffColumn.buff_constant)));
         buff.setBuff_fluctuate(c.getFloat(c.getColumnIndex(BuffColumn.buff_fluctuate)));
         buff.setTime(c.getInt(c.getColumnIndex(BuffColumn.time)));
         buff.setRange(c.getInt(c.getColumnIndex(BuffColumn.range)));
-        buff.setEffect_constant_up(c.getInt(c.getColumnIndex(BuffColumn.constant_up)));
-        buff.setEffect_fluctuate_up(c.getFloat(c.getColumnIndex(BuffColumn.fluctuate_up)));
+        buff.setLevel_up_constant(c.getInt(c.getColumnIndex(BuffColumn.level_up_constant)));
+        buff.setLevel_up_fluctuate(c.getFloat(c.getColumnIndex(BuffColumn.level_up_fluctuate)));
+        buff.setLevel_up_range(c.getFloat(c.getColumnIndex(BuffColumn.level_up_range)));
+        buff.setLevel_up_time(c.getFloat(c.getColumnIndex(BuffColumn.level_up_time)));
         return buff;
     }
 }

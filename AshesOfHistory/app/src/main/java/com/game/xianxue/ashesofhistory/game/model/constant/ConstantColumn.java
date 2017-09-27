@@ -35,7 +35,6 @@ public class ConstantColumn {
         //用户已经拥有的武将，对比上面的表格，会额外多一些属性
         public static final String tableName = "ownPerson";
 
-        public static final String personId = "personId";
         public static final String level = "level";
         public static final String weaponId = "weaponId";       // 武器id
         public static final String equipId = "equipId";         // 装备id
@@ -81,14 +80,17 @@ public class ConstantColumn {
         public static final String buff_id = "buff_id";                 // 唯一标识这个技能的id
         public static final String name = "name";                       // 名字
         public static final String introduce = "introduce";             // buff介绍
+        public static final String buff_effect = "buff_effect";         // buff效果，即影响什么属性
         public static final String buff_type = "buff_type";             // buff的类型（攻击，恢复，辅助）
         public static final String buff_nature = "buff_nature";         // buff的性质（主动，被动）
         public static final String buff_constant = "buff_constant";     // buff固定影响
         public static final String buff_fluctuate = "buff_fluctuate";   // buff的浮动影响
         public static final String time = "time";                       // buff的持续时间
         public static final String range = "range";                     // buff的范围
-        public static final String constant_up = "effect_constant_up";             // 每升一级 固定部分 提高的百分比
-        public static final String fluctuate_up = "effect_fluctuate_up";           // 每升一级 浮动部分 提高的百分比
+        public static final String level_up_constant = "level_up_constant";          // 每升一级 固定部分 提高的百分比
+        public static final String level_up_fluctuate = "level_up_fluctuate";        // 每升一级 浮动部分 提高的百分比
+        public static final String level_up_range = "level_up_range";                // 每升一级 作用范围提高
+        public static final String level_up_time = "level_up_time";                  // 每升一级 作用时间提高
     }
 
 

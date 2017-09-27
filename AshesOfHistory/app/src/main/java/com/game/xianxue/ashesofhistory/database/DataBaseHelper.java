@@ -103,14 +103,17 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + BuffColumn.buff_id + " INTEGER,"
                 + BuffColumn.name + " TEXT,"
                 + BuffColumn.introduce + " TEXT,"
+                + BuffColumn.buff_effect + " INTEGER,"
                 + BuffColumn.buff_type + " INTEGER,"
                 + BuffColumn.buff_nature + " INTEGER,"
                 + BuffColumn.buff_constant + " INTEGER,"
                 + BuffColumn.buff_fluctuate + " REAL,"
                 + BuffColumn.time + " INTEGER,"
                 + BuffColumn.range + " INTEGER,"
-                + BuffColumn.constant_up + " REAL,"
-                + BuffColumn.fluctuate_up + " REAL)");
+                + BuffColumn.level_up_constant + " REAL,"
+                + BuffColumn.level_up_fluctuate + " REAL,"
+                + BuffColumn.level_up_range + " REAL,"
+                + BuffColumn.level_up_time + " REAL)");
         insertBuffData(db);
     }
 

@@ -11,16 +11,16 @@ buff有四种：比如 力量契约 力量衰竭 力量祝福 力量诅咒
 此外还有一些更高级的组合buff，以后再完善
 
 ===影响基础属性的buff===
-0  辅助效果：力量
-1  辅助效果：智力
-2  辅助效果：敏捷
-3  辅助效果：体制
-4  辅助效果：精神
-5  辅助效果：魅力
-6  辅助效果：幸运
+1  辅助效果：力量
+2  辅助效果：智力
+3  辅助效果：敏捷
+4  辅助效果：体制
+5  辅助效果：精神
+6  辅助效果：魅力
+7  辅助效果：幸运
 
 ===影响面板属性的buff===
-7  辅助效果：生命值
+
 8  辅助效果：物理伤害
 9  辅助效果：魔法伤害
 10 辅助效果：真实伤害
@@ -36,70 +36,76 @@ buff有四种：比如 力量契约 力量衰竭 力量祝福 力量诅咒
 20 辅助效果：速度
 21 辅助效果：生命恢复。发起进攻时，生命恢复
 22 辅助效果：行动值。执行一次行动，需要的行动值（越少越好）
+23 辅助效果：抗暴击（越少越好）
+24 辅助效果：生命值
 -->
 
 <all_buff>
     <item>
         <buff_id>0</buff_id><!--buff ID,唯一标识这个技能-->
         <name>力量契约</name><!--技能名字-->
-        <introduce>力量提升</introduce><!--技能描述-->
+        <introduce>力量提升:被动</introduce><!--技能描述-->
+        <buff_effect>0</buff_effect><!--buff 效果 0～23 -->
         <buff_type>2</buff_type><!--技能类型：0攻击 1恢复 2辅助-->
         <buff_nature>0</buff_nature><!--buff 性质 0 被动加成的 1 主动释放加持的-->
         <buff_constant>10</buff_constant><!--buff效果固定部分-->
         <buff_fluctuate>0</buff_fluctuate><!--buff效果浮动部分 浮点数-->
         <time>10</time><!--技能持续时间，0一次性的伤害 1～5后续伤害持续回合 10无限时间 -->
         <range>0</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
-        <effect_constant_up>1</effect_constant_up><!--技能升级 固定部分 效果提升 浮点数 0～5.0 -->
-        <effect_fluctuate_up>0</effect_fluctuate_up><!--技能升级 浮动部分 效果提升 浮点数 0～5.0 -->
-        <effect_range_up>0</effect_range_up><!--技能升级 范围提升 浮点数 原来的范围加上effect_range_up然后向下取整就是新的范围 -->
-        <effect_time_up>0</effect_time_up>  <!--技能升级 时间提升 浮点数 time+effect_time_up然后向下取整就是新的持续时间 -->
+        <level_up_constant>1</level_up_constant><!--技能升级 固定部分 效果提升 浮点数 0～5.0 -->
+        <level_up_fluctuate>0</level_up_fluctuate><!--技能升级 浮动部分 效果提升 浮点数 0～5.0 -->
+        <level_up_range>0</level_up_range><!--技能升级 范围提升 浮点数 原来的范围加上effect_range_up然后向下取整就是新的范围 -->
+        <level_up_time>0</level_up_time>  <!--技能升级 时间提升 浮点数 time+effect_time_up然后向下取整就是新的持续时间 -->
     </item>
 
     <item>
         <buff_id>1</buff_id><!--buff ID,唯一标识这个技能-->
         <name>力量衰弱</name><!--技能名字-->
-        <introduce>力量降低</introduce><!--技能描述-->
+        <introduce>力量降低:被动</introduce><!--技能描述-->
+        <buff_effect>0</buff_effect><!--buff 效果 0～23 -->
         <buff_type>2</buff_type><!--技能类型：0攻击 1恢复 2辅助-->
         <buff_nature>0</buff_nature><!--buff 性质 0 被动加成的 1 主动释放加持的-->
         <buff_constant>-10</buff_constant><!--buff效果固定部分-->
         <buff_fluctuate>0</buff_fluctuate><!--buff效果浮动部分 浮点数-->
         <time>10</time><!--技能持续时间，0一次性的伤害 1～5后续伤害持续回合 10无限时间 -->
         <range>0</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
-        <effect_constant_up>1</effect_constant_up><!--技能升级 固定部分 效果提升 浮点数 0～5.0 -->
-        <effect_fluctuate_up>0</effect_fluctuate_up><!--技能升级 浮动部分 效果提升 浮点数 0～5.0 -->
-        <effect_range_up>0</effect_range_up><!--技能升级 范围提升 浮点数 原来的范围加上effect_range_up然后向下取整就是新的范围 -->
-        <effect_time_up>0</effect_time_up>  <!--技能升级 时间提升 浮点数 time+effect_time_up然后向下取整就是新的持续时间 -->
+        <level_up_constant>1</level_up_constant><!--技能升级 固定部分 效果提升 浮点数 0～5.0 -->
+        <level_up_fluctuate>0</level_up_fluctuate><!--技能升级 浮动部分 效果提升 浮点数 0～5.0 -->
+        <level_up_range>0</level_up_range><!--技能升级 范围提升 浮点数 原来的范围加上effect_range_up然后向下取整就是新的范围 -->
+        <level_up_time>0</level_up_time>  <!--技能升级 时间提升 浮点数 time+effect_time_up然后向下取整就是新的持续时间 -->
     </item>
 
     <item>
         <buff_id>2</buff_id><!--buff ID,唯一标识这个技能-->
         <name>力量祝福</name><!--技能名字-->
-        <introduce>力量提升</introduce><!--技能描述-->
+        <introduce>力量提升：主动</introduce><!--技能描述-->
+        <buff_effect>0</buff_effect><!--buff 效果 0～23 -->
         <buff_type>2</buff_type><!--技能类型：0攻击 1恢复 2辅助-->
         <buff_nature>1</buff_nature><!--buff 性质 0 被动加成的 1 主动释放加持的-->
         <buff_constant>10</buff_constant><!--buff效果固定部分-->
         <buff_fluctuate>2</buff_fluctuate><!--buff效果浮动部分 浮点数-->
         <time>3</time><!--技能持续时间，0一次性的伤害 1～5后续伤害持续回合 10无限时间 -->
         <range>1</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
-        <effect_constant_up>1</effect_constant_up><!--技能升级 固定部分 效果提升 浮点数 0～5.0 -->
-        <effect_fluctuate_up>2</effect_fluctuate_up><!--技能升级 浮动部分 效果提升 浮点数 0～5.0 -->
-        <effect_range_up>0</effect_range_up><!--技能升级 范围提升 浮点数 原来的范围加上effect_range_up就是新的范围 -->
-        <effect_time_up>0</effect_time_up>  <!--技能升级 时间提升 浮点数 time + effect_time_up然后向下取整就是新的持续时间 -->
+        <level_up_constant>1</level_up_constant><!--技能升级 固定部分 效果提升 浮点数 0～5.0 -->
+        <level_up_fluctuate>2</level_up_fluctuate><!--技能升级 浮动部分 效果提升 浮点数 0～5.0 -->
+        <level_up_range>0</level_up_range><!--技能升级 范围提升 浮点数 原来的范围加上effect_range_up然后向下取整就是新的范围 -->
+        <level_up_time>0.3</level_up_time>  <!--技能升级 时间提升 浮点数 time+effect_time_up然后向下取整就是新的持续时间 -->
     </item>
 
     <item>
         <buff_id>3</buff_id><!--buff ID,唯一标识这个技能-->
         <name>力量诅咒</name><!--技能名字-->
-        <introduce>力量下降</introduce><!--技能描述-->
+        <introduce>力量下降：主动</introduce><!--技能描述-->
+        <buff_effect>0</buff_effect><!--buff 效果 0～23 -->
         <buff_type>2</buff_type><!--技能类型：0攻击 1恢复 2辅助-->
         <buff_nature>1</buff_nature><!--buff 性质 0 被动加成的 1 主动释放加持的-->
         <buff_constant>-10</buff_constant><!--buff效果固定部分-->
         <buff_fluctuate>-1</buff_fluctuate><!--buff效果浮动部分 浮点数-->
         <time>3</time><!--技能持续时间，0一次性的伤害 1～5后续伤害持续回合 10无限时间 -->
         <range>2</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
-        <effect_constant_up>2.2</effect_constant_up><!--技能升级 固定部分 效果提升 浮点数 0～5.0 -->
-        <effect_fluctuate_up>1</effect_fluctuate_up><!--技能升级 浮动部分 效果提升 浮点数 0～5.0 -->
-        <effect_range_up>0</effect_range_up><!--技能升级 范围提升 浮点数 原来的范围加上effect_range_up就是新的范围 -->
-        <effect_time_up>1</effect_time_up>  <!--技能升级 时间提升 浮点数 time+effect_time_up就是新的持续时间 -->
+        <level_up_constant>2.2</level_up_constant><!--技能升级 固定部分 效果提升 浮点数 0～5.0 -->
+        <level_up_fluctuate>1</level_up_fluctuate><!--技能升级 浮动部分 效果提升 浮点数 0～5.0 -->
+        <level_up_range>0</level_up_range><!--技能升级 范围提升 浮点数 原来的范围加上effect_range_up就是新的范围 -->
+        <level_up_time>0.5</level_up_time>  <!--技能升级 时间提升 浮点数 time+effect_time_up就是新的持续时间 -->
     </item>
 </all_buff>
