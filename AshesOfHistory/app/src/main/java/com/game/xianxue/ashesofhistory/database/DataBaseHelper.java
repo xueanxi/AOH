@@ -12,6 +12,7 @@ import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpBase;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.*;
 import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
+import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 import com.game.xianxue.ashesofhistory.utils.XmlUtils;
 
 import java.util.ArrayList;
@@ -103,15 +104,15 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + BuffColumn.buff_id + " INTEGER,"
                 + BuffColumn.name + " TEXT,"
                 + BuffColumn.introduce + " TEXT,"
-                + BuffColumn.buff_effect + " INTEGER,"
+                + BuffColumn.buff_effect + " TEXT,"
                 + BuffColumn.buff_type + " INTEGER,"
                 + BuffColumn.buff_nature + " INTEGER,"
-                + BuffColumn.buff_constant + " INTEGER,"
-                + BuffColumn.buff_fluctuate + " REAL,"
+                + BuffColumn.buff_constant + " TEXT,"
+                + BuffColumn.buff_fluctuate + " TEXT,"
                 + BuffColumn.time + " INTEGER,"
                 + BuffColumn.range + " INTEGER,"
-                + BuffColumn.level_up_constant + " REAL,"
-                + BuffColumn.level_up_fluctuate + " REAL,"
+                + BuffColumn.level_up_constant + " TEXT,"
+                + BuffColumn.level_up_fluctuate + " TEXT,"
                 + BuffColumn.level_up_range + " REAL,"
                 + BuffColumn.level_up_time + " REAL)");
         insertBuffData(db);

@@ -3,6 +3,7 @@ package com.game.xianxue.ashesofhistory.database;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.BasePersonColumn;
 import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
@@ -75,7 +76,7 @@ public class BasePersonManager {
         Cursor cursor = db.rawQuery(sql, null);
         if (cursor == null) return;
         ArrayList<BasePerson> arrays = cursorToPersons(cursor);
-        ShowUtils.showArrays(arrays);
+        ShowUtils.showArrayLists(arrays);
     }
 
     /**

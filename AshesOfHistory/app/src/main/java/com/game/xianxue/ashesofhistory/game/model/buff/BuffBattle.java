@@ -1,8 +1,9 @@
 package com.game.xianxue.ashesofhistory.game.model.buff;
 
-import com.game.xianxue.ashesofhistory.Log.SimpleLog;
-import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
 import com.game.xianxue.ashesofhistory.interfaces.Interface_Buff;
+import com.game.xianxue.ashesofhistory.utils.TextUtils;
+
+import org.w3c.dom.Text;
 
 /**
  * Buff 在战斗时的实体类
@@ -19,14 +20,23 @@ public class BuffBattle extends BuffBase implements Interface_Buff {
         this.introduce = base.introduce;            // buff说明
         this.buff_nature = base.buff_nature;        // buff的性质   (0:被动buff 1:主动buff)
         this.buff_type = base.buff_type;            // buff类型    （分为攻击buff，辅助buff，恢复buff）
-        this.buff_constant = base.buff_constant;    // buff的固定部分
-        this.buff_fluctuate = base.buff_fluctuate;  // buff的浮动部分
         this.time = base.time;                      // buff持续时间
         this.range = base.range;                    // buff的影响范围
-        this.level_up_constant = base.level_up_constant;        // 每升一级固定部分的提升
-        this.level_up_fluctuate = base.level_up_fluctuate;      // 每升一级浮动部分的提升
         this.level_up_range = base.level_up_range;              // 每升一级浮动部分的提升
         this.level_up_time = base.level_up_time;                // 每升一级浮动部分的提升
+
+        this.sbuff_effect = base.sbuff_effect;        // buff的效果
+        this.sbuff_constant = base.sbuff_constant;    // buff的固定部分
+        this.sbuff_fluctuate = base.sbuff_fluctuate;  // buff的浮动部分
+        this.slevel_up_constant = base.slevel_up_constant;        // 每升一级固定部分的提升
+        this.slevel_up_fluctuate = base.slevel_up_fluctuate;      // 每升一级浮动部分的提升
+
+        // 把 String 转化为 int[] / float[]
+        this.buff_effect = TextUtils.getIntArrayFromString(sbuff_effect);
+        this.buff_constant = TextUtils.getFloatArrayFromString(sbuff_constant);
+        this.buff_fluctuate = TextUtils.getFloatArrayFromString(sbuff_fluctuate);
+        this.level_up_constant = TextUtils.getFloatArrayFromString(slevel_up_constant);
+        this.level_up_fluctuate = TextUtils.getFloatArrayFromString(slevel_up_fluctuate);
     }
 
     public int getLevel() {
@@ -39,29 +49,36 @@ public class BuffBattle extends BuffBase implements Interface_Buff {
      * @param level
      */
     public void setLevel(int level) {
-        this.level = level;
-        buff_constant = (int) (buff_constant + (level - 1) * level_up_constant);
-        buff_fluctuate = (float) (buff_fluctuate + (float) (level - 1) * level_up_fluctuate);
-        time = (int) (time + time * (level - 1) * level_up_time);
-        range = (int) (range + range * (level - 1) * level_up_range);
-    }
-
-    @Override
-    public void start(BasePerson person) {
-        /*if(this.buff_effect == 0) {
-            SimpleLog.loge(TAG,"Error!!! start() : buff_effect == 0");
-            return;
+        if (level < BUFF_LEVEL_LIMIT_MINI) {
+            level = BUFF_LEVEL_LIMIT_MINI;
+        } else if (level > BUFF_LEVEL_LIMIT_MAX) {
+            level = BUFF_LEVEL_LIMIT_MAX;
         }
-        // 小于等于 BUFF_LUCK 表示 为基础buff
-        if (this.buff_effect <= BUFF_LUCK) {
 
-        } else {
-
-        }*/
+        if(buff_effect.length == buff_constant.length
+                && buff_effect.length == buff_fluctuate.length
+                && buff_effect.length == level_up_constant.length
+                && buff_effect.length == level_up_fluctuate.length){
+            this.level = level;
+            for(int i = 0;i<buff_effect.length;i++){
+                buff_constant[i] = (float) (buff_constant[i] + (float)(level - 1) * level_up_constant[i]);
+                buff_fluctuate[i] = (float) (buff_fluctuate[i] + (float) (level - 1) * level_up_fluctuate[i]);
+            }
+            time = (int) (time + time * (level - 1) * level_up_time);
+            range = (int) (range + range * (level - 1) * level_up_range);
+        }
     }
 
-    @Override
-    public void stop(BasePerson person) {
-
+    /**
+     * 这个buff的效果是否是影响基础属性的
+     *
+     * @return
+     */
+    public static boolean isBisisBuff(int effect) {
+        if (effect >= BUFF_STRENGTH && effect <= BUFF_LUCK) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

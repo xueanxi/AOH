@@ -203,23 +203,23 @@ public class XmlUtils {
                     } else if (BuffColumn.introduce.equals(tag)) {
                         buff.setIntroduce(pullParser.nextText());
                     } else if (BuffColumn.buff_effect.equals(tag)) {
-                        buff.setBuff_effect(Integer.valueOf(pullParser.nextText()));
+                        buff.setSbuff_effect(pullParser.nextText());
                     } else if (BuffColumn.buff_type.equals(tag)) {
                         buff.setBuff_type(Integer.valueOf(pullParser.nextText()));
                     } else if (BuffColumn.buff_nature.equals(tag)) {
                         buff.setBuff_nature(Integer.valueOf(pullParser.nextText()));
                     } else if (BuffColumn.buff_constant.equals(tag)) {
-                        buff.setBuff_constant(Integer.valueOf(pullParser.nextText()));
+                        buff.setSbuff_constant(pullParser.nextText());
                     } else if (BuffColumn.buff_fluctuate.equals(tag)) {
-                        buff.setBuff_fluctuate(Float.valueOf(pullParser.nextText()));
+                        buff.setSbuff_fluctuate(pullParser.nextText());
                     } else if (BuffColumn.time.equals(tag)) {
                         buff.setTime(Integer.valueOf(pullParser.nextText()));
                     } else if (BuffColumn.range.equals(tag)) {
                         buff.setRange(Integer.valueOf(pullParser.nextText()));
                     } else if (BuffColumn.level_up_constant.equals(tag)) {
-                        buff.setLevel_up_constant(Float.valueOf(pullParser.nextText()));
+                        buff.setSlevel_up_constant(pullParser.nextText());
                     } else if (BuffColumn.level_up_fluctuate.equals(tag)) {
-                        buff.setLevel_up_fluctuate(Float.valueOf(pullParser.nextText()));
+                        buff.setSlevel_up_fluctuate(pullParser.nextText());
                     } else if (BuffColumn.level_up_range.equals(tag)) {
                         buff.setLevel_up_range(Float.valueOf(pullParser.nextText()));
                     } else if (BuffColumn.level_up_time.equals(tag)) {
@@ -294,7 +294,7 @@ public class XmlUtils {
             }
             event = pullParser.next();
         }
-        ShowUtils.showArrays("anxii", dataLists);
+        ShowUtils.showArrayLists("anxii", dataLists);
         SimpleLog.logd(TAG, "解析所有阵型使用的时间:" + (System.currentTimeMillis() - startTime));
         return dataLists;
     }

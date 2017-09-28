@@ -3,6 +3,7 @@ package com.game.xianxue.ashesofhistory.DatabaseTest;
 import com.game.xianxue.ashesofhistory.game.model.lineup.UnitBase;
 import com.game.xianxue.ashesofhistory.utils.SerializableUtils;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
+import com.game.xianxue.ashesofhistory.utils.TextUtils;
 
 import org.junit.Test;
 
@@ -28,8 +29,5 @@ public class DatabaseTest {
         int a = 10;
         System.out.println("a = "+a);
     }
-    @Test
-    public void test02(){
 
-    }
 }

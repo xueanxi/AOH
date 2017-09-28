@@ -60,7 +60,7 @@ public class LineUpDataManager {
         ArrayList<LineUpBase> arrays = cursorToBuffs(cursor);
         cursor.close();
         db.close();
-        ShowUtils.showArrays(TAG, arrays);
+        ShowUtils.showArrayLists(TAG, arrays);
         return arrays;
     }
 

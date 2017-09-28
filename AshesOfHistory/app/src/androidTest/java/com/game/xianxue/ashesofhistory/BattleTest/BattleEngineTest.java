@@ -1,7 +1,6 @@
 package com.game.xianxue.ashesofhistory.BattleTest;
 
 import android.content.Context;
-import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -135,8 +134,8 @@ public class BattleEngineTest {
         playerList2.add(b11);
         playerList2.add(b12);
 
-        ShowUtils.showArrays(TAG,playerList1);
-        ShowUtils.showArrays(TAG,playerList2);
+        ShowUtils.showArrayLists(TAG,playerList1);
+        ShowUtils.showArrayLists(TAG,playerList2);
 
         // 初始化阵型1
         LineUpBase lineUp1 = LineUpDataManager.getDataFromDataBaseById(0);//普通阵容
@@ -176,13 +175,13 @@ public class BattleEngineTest {
         list.add(play2);
         list.add(play3);
         list.add(play4);
-        ShowUtils.showArrays(TAG, list);
+        ShowUtils.showArrayLists(TAG, list);
         SerializableUtils.writeObjectToFile(list, "baseperson");
         SimpleLog.logd(TAG, "=======");
 
         list = null;
         list = SerializableUtils.readObjectFromFile("baseperson");
-        ShowUtils.showArrays(TAG, list);
+        ShowUtils.showArrayLists(TAG, list);
     }
 
     @Test
@@ -193,7 +192,7 @@ public class BattleEngineTest {
         SimpleLog.logd(TAG, "=======");
         list = null;
         list = SerializableUtils.readObjectFromFile("baseperson");
-        ShowUtils.showArrays(TAG, list);
+        ShowUtils.showArrayLists(TAG, list);
     }
 
 

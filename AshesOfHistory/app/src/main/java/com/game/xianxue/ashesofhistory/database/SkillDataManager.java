@@ -83,7 +83,7 @@ public class SkillDataManager {
         ArrayList<SkillBase> arrays = cursorToSkills(cursor);
         cursor.close();
         db.close();
-        ShowUtils.showArrays(TAG, arrays);
+        ShowUtils.showArrayLists(TAG, arrays);
         SimpleLog.logd(TAG, "加载技能完毕！！！");
         return arrays;
     }

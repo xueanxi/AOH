@@ -8,17 +8,25 @@ public class BuffBase {
     protected int buffId;                       // buffid
     protected String name;                      // buff名字
     protected String introduce;                 // buff说明
-    protected int buff_effect;                  // buff效果，即影响什么属性
     protected int buff_nature;                  // buff的性质   (分为主动buff和被动buff)
     protected int buff_type;                    // buff类型    （分为攻击buff，辅助buff，恢复buff）
-    protected int buff_constant;                // buff的固定部分
-    protected float buff_fluctuate;             // buff的浮动部分
     protected int time;                         // buff持续时间
     protected int range;                        // buff的影响范围
-    protected float level_up_constant;          // 每升一级 固定部分 的提升
-    protected float level_up_fluctuate;         // 每升一级 浮动部分 的提升
     protected float level_up_range;             // 每升一级 作用范围 的提升
     protected float level_up_time;              // 每升一级 持续时间 的提升
+
+    protected int[] buff_effect;                // buff效果，即影响什么属性
+    protected float[] level_up_constant;        // 每升一级 固定部分 的提升
+    protected float[] level_up_fluctuate;       // 每升一级 浮动部分 的提升
+    protected float[] buff_constant;              // buff的固定部分
+    protected float[] buff_fluctuate;           // buff的浮动部分
+
+    // 以上5个数组的字符串，便于存储
+    protected String sbuff_effect;              // buff效果，即影响什么属性
+    protected String slevel_up_constant;        // 每升一级 固定部分 的提升
+    protected String slevel_up_fluctuate;       // 每升一级 浮动部分 的提升
+    protected String sbuff_constant;            // buff的固定部分
+    protected String sbuff_fluctuate;           // buff的浮动部分
 
     public BuffBase() {
     }
@@ -63,22 +71,6 @@ public class BuffBase {
         this.buff_type = buff_type;
     }
 
-    public int getBuff_constant() {
-        return buff_constant;
-    }
-
-    public void setBuff_constant(int buff_constant) {
-        this.buff_constant = buff_constant;
-    }
-
-    public float getBuff_fluctuate() {
-        return buff_fluctuate;
-    }
-
-    public void setBuff_fluctuate(float buff_fluctuate) {
-        this.buff_fluctuate = buff_fluctuate;
-    }
-
     public int getTime() {
         return time;
     }
@@ -93,22 +85,6 @@ public class BuffBase {
 
     public void setRange(int range) {
         this.range = range;
-    }
-
-    public float getLevel_up_constant() {
-        return level_up_constant;
-    }
-
-    public void setLevel_up_constant(float level_up_constant) {
-        this.level_up_constant = level_up_constant;
-    }
-
-    public float getLevel_up_fluctuate() {
-        return level_up_fluctuate;
-    }
-
-    public void setLevel_up_fluctuate(float level_up_fluctuate) {
-        this.level_up_fluctuate = level_up_fluctuate;
     }
 
     public float getLevel_up_range() {
@@ -127,12 +103,84 @@ public class BuffBase {
         this.level_up_time = level_up_time;
     }
 
-    public int getBuff_effect() {
+    public int[] getBuff_effect() {
         return buff_effect;
     }
 
-    public void setBuff_effect(int buff_effect) {
+    public void setBuff_effect(int[] buff_effect) {
         this.buff_effect = buff_effect;
+    }
+
+    public float[] getBuff_constant() {
+        return buff_constant;
+    }
+
+    public void setBuff_constant(float[] buff_constant) {
+        this.buff_constant = buff_constant;
+    }
+
+    public float[] getBuff_fluctuate() {
+        return buff_fluctuate;
+    }
+
+    public void setBuff_fluctuate(float[] buff_fluctuate) {
+        this.buff_fluctuate = buff_fluctuate;
+    }
+
+    public float[] getLevel_up_constant() {
+        return level_up_constant;
+    }
+
+    public void setLevel_up_constant(float[] level_up_constant) {
+        this.level_up_constant = level_up_constant;
+    }
+
+    public float[] getLevel_up_fluctuate() {
+        return level_up_fluctuate;
+    }
+
+    public void setLevel_up_fluctuate(float[] level_up_fluctuate) {
+        this.level_up_fluctuate = level_up_fluctuate;
+    }
+
+    public String getSbuff_effect() {
+        return sbuff_effect;
+    }
+
+    public void setSbuff_effect(String sbuff_effect) {
+        this.sbuff_effect = sbuff_effect;
+    }
+
+    public String getSlevel_up_constant() {
+        return slevel_up_constant;
+    }
+
+    public void setSlevel_up_constant(String slevel_up_constant) {
+        this.slevel_up_constant = slevel_up_constant;
+    }
+
+    public String getSlevel_up_fluctuate() {
+        return slevel_up_fluctuate;
+    }
+
+    public void setSlevel_up_fluctuate(String slevel_up_fluctuate) {
+        this.slevel_up_fluctuate = slevel_up_fluctuate;
+    }
+
+    public String getSbuff_constant() {
+        return sbuff_constant;
+    }
+
+    public void setSbuff_constant(String sbuff_constant) {
+        this.sbuff_constant = sbuff_constant;
+    }
+
+    public String getSbuff_fluctuate() {
+        return sbuff_fluctuate;
+    }
+
+    public void setSbuff_fluctuate(String sbuff_fluctuate) {
+        this.sbuff_fluctuate = sbuff_fluctuate;
     }
 
     @Override

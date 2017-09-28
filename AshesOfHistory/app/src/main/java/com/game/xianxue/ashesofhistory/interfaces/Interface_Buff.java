@@ -10,7 +10,7 @@ import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 
 public interface Interface_Buff {
 
-    // Buff 的效果
+    // ==================== Buff 的效果 start=======================
     public final int BUFF_STRENGTH = 1;         // 辅助效果：力量
     public final int BUFF_INTELLECT = 2;        // 辅助效果：智力
     public final int BUFF_DEXTERITY = 3;        // 辅助效果：敏捷
@@ -36,6 +36,9 @@ public interface Interface_Buff {
     public final int BUFF_ACTIVEVALUE = 22;     // 辅助效果：行动值。执行一次行动，需要的行动值（越少越好）
     public final int BUFF_REDUCEBECRITERATE = 23;// 辅助效果：抗暴击
     public final int BUFF_HP = 24;              // 辅助效果：生命值
+    // ==================== Buff 的效果 end=======================
+
+
 
     // Buff的类型
     public int BUFF_TYPE_NONE = 0;              // 无BUFF
@@ -47,8 +50,4 @@ public interface Interface_Buff {
 
     public int BUFF_LEVEL_LIMIT_MAX = 5;       // buff最高等级限制
     public int BUFF_LEVEL_LIMIT_MINI = 1;       // buff最低等级限制
-
-    void start(BasePerson person);
-
-    void stop(BasePerson person);
 }

@@ -7,7 +7,6 @@ import android.support.test.runner.AndroidJUnit4;
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.database.BasePersonManager;
 import com.game.xianxue.ashesofhistory.database.BuffDataManager;
-import com.game.xianxue.ashesofhistory.database.LineUpDataManager;
 import com.game.xianxue.ashesofhistory.database.SkillDataManager;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBase;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
@@ -105,7 +104,7 @@ public class DataBaseTest {
             ArrayList<SkillBase> skillList = null;
             try {
                 skillList = XmlUtils.getAllSkill(mContext);
-                ShowUtils.showArrays(TAG,skillList);
+                ShowUtils.showArrayLists(TAG,skillList);
             } catch (Exception e) {
                 e.printStackTrace();
             }

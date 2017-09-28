@@ -1,6 +1,10 @@
 package com.game.xianxue.ashesofhistory.game.model.person;
 
+import com.game.xianxue.ashesofhistory.Log.SimpleLog;
+import com.game.xianxue.ashesofhistory.game.model.buff.BuffBattle;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
+import com.game.xianxue.ashesofhistory.interfaces.Interface_Buff;
+import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 
 import java.util.ArrayList;
 
@@ -8,7 +12,7 @@ import java.util.ArrayList;
  * 人物普通情况下的模型
  * 包含等级 经验 技能 属性 装备等
  */
-public class NormalPerson extends BasePerson {
+public class NormalPerson extends BasePerson implements Interface_Buff {
     private static final String TAG = "NormalPerson";
 
     public static final int LEVEL_MAX = 25;        // 最高等级
@@ -16,8 +20,8 @@ public class NormalPerson extends BasePerson {
     public static final int DEFAULT_ACTIVE_VALUES_MAX = 100;   //最大行动值，当行动值到达最大，就可以发动进攻
 
     /**
-     * 基础属性
-     * 每升一级会获得五项基础属性的提升（基础属性由 1级时的基础属性值 等级 天赋 决定）
+     * 7个基础属性
+     * 每升一级会获得五项基础属性的提升(魅力和运气不会随着升级增加),基础属性由 1级时的基础属性值 等级 天赋 决定
      * 提升的公式为：
      * newValues = oldVaules + ( Values_Raw * 0.5 + aptitude*1 )
      * 文字描述： 新属性 = 旧属性 + （ 0.5乘以 该属性的初始属性 + 资质 乘以 1）
@@ -42,10 +46,12 @@ public class NormalPerson extends BasePerson {
     public int riderId = -1;        // 坐骑id
 
     // 经验
-    public int experience ;         // 拥有经验
-    public int experience_max ;     // 升级总经验
+    public int experience;         // 拥有经验
+    public int experience_max;     // 升级总经验
 
     ArrayList<SkillBase> skillArrays = null;       // 当前拥有的技能，包括天赋技能 和 其他途径获得的技能
+    ArrayList<BuffBattle> buffActive = null;       // 主动加持的buff
+    ArrayList<BuffBattle> buffPassive = null;      // 被动加持的buff
 
     /**
      * 面板属性
@@ -118,7 +124,6 @@ public class NormalPerson extends BasePerson {
         this.spirit_Raw = basePerson.getSpirit_Raw();               // 原始精神
         this.fascination_Raw = basePerson.getFascination_Raw();     // 原始魅力
         this.luck_Raw = basePerson.getLuck_Raw();                   // 原始运气
-
         // 设置等级，同时刷新属性
         setLevel(level);
     }
@@ -133,10 +138,12 @@ public class NormalPerson extends BasePerson {
         dexterity = getNewAttribute(dexterity_Raw, level);
         physique = getNewAttribute(physique_Raw, level);
         spirit = getNewAttribute(spirit_Raw, level);
+        luck = luck_Raw;
+        fascination = fascination_Raw;
 
         // TODO: 8/29/17 处理影响 基础属性 的效果比如增加力量的装备等等
         // TODO： 处理基础属性 包括 被动技能中涉及基础属性的部分、武器装备中涉及基础属性的部分、阵型中涉及基础属性的部分
-
+        AddBasisBuff();
 
         HP = calculateHp();                                     // 生命值
         experiencePoint = 0;                                    // 经验值
@@ -158,9 +165,206 @@ public class NormalPerson extends BasePerson {
 
 
         // TODO: 8/29/17 处理 面板属性 的效果
+        AddPanelBuff();
 
     }
 
+    /**
+     * 加持 面板 被动 buff效果
+     * 处理方式：
+     * 通过循环遍历所有被动buff
+     * 1.buff固定部分直接加到属性里面就好
+     * 2.buff的浮动部分是百分比，需要把所有加起来，再计算到属性里面
+     */
+    private void AddPanelBuff() {
+        if (buffPassive != null && buffPassive.size() > 0) {
+
+            // 面板屬性提高的比例
+            float physicDamageRate = 0;
+            float magicDamageRate = 0;
+            float realDamageRate = 0;
+            float physicsPenetrateRate = 0;
+            float magicPenetrateRate = 0;
+            float accuracyRate = 0;
+            float criteRateRate = 0;
+            float criteDamageRate = 0;
+            float armorRate = 0;
+            float magicResistRate = 0;
+            float dodgeRate = 0;
+            float blockRate = 0;
+            float actionSpeedRate = 0;
+            float hpRestoreRate = 0;
+            float actionValuesMaxRate = 0;
+            float reduceBeCriteRateRate = 0;
+            float HPRate = 0;
+
+            // 遍历buff数组，把buff的加成加到属性里面
+            for (BuffBattle buff : buffPassive) {
+                int buffNumber = buff.getBuff_effect().length;
+                for (int i = 0; i < buffNumber; i++) {
+                    int buffEffect = buff.getBuff_effect()[i];
+                    if (!BuffBattle.isBisisBuff(buffEffect)) {
+                        switch (buffEffect) {
+                            case BUFF_PHYSICDAMAGE:
+                                // buff 中的固定部分直接加到 physicDamage 中就可以
+                                // buff 中的浮动部分先加到 physicDamageRate ，在最后再统一计算
+                                physicDamage += buff.getBuff_constant()[i];
+                                physicDamageRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_MAGICDAMAGE:
+                                magicDamage += buff.getBuff_constant()[i];
+                                magicDamageRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_REALDAMAGE:
+                                realDamage += buff.getBuff_constant()[i];
+                                realDamageRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_PHYSICSPENETRATE:
+                                physicsPenetrate += buff.getBuff_constant()[i];
+                                physicsPenetrateRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_MAGICPENETRATE:
+                                magicPenetrate += buff.getBuff_constant()[i];
+                                magicPenetrateRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_ACCURACY:
+                                accuracy += buff.getBuff_constant()[i];
+                                accuracyRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_CRITERATE:
+                                criteRate += buff.getBuff_constant()[i];
+                                criteRateRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_CRITEDAMAGE:
+                                criteDamage += buff.getBuff_constant()[i];
+                                criteDamageRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_ARMOR:
+                                armor += buff.getBuff_constant()[i];
+                                armorRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_MAGICRESIST:
+                                magicResist += buff.getBuff_constant()[i];
+                                magicResistRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_DODGE:
+                                dodge += buff.getBuff_constant()[i];
+                                dodgeRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_BLOCK:
+                                block += buff.getBuff_constant()[i];
+                                blockRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_ACTIONSPEED:
+                                actionSpeed += buff.getBuff_constant()[i];
+                                actionSpeedRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_HPRESTORE:
+                                hpRestore += buff.getBuff_constant()[i];
+                                hpRestoreRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_ACTIVEVALUE:
+                                actionValuesMax += buff.getBuff_constant()[i];
+                                actionValuesMaxRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_REDUCEBECRITERATE:
+                                reduceBeCriteRate += buff.getBuff_constant()[i];
+                                reduceBeCriteRateRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_HP:
+                                HP += buff.getBuff_constant()[i];
+                                HPRate += buff.getBuff_fluctuate()[i];
+                                break;
+                        }
+                    }
+                }
+
+                // buff 中浮动的属性，在最后一起计算
+                strength = (int) (strength * (1f + physicDamageRate));
+                magicDamage = (int) (magicDamage * (1f + magicDamageRate));
+                realDamage = (int) (realDamage * (1f + realDamageRate));
+                physicsPenetrate = (int) (physicsPenetrate * (1f + physicsPenetrateRate));
+                magicPenetrate = (int) (magicPenetrate * (1f + magicPenetrateRate));
+                accuracy = (int) (accuracyRate * (1f + accuracyRate));
+                criteRate = (int) (criteRate * (1f + criteRateRate));
+                criteDamage = (int) (criteDamage * (1f + criteDamageRate));
+                armor = (int) (armor * (1f + armorRate));
+                magicResist = (int) (magicResist * (1f + magicResistRate));
+                dodge = (int) (dodge * (1f + dodgeRate));
+                block = (int) (block * (1f + blockRate));
+                actionSpeed = (int) (actionSpeed * (1f + actionSpeedRate));
+                hpRestore = (int) (hpRestore * (1f + hpRestoreRate));
+                actionValuesMax = (int) (actionValuesMax * (1f + actionValuesMaxRate));
+                reduceBeCriteRate = (int) (reduceBeCriteRate * (1f + reduceBeCriteRateRate));
+                HP = (int) (HP * (1f + HPRate));
+            }
+        }
+    }
+
+    /**
+     * 加持 基础 被动 buff效果
+     */
+    private void AddBasisBuff() {
+        if (buffPassive != null && buffPassive.size() > 0) {
+
+            // 处理被动技能的浮动部分加成
+            float strengthRate = 0;
+            float intellectRate = 0;
+            float dexterityRate = 0;
+            float physiqueRate = 0;
+            float spiritRate = 0;
+            float fascinationRate = 0;
+            float luckRate = 0;
+
+            // 先处理被动技能的固定加成部分
+            for (BuffBattle buff : buffPassive) {
+                for (int i = 0; i < buff.getBuff_effect().length; i++) {
+                    int buffEffect = buff.getBuff_effect()[i];
+                    if (BuffBattle.isBisisBuff(buffEffect)) {
+                        switch (buffEffect) {
+                            case BUFF_STRENGTH:
+                                strength += buff.getBuff_constant()[i];
+                                strengthRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_INTELLECT:
+                                intellect += buff.getBuff_constant()[i];
+                                intellectRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_DEXTERITY:
+                                dexterity += buff.getBuff_constant()[i];
+                                dexterityRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_PHYSIQUE:
+                                physique += buff.getBuff_constant()[i];
+                                physiqueRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_SPIRIT:
+                                spirit += buff.getBuff_constant()[i];
+                                spiritRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_FASCINATION:
+                                fascination += buff.getBuff_constant()[i];
+                                fascinationRate += buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_LUCK:
+                                luck += buff.getBuff_constant()[i];
+                                luckRate += buff.getBuff_fluctuate()[i];
+                                break;
+                        }
+                    }
+                }
+            }
+
+            // 最后再把百分比的计算到属性中
+            strength = (int) (strength * (1f + strengthRate));
+            intellect = (int) (intellect * (1f + intellectRate));
+            dexterity = (int) (dexterity * (1f + dexterityRate));
+            physique = (int) (physique * (1f + physiqueRate));
+            spirit = (int) (spirit * (1f + spiritRate));
+            fascination = (int) (fascination * (1f + fascinationRate));
+            luck = (int) (luck * (1f + luckRate));
+        }
+    }
 
 
     protected int calculateHp() {
@@ -233,7 +437,7 @@ public class NormalPerson extends BasePerson {
      *
      * @param level
      */
-    protected void setLevel(int level) {
+    public void setLevel(int level) {
         if (level <= LEVEL_MINI) {
             this.level = LEVEL_MINI;
         } else if (level <= LEVEL_MAX) {
@@ -514,6 +718,22 @@ public class NormalPerson extends BasePerson {
         this.actionValuesMax = actionValuesMax;
     }
 
+    public ArrayList<BuffBattle> getBuffActive() {
+        return buffActive;
+    }
+
+    public void setBuffActive(ArrayList<BuffBattle> buffActive) {
+        this.buffActive = buffActive;
+    }
+
+    public ArrayList<BuffBattle> getBuffPassive() {
+        return buffPassive;
+    }
+
+    public void setBuffPassive(ArrayList<BuffBattle> buffPassive) {
+        this.buffPassive = buffPassive;
+    }
+
     @Override
     public String toString() {
         return "PlayerModel{" +
@@ -528,6 +748,39 @@ public class NormalPerson extends BasePerson {
                 ", spirit_Raw=" + spirit_Raw +
                 ", luck_Raw=" + luck_Raw +
                 ", fascination_Raw=" + fascination_Raw +
+                ", strength=" + strength +
+                ", intellect=" + intellect +
+                ", dexterity=" + dexterity +
+                ", physique=" + physique +
+                ", spirit=" + spirit +
+                ", luck=" + luck +
+                ", skillLists='" + skillLists + '\'' +
+                ", skillArrays=" + skillArrays +
+                ", level=" + level +
+                ", HP=" + HP +
+                ", experiencePoint=" + experiencePoint +
+                ", physicDamage=" + physicDamage +
+                ", magicDamage=" + magicDamage +
+                ", realDamage=" + realDamage +
+                ", physicsPenetrate=" + physicsPenetrate +
+                ", magicPenetrate=" + magicPenetrate +
+                ", accuracy=" + accuracy +
+                ", criteRate=" + criteRate +
+                ", reduceBeCriteRate=" + reduceBeCriteRate +
+                ", criteDamage=" + criteDamage +
+                ", armor=" + armor +
+                ", magicResist=" + magicResist +
+                ", dodge=" + dodge +
+                ", block=" + block +
+                ", actionSpeed=" + actionSpeed +
+                ", hpRestore=" + hpRestore +
+                ", fascination=" + fascination +
+                '}';
+    }
+
+    public String display() {
+        return "Player{" +
+                ", name='" + name + '\'' +
                 ", strength=" + strength +
                 ", intellect=" + intellect +
                 ", dexterity=" + dexterity +

@@ -32,7 +32,7 @@ public class FileTest {
     @Test
     public void testReadObject() throws Exception {
         ArrayList<String> list = SerializableUtils.readObjectFromFileForTest2("test1");
-        ShowUtils.showArraysJava("TAG",list);
+        ShowUtils.showArrayListsJava("TAG",list);
     }
 
     public class Skill implements Serializable{

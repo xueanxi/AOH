@@ -84,7 +84,7 @@ public class BattleTestJava {
 
     @Test
     public void testGetPerson() throws Exception {
-        ShowUtils.showArraysJava(TAG,getAllPerson());
+        ShowUtils.showArrayListsJava(TAG,getAllPerson());
     }
 
     public ArrayList<BasePerson> getAllPerson() {
