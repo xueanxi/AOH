@@ -2,90 +2,174 @@
 
 <all_skill>
     <item>
-        <skill_id>0</skill_id><!--技能ID,唯一标识这个技能-->
+        <skill_id>1</skill_id><!--技能ID,唯一标识这个技能-->
         <name>普通攻击</name><!--技能名字-->
         <introduce>进行普通物理攻击</introduce><!--技能描述-->
+        <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <buff_nature>0</buff_nature><!--技能性质：0主动 1恢复 2被动-->
         <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
-        <damage_constant>0</damage_constant><!--技能伤害固定部分-->
-        <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
+        <damage_constant>50</damage_constant><!--技能伤害固定部分-->
+        <damage_fluctuate>0.5</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
+        <damage_fluctuate>0</damage_fluctuate><!--护甲穿透率 浮点数-->
         <accuracy_rate>1</accuracy_rate><!--技能命中率 浮点数 0～1.0 1.0为本身人物的命中率 2.0为必中-->
-        <effect_rate>0</effect_rate><!--技能附加效果触发几率 0～1.0-->
         <cd_time>0</cd_time><!--技能冷却时间0～+ -->
-        <time>0</time><!--技能持续时间，0一次性的伤害 1～5后续伤害持续回合 10无限时间 -->
         <range>1</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
         <effect_number>1</effect_number><!--技能攻击人数，0～10 （0的意思对全场AOE） -->
-        <level>0</level><!--技能等级 0～5-->
-        <effect_up>0.2</effect_up><!--技能升级效果提升 浮点数 0～5.0 -->
-        <effect_camp>0</effect_camp><!--技能目标阵营 0：敌人 1：友方-->
+        <effect_camp>0</effect_camp><!--技能目标阵营 0对敌人 1对友方-->
         <effect_target>0</effect_target><!--技能作用目标 0随机目标 1血最少的 2血最多的 3最进的 4最远的-->
-        <assist_effect>0</assist_effect><!-- 技能辅助效果 具体查看顶部介绍-->
-    </item>
-
-    <item>
-        <skill_id>1</skill_id><!--技能ID,唯一标识这个技能-->
-        <name>精神攻击</name><!--技能名字-->
-        <introduce>进行普通魔法攻击</introduce><!--技能描述-->
-        <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <buff_nature>0</buff_nature><!--技能性质：0主动 1恢复 2被动-->
-        <damage_type>1</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
-        <damage_constant>100</damage_constant><!--技能伤害固定部分-->
-        <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
-        <accuracy_rate>1</accuracy_rate><!--技能命中率 浮点数 0～1.0 1.0为本身人物的命中率 2.0为必中-->
+        <assist_effect>0</assist_effect><!-- 技能辅助效果 buff的id-->
         <effect_rate>0</effect_rate><!--技能附加效果触发几率 0～1.0-->
-        <cd_time>0</cd_time><!--技能冷却时间0～+ -->
-        <time>0</time><!--技能持续时间，一般是恢复和辅助才有这个属性 -->
-        <range>2</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
-        <effect_number>1</effect_number><!--技能攻击人数，0～10 （0的意思对全场AOE） -->
-        <level>0</level><!--技能等级 0～5-->
-        <effect_up>0.2</effect_up><!--技能升级效果提升 浮点数 0～5.0 -->
-        <effect_camp>0</effect_camp><!--技能目标 0：敌人 1：友方-->
-        <effect_target>0</effect_target><!--技能作用目标 0随机目标 1血最少的 2血最多的 3最进的 4最远的-->
-        <assist_effect>0</assist_effect><!-- 技能辅助效果 具体查看顶部介绍-->
+        <level_up_constant>20</level_up_constant><!--技能升级 固定部分 效果提升 浮点数-->
+        <level_up_fluctuate>0.1</level_up_fluctuate><!--技能升级 浮动部分 效果提升 浮点数-->
+        <level_up_range>0</level_up_range><!--技能升级 范围提升 浮点数 -->
+        <level_up_number>0.3</level_up_number><!--技能升级 攻击目标数量 浮点数-->
+        <level_up_effect_rate>0</level_up_effect_rate><!--技能升级 攻击效果触发概率 浮点数-->
+        <level_up_penetrate>0</level_up_penetrate><!--技能升级 穿透率增加 浮点数-->
     </item>
 
     <item>
         <skill_id>2</skill_id><!--技能ID,唯一标识这个技能-->
-        <name>武圣</name><!--技能名字-->
-        <introduce>被动：全基础属性提升</introduce><!--技能描述-->
-        <skill_type>2</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <buff_nature>1</buff_nature><!--技能性质：0主动 1被动-->
+        <name>弓箭射击</name><!--技能名字-->
+        <introduce>进行远程普通物理攻击</introduce><!--技能描述-->
+        <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
+        <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
         <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
-        <damage_constant>0</damage_constant><!--技能伤害固定部分-->
-        <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
-        <accuracy_rate>2.0</accuracy_rate><!--技能命中率 浮点数 0～1.0 1.0为本身人物的命中率 2.0为必中-->
-        <effect_rate>0</effect_rate><!--技能附加效果触发几率 0～1.0-->
+        <damage_constant>30</damage_constant><!--技能伤害固定部分-->
+        <damage_fluctuate>0.5</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
+        <accuracy_rate>0.9</accuracy_rate><!--技能命中率 浮点数 0～1.0 1.0为本身人物的命中率 2.0为必中-->
         <cd_time>0</cd_time><!--技能冷却时间0～+ -->
-        <time>10</time><!--技能持续时间，一般是恢复和辅助才有这个属性 -->
-        <range>0</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
+        <range>2</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
         <effect_number>1</effect_number><!--技能攻击人数，0～10 （0的意思对全场AOE） -->
-        <level>0</level><!--技能等级 0～5-->
-        <effect_up>0.1</effect_up><!--技能升级效果提升 浮点数 0～5.0 -->
-        <effect_camp>1</effect_camp><!--技能目标 0：敌人 1：友方-->
+        <effect_camp>0</effect_camp><!--技能目标阵营 0对敌人 1对友方-->
         <effect_target>0</effect_target><!--技能作用目标 0随机目标 1血最少的 2血最多的 3最进的 4最远的-->
-        <assist_effect>7,9,11,13,15,17,19</assist_effect><!-- 技能辅助效果 具体查看顶部介绍-->
+        <assist_effect>0</assist_effect><!-- 技能辅助效果 buff的id-->
+        <effect_rate>0</effect_rate><!--技能附加效果触发几率 0～1.0-->
+        <level_up_constant>15</level_up_constant><!--技能升级 固定部分 效果提升 浮点数-->
+        <level_up_fluctuate>0.1</level_up_fluctuate><!--技能升级 浮动部分 效果提升 浮点数-->
+        <level_up_range>0</level_up_range><!--技能升级 范围提升 浮点数 -->
+        <level_up_number>0.3</level_up_number><!--技能升级 攻击目标数量 浮点数-->
+        <level_up_effect_rate>0</level_up_effect_rate><!--技能升级 攻击效果触发概率 浮点数-->
     </item>
 
     <item>
-        <skill_id>3</skill_id><!--技能ID,唯一标识这个技能-->
-        <name>暗杀</name><!--技能名字-->
-        <introduce>对生命最低的敌人进行一次高伤害的物理攻击</introduce><!--技能描述-->
+        <skill_id>100</skill_id><!--技能ID,唯一标识这个技能-->
+        <name>精神攻击</name><!--技能名字-->
+        <introduce>进行普通魔法攻击</introduce><!--技能描述-->
+        <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <buff_nature>0</buff_nature><!--技能性质：0主动 1被动-->
-        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
-        <damage_constant>0</damage_constant><!--技能伤害固定部分-->
-        <damage_fluctuate>2</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
-        <accuracy_rate>1.0</accuracy_rate><!--技能命中率 浮点数 0～1.0 1.0为本身人物的命中率 2.0为必中-->
-        <effect_rate>0</effect_rate><!--技能附加效果触发几率 0～1.0-->
-        <cd_time>1</cd_time><!--技能冷却时间0～+ -->
-        <time>0</time><!--技能持续时间，一般是恢复和辅助才有这个属性 -->
+        <damage_type>1</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_constant>70</damage_constant><!--技能伤害固定部分-->
+        <damage_fluctuate>0.6</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
+        <accuracy_rate>0.9</accuracy_rate><!--技能命中率 浮点数 0～1.0 1.0为本身人物的命中率 2.0为必中-->
+        <cd_time>0</cd_time><!--技能冷却时间0～+ -->
         <range>3</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
         <effect_number>1</effect_number><!--技能攻击人数，0～10 （0的意思对全场AOE） -->
-        <level>0</level><!--技能等级 0～5-->
-        <effect_up>0.5</effect_up><!--技能升级效果提升 浮点数 0～5.0 -->
-        <effect_camp>0</effect_camp><!--技能目标 0：敌人 1：友方-->
-        <effect_target>1</effect_target><!--技能作用目标 0随机目标 1血最少的 2血最多的 3最进的 4最远的-->
-        <assist_effect>0</assist_effect><!-- 技能辅助效果 具体查看顶部介绍-->
+        <effect_camp>0</effect_camp><!--技能目标阵营 0对敌人 1对友方-->
+        <effect_target>0</effect_target><!--技能作用目标 0随机目标 1血最少的 2血最多的 3最进的 4最远的-->
+        <assist_effect>0</assist_effect><!-- 技能辅助效果 buff的id-->
+        <effect_rate>0</effect_rate><!--技能附加效果触发几率 0～1.0-->
+        <level_up_constant>30</level_up_constant><!--技能升级 固定部分 效果提升 浮点数-->
+        <level_up_fluctuate>0.15</level_up_fluctuate><!--技能升级 浮动部分 效果提升 浮点数-->
+        <level_up_range>0</level_up_range><!--技能升级 范围提升 浮点数 -->
+        <level_up_number>0</level_up_number><!--技能升级 攻击目标数量 浮点数-->
+        <level_up_effect_rate>0</level_up_effect_rate><!--技能升级 攻击效果触发概率 浮点数-->
     </item>
+
+    <item>
+        <skill_id>200</skill_id><!--技能ID,唯一标识这个技能-->
+        <name>弱点击破</name><!--技能名字-->
+        <introduce>对敌人进行一次破甲攻击，必中</introduce><!--技能描述-->
+        <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
+        <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
+        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_constant>100</damage_constant><!--技能伤害固定部分-->
+        <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
+        <accuracy_rate>2</accuracy_rate><!--技能命中率 浮点数 0～1.0 1.0为本身人物的命中率 2.0为必中-->
+        <cd_time>1</cd_time><!--技能冷却时间0～+ -->
+        <range>1</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
+        <effect_number>1</effect_number><!--技能攻击人数，0～10 （0的意思对全场AOE） -->
+        <effect_camp>0</effect_camp><!--技能目标阵营 0对敌人 1对友方-->
+        <effect_target>0</effect_target><!--技能作用目标 0随机目标 1血最少的 2血最多的 3最进的 4最远的-->
+        <assist_effect>0</assist_effect><!-- 技能辅助效果 buff的id-->
+        <effect_rate>0</effect_rate><!--技能附加效果触发几率 0～1.0-->
+        <level_up_constant>20</level_up_constant><!--技能升级 固定部分 效果提升 浮点数-->
+        <level_up_fluctuate>0</level_up_fluctuate><!--技能升级 浮动部分 效果提升 浮点数-->
+        <level_up_range>0</level_up_range><!--技能升级 范围提升 浮点数 -->
+        <level_up_number>0</level_up_number><!--技能升级 攻击目标数量 浮点数-->
+        <level_up_effect_rate>0</level_up_effect_rate><!--技能升级 攻击效果触发概率 浮点数-->
+    </item>
+
+    <item>
+        <skill_id>300</skill_id><!--技能ID,唯一标识这个技能-->
+        <name>暗杀</name><!--技能名字-->
+        <introduce>对生命最低的敌人进行一次高伤害的物理攻击</introduce><!--技能描述-->
+        <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
+        <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
+        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_constant>0</damage_constant><!--技能伤害固定部分-->
+        <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
+        <accuracy_rate>1</accuracy_rate><!--技能命中率 浮点数 0～1.0 1.0为本身人物的命中率 2.0为必中-->
+        <cd_time>0</cd_time><!--技能冷却时间0～+ -->
+        <range>1</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
+        <effect_number>1</effect_number><!--技能攻击人数，0～10 （0的意思对全场AOE） -->
+        <effect_camp>0</effect_camp><!--技能目标阵营 0对敌人 1对友方-->
+        <effect_target>0</effect_target><!--技能作用目标 0随机目标 1血最少的 2血最多的 3最进的 4最远的-->
+        <assist_effect>0</assist_effect><!-- 技能辅助效果 buff的id-->
+        <effect_rate>0</effect_rate><!--技能附加效果触发几率 0～1.0-->
+        <level_up_constant>20</level_up_constant><!--技能升级 固定部分 效果提升 浮点数-->
+        <level_up_fluctuate>0</level_up_fluctuate><!--技能升级 浮动部分 效果提升 浮点数-->
+        <level_up_range>0</level_up_range><!--技能升级 范围提升 浮点数 -->
+        <level_up_number>0</level_up_number><!--技能升级 攻击目标数量 浮点数-->
+        <level_up_effect_rate>0</level_up_effect_rate><!--技能升级 攻击效果触发概率 浮点数-->
+    </item>
+
+    <item>
+        <skill_id>301</skill_id><!--技能ID,唯一标识这个技能-->
+        <name>火攻</name><!--技能名字-->
+        <introduce>进行范围魔法攻击</introduce><!--技能描述-->
+        <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
+        <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
+        <damage_type>1</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_constant>50</damage_constant><!--技能伤害固定部分-->
+        <damage_fluctuate>0.4</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
+        <accuracy_rate>1</accuracy_rate><!--技能命中率 浮点数 0～1.0 1.0为本身人物的命中率 2.0为必中-->
+        <cd_time>1</cd_time><!--技能冷却时间0～+ -->
+        <range>3</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
+        <effect_number>3</effect_number><!--技能攻击人数，0～10 （0的意思对全场AOE） -->
+        <effect_camp>0</effect_camp><!--技能目标阵营 0对敌人 1对友方-->
+        <effect_target>0</effect_target><!--技能作用目标 0随机目标 1血最少的 2血最多的 3最进的 4最远的-->
+        <assist_effect>200</assist_effect><!-- 技能辅助效果 buff的id-->
+        <effect_rate>0.3</effect_rate><!--技能附加效果触发几率 0～1.0-->
+        <level_up_constant>30</level_up_constant><!--技能升级 固定部分 效果提升 浮点数-->
+        <level_up_fluctuate>0.15</level_up_fluctuate><!--技能升级 浮动部分 效果提升 浮点数-->
+        <level_up_range>0</level_up_range><!--技能升级 范围提升 浮点数 -->
+        <level_up_number>0</level_up_number><!--技能升级 攻击目标数量 浮点数-->
+        <level_up_effect_rate>0.1</level_up_effect_rate><!--技能升级 攻击效果触发概率 浮点数-->
+    </item>
+
+    <item>
+        <skill_id>500</skill_id><!--技能ID,唯一标识这个技能-->
+        <name>武圣</name><!--技能名字-->
+        <introduce>被动：全基础属性提升</introduce><!--技能描述-->
+        <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
+        <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
+        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_constant>0</damage_constant><!--技能伤害固定部分-->
+        <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
+        <accuracy_rate>1</accuracy_rate><!--技能命中率 浮点数 0～1.0 1.0为本身人物的命中率 2.0为必中-->
+        <cd_time>0</cd_time><!--技能冷却时间0～+ -->
+        <range>1</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
+        <effect_number>1</effect_number><!--技能攻击人数，0～10 （0的意思对全场AOE） -->
+        <effect_camp>0</effect_camp><!--技能目标阵营 0对敌人 1对友方-->
+        <effect_target>0</effect_target><!--技能作用目标 0随机目标 1血最少的 2血最多的 3最进的 4最远的-->
+        <assist_effect>0</assist_effect><!-- 技能辅助效果 buff的id-->
+        <effect_rate>0</effect_rate><!--技能附加效果触发几率 0～1.0-->
+        <level_up_constant>20</level_up_constant><!--技能升级 固定部分 效果提升 浮点数-->
+        <level_up_fluctuate>0</level_up_fluctuate><!--技能升级 浮动部分 效果提升 浮点数-->
+        <level_up_range>0</level_up_range><!--技能升级 范围提升 浮点数 -->
+        <level_up_number>0</level_up_number><!--技能升级 攻击目标数量 浮点数-->
+        <level_up_effect_rate>0</level_up_effect_rate><!--技能升级 攻击效果触发概率 浮点数-->
+    </item>
+
+
 </all_skill>
