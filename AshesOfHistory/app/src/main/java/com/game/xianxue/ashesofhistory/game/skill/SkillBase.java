@@ -1,119 +1,39 @@
 package com.game.xianxue.ashesofhistory.game.skill;
 
-import com.game.xianxue.ashesofhistory.interfaces.Interface_Skill;
-import com.game.xianxue.ashesofhistory.game.model.TeamModel;
-import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
-
 /**
- * 技能实体类 模型
+ * 技能最基础的类
+ * 这个类是保存从数据库取出来的数据
  */
-public class SkillBase implements Interface_Skill {
-    public int skillId;                             // 技能id
-    public String name;                             // 技能名字
-    public String introduce;                        // 技能说明
-    public int naturetype = SKILL_NATURE_ACTIVE;    // 技能的性质   (分为主动技能和被动技能)
-    public int skillType = SKILL_TYPE_DAMGE;        // 技能类型    （分为攻击技能，辅助技能，恢复技能）
-    public float accuracyRate = 1.0f;               // 技能命中率   (如果为1.0则默认使用武将本身的命中率，如果必中为2.0,其他0～1.0为普通命中率
-    public float effectRate = 1.0f;                 // 技能触发概率 ( 当有多个技能的时候，技能触发的概率）
-    public int cdTime = 0;                          // 技能的冷却回合数
-    public int time = SKILL_LAST_TIME_0;            // 伤害持续回合，普通技能一般都是0个回合，除了那些持续类型的伤害
-    public int range = SKILL_RANGE_1;               // 技能的影响范围
-    public int effectNumber = SKILL_EFFECT_NUMBER_0;// 技能的作用数量
-    public int level = SKILL_LIMIT_MINI_LEVEL;      // 当前技能等级     技能等级会影响技能的效果
-    public float effectUp = 0;                      // 技能升级的时候，提升效果
-    public int effectCamp = SKILL_CAMP_ENEMY;       // 技能的目标阵营
-    public int effectTarget = SKILL_TARGET_RANDOM;  // 技能选择作用在什么的人物上面
+public class SkillBase{
+    protected int skillId;                             // 技能id,唯一标识一个技能
+    protected String name;                             // 技能名字
+    protected String introduce;                        // 技能说明
+    protected int skillNature;                         // 技能的性质(分为主动技能和被动技能)
+    protected int skillType;                           // 技能类型分为攻击技能，辅助技能，恢复技能）
+    protected float accuracyRate;                      // 技能命中率(技能命中率 = 人物命中率 * 技能命中率 Ex：-1 则表示必中)
+    protected float criteRate;                         // 技能暴击率(技能触发暴击的概率 = 人物暴击率 * 技能暴击率 Ex：-1表示必暴击)
+    protected float effectRate;                        // 效果触发概率(当有技能特效时，技能触发的概率 0~1,无视对方的闪避）
+    protected int cdTime;                              // 技能的冷却回合数
+    protected int range;                               // 技能的影响范围(0～9 :0的意思是只能对自己释放)
+    protected int effectNumber;                        // 技能的作用数量(0～10 :0的意思对全场AOE)
+    protected int effectCamp;                          // 技能的目标阵营(0对敌人 1对友方)
+    protected int effectTarget;                        // 技能选择作用在什么的人物上面(0范围内随机目标 1血最少 2血最多 3最近 4最远)
+    protected int damageType;                          // 技能伤害类型(0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实)
+    protected float damageConstant = 0;                  // 技能伤害 固定部分(一个技能的伤害为 技能固定部分 + 人物能力*浮动部分)
+    protected float damageFluctuate = 0;               // 技能伤害 浮动部分(一个技能的伤害为 技能固定部分 + 人物能力*浮动部分)
+    protected float damagePenetrate;                   // 伤害穿透率
+    protected String assistEffect;                     // 技能的额外效果，指向buff的id
 
-    // 攻击、恢复类型
-    public int damageType = DAMGE_TYPE_PHYSICS;     // 技能伤害类型
-    public int damageConstant = 0;                  // 技能伤害 固定部分(一个技能的伤害为 技能固定部分+武将能力*浮动部分)
-    public float damageFluctuate = 0;               // 技能伤害 浮动部分(一个技能的伤害为 技能固定部分+武将能力*浮动部分)
-
-    // 辅助类型
-    public String assisteffect = "0";   // 辅助效果
+    // 技能升级相关
+    protected float levelUpConstant;                   // 技能固定伤害部分升级提升
+    protected float levelUpFluctuate;                  // 技能浮动伤害部分升级提升
+    protected float levelUpRange;                      // 技能作用范围升级提升
+    protected float levelUpNumber;                     // 技能作用人数升级提升
+    protected float levelUpEffectRate;                 // 技能辅助效果触发几率升级提升
+    protected float levelUpPenetrate;                  // 技能穿透升级提升
+    protected float levelUpCDTime;                     // 技能冷却时间升级提升
 
     public SkillBase(){}
-
-    public SkillBase(int id, String name, int skillType, int naturetype, float accuracyRate, float effectRate, String introduce,
-                     int cdTime, int time, int range, int effectNumber, int level, float effectUp, int damageType, int effectCamp, int effectTarget,
-                     int damageConstant, float damageFluctuate, String assisteffect) {
-        this.skillId = id;
-        this.name = name;
-        this.skillType = skillType;
-        this.naturetype = naturetype;
-        this.accuracyRate = accuracyRate;
-        this.effectRate = effectRate;
-        this.introduce = introduce;
-        this.cdTime = cdTime;
-        this.time = time;
-        this.range = range;
-        this.effectNumber = effectNumber;
-        this.effectUp = effectUp;
-        this.damageType = damageType;
-        this.effectCamp = effectCamp;
-        this.damageConstant = damageConstant;
-        this.damageFluctuate = damageFluctuate;
-        this.assisteffect = assisteffect;
-        this.effectTarget = effectTarget;
-        levelUp(level);
-    }
-
-    /**
-     * 设置技能的等级
-     */
-    private void levelUp(int level) {
-        if (level < SKILL_LIMIT_MINI_LEVEL) {
-            this.level = SKILL_LIMIT_MINI_LEVEL;
-        } else if (level > SKILL_LIMIT_MAX_LEVEL) {
-            this.level = SKILL_LIMIT_MAX_LEVEL;
-        } else {
-            this.level = level;
-        }
-
-        // 提升了多少级
-        int uplevel = this.level - SKILL_LIMIT_MINI_LEVEL;
-        switch (this.skillType) {
-            case SKILL_TYPE_DAMGE:
-            case SKILL_TYPE_RECOVER:
-                this.damageConstant += uplevel * effectUp;
-                this.damageFluctuate += uplevel * effectUp;
-                break;
-            case SKILL_TYPE_ASSIST:
-                assisteffect += uplevel * effectUp;
-                break;
-        }
-    }
-
-    @Override
-    public void attack(BattlePerson personRelease, TeamModel teamReceive) {
-
-    }
-
-    @Override
-    public void recover(BattlePerson personRelease, TeamModel teamReceive) {
-
-    }
-
-    @Override
-    public void assist(BattlePerson personRelease, TeamModel teamReceive) {
-
-    }
-
-    public void doAction(BattlePerson personRelease, TeamModel teamReceive) {
-        switch (skillType) {
-            case SKILL_TYPE_DAMGE:
-                attack(personRelease, teamReceive);
-                break;
-            case SKILL_TYPE_RECOVER:
-                recover(personRelease, teamReceive);
-                break;
-            case SKILL_TYPE_ASSIST:
-                assist(personRelease, teamReceive);
-                break;
-            default:
-                break;
-        }
-    }
 
     public int getSkillId() {
         return skillId;
@@ -139,12 +59,12 @@ public class SkillBase implements Interface_Skill {
         this.skillType = skillType;
     }
 
-    public int getNaturetype() {
-        return naturetype;
+    public int getSkillNature() {
+        return skillNature;
     }
 
-    public void setNaturetype(int naturetype) {
-        this.naturetype = naturetype;
+    public void setSkillNature(int skillNature) {
+        this.skillNature = skillNature;
     }
 
     public float getAccuracyRate() {
@@ -179,14 +99,6 @@ public class SkillBase implements Interface_Skill {
         this.cdTime = cdTime;
     }
 
-    public int getTime() {
-        return time;
-    }
-
-    public void setTime(int time) {
-        this.time = time;
-    }
-
     public int getRange() {
         return range;
     }
@@ -201,22 +113,6 @@ public class SkillBase implements Interface_Skill {
 
     public void setEffectNumber(int effectNumber) {
         this.effectNumber = effectNumber;
-    }
-
-    public int getLevel() {
-        return level;
-    }
-
-    public void setLevel(int level) {
-        this.level = level;
-    }
-
-    public float getEffectUp() {
-        return effectUp;
-    }
-
-    public void setEffectUp(float effectUp) {
-        this.effectUp = effectUp;
     }
 
     public int getEffectCamp() {
@@ -243,11 +139,11 @@ public class SkillBase implements Interface_Skill {
         this.damageType = damageType;
     }
 
-    public int getDamageConstant() {
+    public float getDamageConstant() {
         return damageConstant;
     }
 
-    public void setDamageConstant(int damageConstant) {
+    public void setDamageConstant(float damageConstant) {
         this.damageConstant = damageConstant;
     }
 
@@ -259,12 +155,84 @@ public class SkillBase implements Interface_Skill {
         this.damageFluctuate = damageFluctuate;
     }
 
-    public String getAssisteffect() {
-        return assisteffect;
+    public String getAssistEffect() {
+        return assistEffect;
     }
 
-    public void setAssisteffect(String assisteffect) {
-        this.assisteffect = assisteffect;
+    public void setAssistEffect(String assistEffect) {
+        this.assistEffect = assistEffect;
+    }
+
+    public float getCriteRate() {
+        return criteRate;
+    }
+
+    public void setCriteRate(float criteRate) {
+        this.criteRate = criteRate;
+    }
+
+    public float getDamagePenetrate() {
+        return damagePenetrate;
+    }
+
+    public void setDamagePenetrate(float damagePenetrate) {
+        this.damagePenetrate = damagePenetrate;
+    }
+
+    public float getLevelUpConstant() {
+        return levelUpConstant;
+    }
+
+    public void setLevelUpConstant(float levelUpConstant) {
+        this.levelUpConstant = levelUpConstant;
+    }
+
+    public float getLevelUpFluctuate() {
+        return levelUpFluctuate;
+    }
+
+    public void setLevelUpFluctuate(float levelUpFluctuate) {
+        this.levelUpFluctuate = levelUpFluctuate;
+    }
+
+    public float getLevelUpRange() {
+        return levelUpRange;
+    }
+
+    public void setLevelUpRange(float levelUpRange) {
+        this.levelUpRange = levelUpRange;
+    }
+
+    public float getLevelUpNumber() {
+        return levelUpNumber;
+    }
+
+    public void setLevelUpNumber(float levelUpNumber) {
+        this.levelUpNumber = levelUpNumber;
+    }
+
+    public float getLevelUpEffectRate() {
+        return levelUpEffectRate;
+    }
+
+    public void setLevelUpEffectRate(float levelUpEffectRate) {
+        this.levelUpEffectRate = levelUpEffectRate;
+    }
+
+    public float getLevelUpPenetrate() {
+        return levelUpPenetrate;
+    }
+
+    public void setLevelUpPenetrate(float levelUpPenetrate) {
+        this.levelUpPenetrate = levelUpPenetrate;
+    }
+
+    public float getLevelUpCDTime() {
+        return levelUpCDTime;
+    }
+
+    public void setLevelUpCDTime(float levelUpCDTime) {
+        this.levelUpCDTime = levelUpCDTime;
     }
 
     @Override
@@ -273,22 +241,28 @@ public class SkillBase implements Interface_Skill {
                 "skillId=" + skillId +
                 ", name='" + name + '\'' +
                 ", introduce='" + introduce + '\'' +
-                ", naturetype=" + naturetype +
+                ", skillNature=" + skillNature +
                 ", skillType=" + skillType +
                 ", accuracyRate=" + accuracyRate +
+                ", criteRate=" + criteRate +
                 ", effectRate=" + effectRate +
                 ", cdTime=" + cdTime +
-                ", time=" + time +
                 ", range=" + range +
                 ", effectNumber=" + effectNumber +
-                ", level=" + level +
-                ", effectUp=" + effectUp +
                 ", effectCamp=" + effectCamp +
                 ", effectTarget=" + effectTarget +
+                ", damagePenetrate=" + damagePenetrate +
                 ", damageType=" + damageType +
                 ", damageConstant=" + damageConstant +
                 ", damageFluctuate=" + damageFluctuate +
-                ", assisteffect='" + assisteffect + '\'' +
+                ", assistEffect='" + assistEffect + '\'' +
+                ", levelUpConstant=" + levelUpConstant +
+                ", levelUpFluctuate=" + levelUpFluctuate +
+                ", levelUpRange=" + levelUpRange +
+                ", levelUpNumber=" + levelUpNumber +
+                ", levelUpEffectRate=" + levelUpEffectRate +
+                ", levelUpPenetrate=" + levelUpPenetrate +
+                ", levelUpCDTime=" + levelUpCDTime +
                 '}';
     }
 }

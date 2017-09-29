@@ -214,7 +214,7 @@ public class BattlePerson extends NormalPerson {
                 ", physique=" + physique +
                 ", spirit=" + spirit +
                 ", luck=" + luck +
-                ", skillLists='" + skillLists + '\'' +
+                ", skillStrings='" + skillStrings + '\'' +
                 ", skillArrays=" + skillArrays +
                 ", level=" + level +
                 ", HP=" + HP +

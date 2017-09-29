@@ -33,44 +33,58 @@ public class SkillDataManager {
                 + SkillColumn.naturetype + " ,"
                 + SkillColumn.skillType + " ,"
                 + SkillColumn.accuracyRate + " ,"
+                + SkillColumn.criteRate + " ,"
                 + SkillColumn.effectRate + " ,"
                 + SkillColumn.cdTime + " ,"
-                + SkillColumn.time + " ,"
                 + SkillColumn.range + " ,"
                 + SkillColumn.effectNumber + " ,"
-                + SkillColumn.level + " ,"
-                + SkillColumn.effectUp + " ,"
                 + SkillColumn.effectCamp + " ,"
                 + SkillColumn.effectTarget + " ,"
                 + SkillColumn.damageType + " ,"
                 + SkillColumn.damageConstant + " ,"
                 + SkillColumn.damageFluctuate + " ,"
-                + SkillColumn.assisteffect + " )"
+                + SkillColumn.damagePenetrate + " ,"
+                + SkillColumn.assisteffect + " ,"
+                + SkillColumn.levelUpConstant + " ,"
+                + SkillColumn.levelUpFluctuate + " ,"
+                + SkillColumn.levelUpRange + " ,"
+                + SkillColumn.levelUpNumber + " ,"
+                + SkillColumn.levelUpEffectRate + " ,"
+                + SkillColumn.levelUpCDTime + " ,"
+                + SkillColumn.levelUpPenetrate + " )"
                 + " VALUES ("
-                + " '%d','%s','%s','%d','%d','%f','%f','%d','%d','%d','%d','%d','%f','%d','%d','%d','%d','%f','%s'"
+                + " '%d','%s','%s','%d','%d','%f','%f','%f','%d','%d','%d','%d','%d','%d','%d','%f','%f','%s','%f','%f','%f','%f','%f','%f','%f'"
                 + " )";
 
-        return String.format(format,
+        String result = String.format(format,
                 skill.getSkillId(),
                 skill.getName(),
                 skill.getIntroduce(),
-                skill.getNaturetype(),
+                skill.getSkillNature(),
                 skill.getSkillType(),
                 skill.getAccuracyRate(),
+                skill.getCriteRate(),
                 skill.getEffectRate(),
                 skill.getCdTime(),
-                skill.getTime(),
                 skill.getRange(),
                 skill.getEffectNumber(),
-                skill.getLevel(),
-                skill.getEffectUp(),
                 skill.getEffectCamp(),
                 skill.getEffectTarget(),
                 skill.getDamageType(),
                 skill.getDamageConstant(),
                 skill.getDamageFluctuate(),
-                skill.getAssisteffect()
+                skill.getDamagePenetrate(),
+                skill.getAssistEffect(),
+                skill.getLevelUpConstant(),
+                skill.getLevelUpFluctuate(),
+                skill.getLevelUpRange(),
+                skill.getLevelUpNumber(),
+                skill.getLevelUpEffectRate(),
+                skill.getLevelUpCDTime(),
+                skill.getLevelUpPenetrate()
         );
+        SimpleLog.logd(TAG,"skill2 = "+result);
+        return result;
     }
 
     public static ArrayList<SkillBase> getAllSkillFromDataBase() {
@@ -98,7 +112,7 @@ public class SkillDataManager {
         SkillBase skill = cursorToSkill(cursor);
         cursor.close();
         db.close();
-        SimpleLog.logd(TAG,skill.toString());
+        SimpleLog.logd(TAG, skill.toString());
         return skill;
     }
 
@@ -119,22 +133,28 @@ public class SkillDataManager {
                 skill.setSkillId(c.getInt(c.getColumnIndex(SkillColumn.skillId)));
                 skill.setName(c.getString(c.getColumnIndex(SkillColumn.name)));
                 skill.setIntroduce(c.getString(c.getColumnIndex(SkillColumn.introduce)));
-                skill.setNaturetype(c.getInt(c.getColumnIndex(SkillColumn.naturetype)));
+                skill.setSkillNature(c.getInt(c.getColumnIndex(SkillColumn.naturetype)));
                 skill.setSkillType(c.getInt(c.getColumnIndex(SkillColumn.skillType)));
                 skill.setAccuracyRate(c.getFloat(c.getColumnIndex(SkillColumn.accuracyRate)));
                 skill.setEffectRate(c.getFloat(c.getColumnIndex(SkillColumn.effectRate)));
                 skill.setCdTime(c.getInt(c.getColumnIndex(SkillColumn.cdTime)));
-                skill.setTime(c.getInt(c.getColumnIndex(SkillColumn.time)));
                 skill.setRange(c.getInt(c.getColumnIndex(SkillColumn.range)));
                 skill.setEffectNumber(c.getInt(c.getColumnIndex(SkillColumn.effectNumber)));
-                skill.setLevel(c.getInt(c.getColumnIndex(SkillColumn.level)));
-                skill.setEffectUp(c.getFloat(c.getColumnIndex(SkillColumn.effectUp)));
                 skill.setEffectCamp(c.getInt(c.getColumnIndex(SkillColumn.effectCamp)));
                 skill.setEffectTarget(c.getInt(c.getColumnIndex(SkillColumn.effectTarget)));
                 skill.setDamageType(c.getInt(c.getColumnIndex(SkillColumn.damageType)));
-                skill.setDamageConstant(c.getInt(c.getColumnIndex(SkillColumn.damageConstant)));
+                skill.setDamageConstant(c.getFloat(c.getColumnIndex(SkillColumn.damageConstant)));
                 skill.setDamageFluctuate(c.getFloat(c.getColumnIndex(SkillColumn.damageFluctuate)));
-                skill.setAssisteffect(c.getString(c.getColumnIndex(SkillColumn.assisteffect)));
+                skill.setAssistEffect(c.getString(c.getColumnIndex(SkillColumn.assisteffect)));
+                skill.setCriteRate(c.getFloat(c.getColumnIndex(SkillColumn.criteRate)));
+                skill.setDamagePenetrate(c.getFloat(c.getColumnIndex(SkillColumn.damagePenetrate)));
+                skill.setLevelUpConstant(c.getFloat(c.getColumnIndex(SkillColumn.levelUpConstant)));
+                skill.setLevelUpEffectRate(c.getFloat(c.getColumnIndex(SkillColumn.levelUpEffectRate)));
+                skill.setLevelUpFluctuate(c.getFloat(c.getColumnIndex(SkillColumn.levelUpFluctuate)));
+                skill.setLevelUpNumber(c.getFloat(c.getColumnIndex(SkillColumn.levelUpNumber)));
+                skill.setLevelUpRange(c.getFloat(c.getColumnIndex(SkillColumn.levelUpRange)));
+                skill.setLevelUpPenetrate(c.getFloat(c.getColumnIndex(SkillColumn.levelUpPenetrate)));
+                skill.setLevelUpCDTime(c.getFloat(c.getColumnIndex(SkillColumn.levelUpCDTime)));
                 lists.add(skill);
             }
         }
@@ -158,23 +178,28 @@ public class SkillDataManager {
         skill.setSkillId(c.getInt(c.getColumnIndex(SkillColumn.skillId)));
         skill.setName(c.getString(c.getColumnIndex(SkillColumn.name)));
         skill.setIntroduce(c.getString(c.getColumnIndex(SkillColumn.introduce)));
-        skill.setNaturetype(c.getInt(c.getColumnIndex(SkillColumn.naturetype)));
+        skill.setSkillNature(c.getInt(c.getColumnIndex(SkillColumn.naturetype)));
         skill.setSkillType(c.getInt(c.getColumnIndex(SkillColumn.skillType)));
         skill.setAccuracyRate(c.getFloat(c.getColumnIndex(SkillColumn.accuracyRate)));
         skill.setEffectRate(c.getFloat(c.getColumnIndex(SkillColumn.effectRate)));
         skill.setCdTime(c.getInt(c.getColumnIndex(SkillColumn.cdTime)));
-        skill.setTime(c.getInt(c.getColumnIndex(SkillColumn.time)));
         skill.setRange(c.getInt(c.getColumnIndex(SkillColumn.range)));
         skill.setEffectNumber(c.getInt(c.getColumnIndex(SkillColumn.effectNumber)));
-        skill.setLevel(c.getInt(c.getColumnIndex(SkillColumn.level)));
-        skill.setEffectUp(c.getFloat(c.getColumnIndex(SkillColumn.effectUp)));
         skill.setEffectCamp(c.getInt(c.getColumnIndex(SkillColumn.effectCamp)));
         skill.setEffectTarget(c.getInt(c.getColumnIndex(SkillColumn.effectTarget)));
         skill.setDamageType(c.getInt(c.getColumnIndex(SkillColumn.damageType)));
-        skill.setDamageConstant(c.getInt(c.getColumnIndex(SkillColumn.damageConstant)));
+        skill.setDamageConstant(c.getFloat(c.getColumnIndex(SkillColumn.damageConstant)));
         skill.setDamageFluctuate(c.getFloat(c.getColumnIndex(SkillColumn.damageFluctuate)));
-        skill.setAssisteffect(c.getString(c.getColumnIndex(SkillColumn.assisteffect)));
-
+        skill.setAssistEffect(c.getString(c.getColumnIndex(SkillColumn.assisteffect)));
+        skill.setCriteRate(c.getFloat(c.getColumnIndex(SkillColumn.criteRate)));
+        skill.setDamagePenetrate(c.getFloat(c.getColumnIndex(SkillColumn.damagePenetrate)));
+        skill.setLevelUpConstant(c.getFloat(c.getColumnIndex(SkillColumn.levelUpConstant)));
+        skill.setLevelUpEffectRate(c.getFloat(c.getColumnIndex(SkillColumn.levelUpEffectRate)));
+        skill.setLevelUpFluctuate(c.getFloat(c.getColumnIndex(SkillColumn.levelUpFluctuate)));
+        skill.setLevelUpNumber(c.getFloat(c.getColumnIndex(SkillColumn.levelUpNumber)));
+        skill.setLevelUpRange(c.getFloat(c.getColumnIndex(SkillColumn.levelUpRange)));
+        skill.setLevelUpPenetrate(c.getFloat(c.getColumnIndex(SkillColumn.levelUpPenetrate)));
+        skill.setLevelUpCDTime(c.getFloat(c.getColumnIndex(SkillColumn.levelUpCDTime)));
         return skill;
     }
 }

@@ -153,19 +153,25 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + SkillColumn.skillType + " INTEGER,"
                 + SkillColumn.naturetype + " INTEGER,"
                 + SkillColumn.accuracyRate + " REAL,"
+                + SkillColumn.criteRate + " REAL,"
                 + SkillColumn.effectRate + " REAL,"
                 + SkillColumn.cdTime + " INTEGER,"
-                + SkillColumn.time + " INTEGER,"
                 + SkillColumn.range + " INTEGER,"
                 + SkillColumn.effectNumber + " INTEGER,"
-                + SkillColumn.level + " INTEGER,"
-                + SkillColumn.effectUp + " REAL,"
                 + SkillColumn.damageType + " INTEGER,"
                 + SkillColumn.effectCamp + " INTEGER,"
                 + SkillColumn.damageConstant + " INTEGER,"
                 + SkillColumn.damageFluctuate + " REAL,"
+                + SkillColumn.damagePenetrate + " REAL,"
                 + SkillColumn.assisteffect + " TEXT,"
-                + SkillColumn.effectTarget + " INTEGER)");
+                + SkillColumn.effectTarget + " INTEGER,"
+                + SkillColumn.levelUpConstant + " REAL,"
+                + SkillColumn.levelUpFluctuate + " REAL,"
+                + SkillColumn.levelUpRange + " REAL,"
+                + SkillColumn.levelUpNumber + " REAL,"
+                + SkillColumn.levelUpEffectRate + " REAL,"
+                + SkillColumn.levelUpCDTime + " REAL,"
+                + SkillColumn.levelUpPenetrate + " REAL)");
         insertSkillData(db);
     }
 

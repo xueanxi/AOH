@@ -1,13 +1,16 @@
 package com.game.xianxue.ashesofhistory.game.model.person;
 
+import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
+
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  * 人物的原始模型 只有一些最基础的资料
  * Created by anxi.xue on 8/29/17.
  */
 
-public class BasePerson implements Serializable{
+public class BasePerson implements Serializable {
     // 基础资料
     public int _id;                 // 保存在数据库中的_id
     public int psersonId;           // id唯一标识这个人物
@@ -33,7 +36,7 @@ public class BasePerson implements Serializable{
     /**
      * 天赋技能. 一个技能的列表字符串，存储了人物在各个等级能够解锁的技能。
      */
-    public String skillLists = null;
+    public String skillStrings = null;
 
     public int getPsersonId() {
         return psersonId;
@@ -131,19 +134,41 @@ public class BasePerson implements Serializable{
         this.fascination_Raw = fascination_Raw;
     }
 
-    public String getSkillLists() {
-        return skillLists;
+    public String getSkillStrings() {
+        return skillStrings;
     }
 
-    public void setSkillLists(String skillLists) {
-        this.skillLists = skillLists;
+    public void setSkillStrings(String skillStrings) {
+        this.skillStrings = skillStrings;
     }
 
+    /**
+     * 在xml文件中，人物的技能是一个字符串，需要解析出来
+     * 字符串是这样的“4,3,7,2:500,3,5,2”
+     * 表示的意义是 ,使用 “：”分隔,所以这个字符串有两个技能分别为4,3,7,2 和 500,3,5,2
+     * “4,3,7,2”
+     * 4表示技能的id为4
+     * 3表示技能当前的等级为3级
+     * 7表示这个技能在人物7级的时候领悟
+     * 2表示技能解锁之后，人物每升2级，技能升级一次
+     */
+    public void parseSkillList(){
+        ArrayList<SkillBase> skillLists = null;
+        if(this.skillStrings != null && skillStrings.length()!=0){
+            String[] skillDatas = skillStrings.split(":");
+            int skillSize = skillDatas.length;
+            if(skillSize <= 0) return;
+            for(int i =0;i<skillSize;i++){
+                skillDatas[i];
+            }
+        }
+    }
 
     @Override
     public String toString() {
         return "BasePerson{" +
-                "psersonId=" + psersonId +
+                "_id=" + _id +
+                ", psersonId=" + psersonId +
                 ", aptitude=" + aptitude +
                 ", name='" + name + '\'' +
                 ", name2='" + name2 + '\'' +
@@ -155,7 +180,7 @@ public class BasePerson implements Serializable{
                 ", spirit_Raw=" + spirit_Raw +
                 ", luck_Raw=" + luck_Raw +
                 ", fascination_Raw=" + fascination_Raw +
-                ", skillLists='" + skillLists + '\'' +
+                ", skillStrings='" + skillStrings + '\'' +
                 '}';
     }
 }

@@ -3,7 +3,6 @@ package com.game.xianxue.ashesofhistory.database;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.BasePersonColumn;
 import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
@@ -54,7 +53,7 @@ public class BasePersonManager {
                 person.getSpirit_Raw(),
                 person.getLuck_Raw(),
                 person.getFascination_Raw(),
-                person.getSkillLists());
+                person.getSkillStrings());
     }
 
     public static ArrayList<BasePerson> getAllPersonFromDataBase() {

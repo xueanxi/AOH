@@ -197,7 +197,7 @@ public class BattleEngine {
             BattleLog.log(p2.getName() + "格档成功 !!!  的格档率为" + (1f - accuracy) * 100 + "%");
         }
 
-        if (p1.getSkillLists() == null) {
+        if (p1.getSkillStrings() == null) {
             //技能列表为空，则进行普通攻击。
             BattleLog.log(p1.getName() + "的物理伤害为" + p1.getPhysicDamage() + " 真实伤害为" + p1.getRealDamage() + " " + p2.getName() + "的护甲为" + p2.getArmor());
             // 计算敌方需要减少多少生命值
@@ -245,7 +245,7 @@ public class BattleEngine {
 
         //p1.getSkil
 
-        if (p1.getSkillLists() == null) {
+        if (p1.getSkillStrings() == null) {
             //技能列表为空，则进行普通攻击。
             BattleLog.log(p1.getName() + "的物理伤害为" + p1.getPhysicDamage() + " 真实伤害为" + p1.getRealDamage() + " " + p2.getName() + "的护甲为" + p2.getArmor());
             // 计算敌方需要减少多少生命值

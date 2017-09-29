@@ -12,7 +12,7 @@ public interface Interface_Skill {
 
     // =======================技能属性 通用 部分===========================
     // 技能的等级
-    int SKILL_LIMIT_MINI_LEVEL = 0;     //技能的等级下限
+    int SKILL_LIMIT_MINI_LEVEL = 1;     //技能的等级下限
     int SKILL_LIMIT_MAX_LEVEL = 5;      //技能的等级上限
 
     // 技能的类型
@@ -87,50 +87,9 @@ public interface Interface_Skill {
     public int ATTACK_EFFECT_MAGIC_PENETRATE = 2;    // 攻击特效：魔法穿透 无视一定魔抗
     public int ATTACK_EFFECT_RECOVER_HP = 3;         // 攻击特效：吸血     吸收一定HP
 
-    /**
-     * 技能攻击
-     *
-     * @param personRelease 释放技能的人
-     * @param teamReceive   承受这个技能的队伍
-     */
-    void attack(BattlePerson personRelease, TeamModel teamReceive);
-
 
     // =======================恢复技能 部分===========================
 
-    /**
-     * 技能恢复
-     *
-     * @param personRelease 释放技能的人
-     * @param teamReceive   承受这个技能的队伍
-     */
-    void recover(BattlePerson personRelease, TeamModel teamReceive);
-
-
-    // =======================辅助技能 部分===========================
-
-    // 辅助效果的类型
-    int ASSIST_TYPE_NONE = 0;                // 辅助效果：无
-    int ASSIST_TYPE_SPEED_UP = 1;            // 辅助效果：速度提升
-    int ASSIST_TYPE_SPEED_DOWN = 2;          // 辅助效果：速度下降
-    int ASSIST_TYPE_ATTACT_UP = 3;           // 辅助效果：攻击提升
-    int ASSIST_TYPE_ATTACT_DOWN = 4;         // 辅助效果：攻击下降
-    int ASSIST_TYPE_DEFEND_UP = 5;           // 辅助效果：防御提升
-    int ASSIST_TYPE_DEFEND_DOWN = 6;         // 辅助效果：防御下降
-    int ASSIST_TYPE_STRENGTH_UP = 7;         // 辅助效果：力量提升
-    int ASSIST_TYPE_STRENGTH_DOWN = 8;       // 辅助效果：力量下降
-    int ASSIST_TYPE_INTELLECT_UP = 9;        // 辅助效果：智力提升
-    int ASSIST_TYPE_INTELLECT_DOWN = 10;     // 辅助效果：智力下降
-    int ASSIST_TYPE_DEXTERITY_UP = 11;       // 辅助效果：敏捷提升
-    int ASSIST_TYPE_DEXTERITY_DOWN = 12;     // 辅助效果：敏捷下降
-    int ASSIST_TYPE_PHYSIQUE_UP = 13;        // 辅助效果：体制提升
-    int ASSIST_TYPE_PHYSIQUE_DOWN = 14;      // 辅助效果：体质下降
-    int ASSIST_TYPE_SPIRIT_UP = 15;          // 辅助效果：精神提升
-    int ASSIST_TYPE_SPIRIT_DOWN = 16;        // 辅助效果：精神下降
-    int ASSIST_TYPE_FASCINATION_UP = 17;     // 辅助效果：魅力提升
-    int ASSIST_TYPE_FASCINATION_DOWN = 18;   // 辅助效果：魅力下降
-    int ASSIST_TYPE_LUCK_UP = 19;            // 辅助效果：幸运下降
-    int ASSIST_TYPE_LUCK_DOWN = 20;          // 辅助效果：幸运下降
 
     /**
      * 技能辅助
@@ -139,4 +98,19 @@ public interface Interface_Skill {
      * @param teamReceive   承受这个技能的队伍
      */
     void assist(BattlePerson personRelease, TeamModel teamReceive);
+    /**
+     * 技能恢复
+     *
+     * @param personRelease 释放技能的人
+     * @param teamReceive   承受这个技能的队伍
+     */
+    void recover(BattlePerson personRelease, TeamModel teamReceive);
+
+    /**
+     * 技能攻击
+     *
+     * @param personRelease 释放技能的人
+     * @param teamReceive   承受这个技能的队伍
+     */
+    void attack(BattlePerson personRelease, TeamModel teamReceive);
 }

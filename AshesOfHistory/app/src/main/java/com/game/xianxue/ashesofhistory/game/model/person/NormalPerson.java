@@ -1,23 +1,18 @@
 package com.game.xianxue.ashesofhistory.game.model.person;
 
-import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBattle;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 import com.game.xianxue.ashesofhistory.interfaces.Interface_Buff;
-import com.game.xianxue.ashesofhistory.utils.ShowUtils;
+import com.game.xianxue.ashesofhistory.interfaces.Interface_Person;
 
 import java.util.ArrayList;
 
 /**
  * 人物普通情况下的模型
- * 包含等级 经验 技能 属性 装备等
+ * 包含等级 经验 技能 面板属性 装备等
  */
-public class NormalPerson extends BasePerson implements Interface_Buff {
+public class NormalPerson extends BasePerson implements Interface_Buff, Interface_Person {
     private static final String TAG = "NormalPerson";
-
-    public static final int LEVEL_MAX = 25;        // 最高等级
-    public static final int LEVEL_MINI = 0;        // 最低等级
-    public static final int DEFAULT_ACTIVE_VALUES_MAX = 100;   //最大行动值，当行动值到达最大，就可以发动进攻
 
     /**
      * 7个基础属性
@@ -100,6 +95,8 @@ public class NormalPerson extends BasePerson implements Interface_Buff {
         this.spirit_Raw = basePerson.getSpirit_Raw();               // 原始精神
         this.fascination_Raw = basePerson.getFascination_Raw();     // 原始魅力
         this.luck_Raw = basePerson.getLuck_Raw();                   // 原始运气
+
+        setLevel(1);
     }
 
     /**
@@ -129,8 +126,18 @@ public class NormalPerson extends BasePerson implements Interface_Buff {
     }
 
     /**
-     * 刷新属性
-     * 在设置等级，穿了装备等操作之后需要刷新属性
+     * 刷新属性：在设置等级，穿了装备等操作之后需要刷新属性
+     * <p>
+     * 刷新的步骤是：
+     * 0.根据当前等级，计算人物当前的基础属性
+     * 1.计算buff,装备等 增加基础属性的固定增加
+     * 2.计算buff,装备等 基础属性浮动增加
+     * 3.通过0和1和2条 计算最终的基础属性
+     * <p>
+     * 4.由基础属性计算出面板属性
+     * 5.计算buff,装备等面板属性的固定增加
+     * 6.计算buff,装备等面板属性的浮动增加
+     * 7.通过4和5和6条 计算最终的面板属性
      */
     public void updateAttribute() {
         strength = getNewAttribute(strength_Raw, level);
@@ -179,7 +186,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff {
     private void AddPanelBuff() {
         if (buffPassive != null && buffPassive.size() > 0) {
 
-            // 面板屬性提高的比例
+            // 面板屬性在所有buff的影响下增幅的比例
             float physicDamageRate = 0;
             float magicDamageRate = 0;
             float realDamageRate = 0;
@@ -438,12 +445,12 @@ public class NormalPerson extends BasePerson implements Interface_Buff {
      * @param level
      */
     public void setLevel(int level) {
-        if (level <= LEVEL_MINI) {
-            this.level = LEVEL_MINI;
-        } else if (level <= LEVEL_MAX) {
+        if (level <= PERSON_LEVEL_MINI) {
+            this.level = PERSON_LEVEL_MINI;
+        } else if (level <= PERSON_LEVEL_MAX) {
             this.level = level;
         } else {
-            this.level = LEVEL_MAX;
+            this.level = PERSON_LEVEL_MAX;
         }
         updateAttribute();
     }
@@ -668,12 +675,12 @@ public class NormalPerson extends BasePerson implements Interface_Buff {
     }
 
 
-    public String getSkillLists() {
-        return skillLists;
+    public String getSkillStrings() {
+        return skillStrings;
     }
 
-    public void setSkillLists(String skillLists) {
-        this.skillLists = skillLists;
+    public void setSkillStrings(String skillStrings) {
+        this.skillStrings = skillStrings;
     }
 
     public String getName() {
@@ -697,7 +704,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff {
     }
 
     public ArrayList<SkillBase> getSkillArrays() {
-        if (skillLists == null || skillLists.length() < 1) {
+        if (skillStrings == null || skillStrings.length() < 1) {
             return null;
         } else {
 
@@ -754,7 +761,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff {
                 ", physique=" + physique +
                 ", spirit=" + spirit +
                 ", luck=" + luck +
-                ", skillLists='" + skillLists + '\'' +
+                ", skillStrings='" + skillStrings + '\'' +
                 ", skillArrays=" + skillArrays +
                 ", level=" + level +
                 ", HP=" + HP +
@@ -787,7 +794,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff {
                 ", physique=" + physique +
                 ", spirit=" + spirit +
                 ", luck=" + luck +
-                ", skillLists='" + skillLists + '\'' +
+                ", skillStrings='" + skillStrings + '\'' +
                 ", skillArrays=" + skillArrays +
                 ", level=" + level +
                 ", HP=" + HP +

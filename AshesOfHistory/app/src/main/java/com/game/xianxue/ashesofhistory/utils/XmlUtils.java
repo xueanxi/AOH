@@ -77,7 +77,7 @@ public class XmlUtils {
                     } else if (BasePersonColumn.fascination_Raw.equals(tag)) {
                         person.setFascination_Raw(Integer.valueOf(pullParser.nextText()));
                     } else if (BasePersonColumn.skill_lists_Raw.equals(tag)) {
-                        person.setSkillLists(pullParser.nextText());
+                        person.setSkillStrings(pullParser.nextText());
                     }
                     break;
                 case XmlPullParser.END_TAG:
@@ -106,7 +106,7 @@ public class XmlUtils {
         ArrayList<SkillBase> skillLists = null;
         XmlPullParser pullParser = Xml.newPullParser();
         pullParser.setInput(context.getAssets().open(SKILL_PAGE_TAG), "UTF-8");
-        int event = pullParser.getEventType();// 觸發第一個事件
+        int event = pullParser.getEventType();// 触发第一个事件
         long startTime = System.currentTimeMillis();
 
         while (event != XmlPullParser.END_DOCUMENT) {
@@ -125,7 +125,7 @@ public class XmlUtils {
                     } else if (SkillColumn.introduce.equals(tag)) {
                         skill.setIntroduce(pullParser.nextText());
                     } else if (SkillColumn.naturetype.equals(tag)) {
-                        skill.setNaturetype(Integer.valueOf(pullParser.nextText()));
+                        skill.setSkillNature(Integer.valueOf(pullParser.nextText()));
                     } else if (SkillColumn.skillType.equals(tag)) {
                         skill.setSkillType(Integer.valueOf(pullParser.nextText()));
                     } else if (SkillColumn.accuracyRate.equals(tag)) {
@@ -134,16 +134,14 @@ public class XmlUtils {
                         skill.setEffectRate(Float.valueOf(pullParser.nextText()));
                     } else if (SkillColumn.cdTime.equals(tag)) {
                         skill.setCdTime(Integer.valueOf(pullParser.nextText()));
-                    } else if (SkillColumn.time.equals(tag)) {
-                        skill.setTime(Integer.valueOf(pullParser.nextText()));
                     } else if (SkillColumn.range.equals(tag)) {
                         skill.setRange(Integer.valueOf(pullParser.nextText()));
                     } else if (SkillColumn.effectNumber.equals(tag)) {
                         skill.setEffectNumber(Integer.valueOf(pullParser.nextText()));
-                    } else if (SkillColumn.level.equals(tag)) {
-                        skill.setLevel(Integer.valueOf(pullParser.nextText()));
-                    } else if (SkillColumn.effectUp.equals(tag)) {
-                        skill.setEffectUp(Float.valueOf(pullParser.nextText()));
+                    } else if (SkillColumn.criteRate.equals(tag)) {
+                        skill.setCriteRate(Float.valueOf(pullParser.nextText()));
+                    } else if (SkillColumn.damagePenetrate.equals(tag)) {
+                        skill.setDamagePenetrate(Float.valueOf(pullParser.nextText()));
                     } else if (SkillColumn.effectCamp.equals(tag)) {
                         skill.setEffectCamp(Integer.valueOf(pullParser.nextText()));
                     } else if (SkillColumn.effectTarget.equals(tag)) {
@@ -151,15 +149,30 @@ public class XmlUtils {
                     } else if (SkillColumn.damageType.equals(tag)) {
                         skill.setDamageType(Integer.valueOf(pullParser.nextText()));
                     } else if (SkillColumn.damageConstant.equals(tag)) {
-                        skill.setDamageConstant(Integer.valueOf(pullParser.nextText()));
+                        skill.setDamageConstant(Float.valueOf(pullParser.nextText()));
                     } else if (SkillColumn.damageFluctuate.equals(tag)) {
                         skill.setDamageFluctuate(Float.valueOf(pullParser.nextText()));
                     } else if (SkillColumn.assisteffect.equals(tag)) {
-                        skill.setAssisteffect(pullParser.nextText());
+                        skill.setAssistEffect(pullParser.nextText());
+                    } else if (SkillColumn.levelUpFluctuate.equals(tag)) {
+                        skill.setLevelUpFluctuate(Float.valueOf(pullParser.nextText()));
+                    } else if (SkillColumn.levelUpConstant.equals(tag)) {
+                        skill.setLevelUpConstant(Float.valueOf(pullParser.nextText()));
+                    } else if (SkillColumn.levelUpEffectRate.equals(tag)) {
+                        skill.setLevelUpEffectRate(Float.valueOf(pullParser.nextText()));
+                    } else if (SkillColumn.levelUpNumber.equals(tag)) {
+                        skill.setLevelUpNumber(Float.valueOf(pullParser.nextText()));
+                    } else if (SkillColumn.levelUpPenetrate.equals(tag)) {
+                        skill.setLevelUpPenetrate(Float.valueOf(pullParser.nextText()));
+                    } else if (SkillColumn.levelUpRange.equals(tag)) {
+                        skill.setLevelUpRange(Float.valueOf(pullParser.nextText()));
+                    }else if (SkillColumn.levelUpCDTime.equals(tag)) {
+                        skill.setLevelUpCDTime(Float.valueOf(pullParser.nextText()));
                     }
                     break;
                 case XmlPullParser.END_TAG:
                     if ("item".equals(pullParser.getName())) {
+                        SimpleLog.logd("SkillDataManager","skill "+skill);
                         skillLists.add(skill);
                         skill = null;
                     }
