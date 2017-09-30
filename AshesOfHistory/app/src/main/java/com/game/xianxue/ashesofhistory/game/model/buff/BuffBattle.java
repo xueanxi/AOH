@@ -19,6 +19,31 @@ public class BuffBattle extends BuffBase implements Interface_Buff {
         this.name = base.name;                      // buff名字
         this.introduce = base.introduce;            // buff说明
         this.buff_nature = base.buff_nature;        // buff的性质   (0:被动buff 1:主动buff)
+        this.buff_type = base.buff_type;            // buff类型     (0：只触发一次 1：时间内每回合触发一次)
+        this.time = base.time;                      // buff持续时间
+        this.range = base.range;                    // buff的影响范围
+        this.level_up_range = base.level_up_range;              // 每升一级浮动部分的提升
+        this.level_up_time = base.level_up_time;                // 每升一级浮动部分的提升
+
+        this.sbuff_effect = base.sbuff_effect;        // buff的效果
+        this.sbuff_constant = base.sbuff_constant;    // buff的固定部分
+        this.sbuff_fluctuate = base.sbuff_fluctuate;  // buff的浮动部分
+        this.slevel_up_constant = base.slevel_up_constant;        // 每升一级固定部分的提升
+        this.slevel_up_fluctuate = base.slevel_up_fluctuate;      // 每升一级浮动部分的提升
+
+        // 把 String 转化为 int[] / float[]
+        this.buff_effect = TextUtils.getIntArrayFromString(sbuff_effect);
+        this.buff_constant = TextUtils.getFloatArrayFromString(sbuff_constant);
+        this.buff_fluctuate = TextUtils.getFloatArrayFromString(sbuff_fluctuate);
+        this.level_up_constant = TextUtils.getFloatArrayFromString(slevel_up_constant);
+        this.level_up_fluctuate = TextUtils.getFloatArrayFromString(slevel_up_fluctuate);
+    }
+
+    public BuffBattle(BuffBase base,int level) {
+        this.buffId = base.buffId;                  // buffid
+        this.name = base.name;                      // buff名字
+        this.introduce = base.introduce;            // buff说明
+        this.buff_nature = base.buff_nature;        // buff的性质   (0:被动buff 1:主动buff)
         this.buff_type = base.buff_type;            // buff类型    （分为攻击buff，辅助buff，恢复buff）
         this.time = base.time;                      // buff持续时间
         this.range = base.range;                    // buff的影响范围
@@ -37,6 +62,8 @@ public class BuffBattle extends BuffBase implements Interface_Buff {
         this.buff_fluctuate = TextUtils.getFloatArrayFromString(sbuff_fluctuate);
         this.level_up_constant = TextUtils.getFloatArrayFromString(slevel_up_constant);
         this.level_up_fluctuate = TextUtils.getFloatArrayFromString(slevel_up_fluctuate);
+
+        setLevel(level);
     }
 
     public int getLevel() {

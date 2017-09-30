@@ -53,7 +53,7 @@ public class SkillDataManager {
                 + SkillColumn.levelUpCDTime + " ,"
                 + SkillColumn.levelUpPenetrate + " )"
                 + " VALUES ("
-                + " '%d','%s','%s','%d','%d','%f','%f','%f','%d','%d','%d','%d','%d','%d','%d','%f','%f','%s','%f','%f','%f','%f','%f','%f','%f'"
+                + " '%d','%s','%s','%d','%d','%f','%f','%f','%d','%d','%d','%d','%d','%d','%d','%f','%f','%d','%f','%f','%f','%f','%f','%f','%f'"
                 + " )";
 
         String result = String.format(format,
@@ -145,7 +145,7 @@ public class SkillDataManager {
                 skill.setDamageType(c.getInt(c.getColumnIndex(SkillColumn.damageType)));
                 skill.setDamageConstant(c.getFloat(c.getColumnIndex(SkillColumn.damageConstant)));
                 skill.setDamageFluctuate(c.getFloat(c.getColumnIndex(SkillColumn.damageFluctuate)));
-                skill.setAssistEffect(c.getString(c.getColumnIndex(SkillColumn.assisteffect)));
+                skill.setAssistEffect(c.getInt(c.getColumnIndex(SkillColumn.assisteffect)));
                 skill.setCriteRate(c.getFloat(c.getColumnIndex(SkillColumn.criteRate)));
                 skill.setDamagePenetrate(c.getFloat(c.getColumnIndex(SkillColumn.damagePenetrate)));
                 skill.setLevelUpConstant(c.getFloat(c.getColumnIndex(SkillColumn.levelUpConstant)));
@@ -190,7 +190,7 @@ public class SkillDataManager {
         skill.setDamageType(c.getInt(c.getColumnIndex(SkillColumn.damageType)));
         skill.setDamageConstant(c.getFloat(c.getColumnIndex(SkillColumn.damageConstant)));
         skill.setDamageFluctuate(c.getFloat(c.getColumnIndex(SkillColumn.damageFluctuate)));
-        skill.setAssistEffect(c.getString(c.getColumnIndex(SkillColumn.assisteffect)));
+        skill.setAssistEffect(c.getInt(c.getColumnIndex(SkillColumn.assisteffect)));
         skill.setCriteRate(c.getFloat(c.getColumnIndex(SkillColumn.criteRate)));
         skill.setDamagePenetrate(c.getFloat(c.getColumnIndex(SkillColumn.damagePenetrate)));
         skill.setLevelUpConstant(c.getFloat(c.getColumnIndex(SkillColumn.levelUpConstant)));

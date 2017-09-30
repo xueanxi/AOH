@@ -163,7 +163,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + SkillColumn.damageConstant + " INTEGER,"
                 + SkillColumn.damageFluctuate + " REAL,"
                 + SkillColumn.damagePenetrate + " REAL,"
-                + SkillColumn.assisteffect + " TEXT,"
+                + SkillColumn.assisteffect + " INTEGER,"
                 + SkillColumn.effectTarget + " INTEGER,"
                 + SkillColumn.levelUpConstant + " REAL,"
                 + SkillColumn.levelUpFluctuate + " REAL,"

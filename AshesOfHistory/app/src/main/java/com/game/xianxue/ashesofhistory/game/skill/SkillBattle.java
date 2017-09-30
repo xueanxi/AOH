@@ -132,19 +132,4 @@ public class SkillBattle extends SkillBase implements Interface_Skill {
             this.recoverTime--;
         }
     }
-
-    @Override
-    public void assist(BattlePerson personRelease, TeamModel teamReceive) {
-
-    }
-
-    @Override
-    public void recover(BattlePerson personRelease, TeamModel teamReceive) {
-
-    }
-
-    @Override
-    public void attack(BattlePerson personRelease, TeamModel teamReceive) {
-
-    }
 }

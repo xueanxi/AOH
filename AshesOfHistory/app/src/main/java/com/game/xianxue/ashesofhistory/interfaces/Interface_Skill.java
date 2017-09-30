@@ -91,26 +91,26 @@ public interface Interface_Skill {
     // =======================恢复技能 部分===========================
 
 
-    /**
+/*    *//**
      * 技能辅助
      *
      * @param personRelease 释放技能的人
      * @param teamReceive   承受这个技能的队伍
-     */
+     *//*
     void assist(BattlePerson personRelease, TeamModel teamReceive);
-    /**
+    *//**
      * 技能恢复
      *
      * @param personRelease 释放技能的人
      * @param teamReceive   承受这个技能的队伍
-     */
+     *//*
     void recover(BattlePerson personRelease, TeamModel teamReceive);
 
-    /**
+    *//**
      * 技能攻击
      *
      * @param personRelease 释放技能的人
      * @param teamReceive   承受这个技能的队伍
-     */
-    void attack(BattlePerson personRelease, TeamModel teamReceive);
+     *//*
+    void attack(BattlePerson personRelease, TeamModel teamReceive);*/
 }

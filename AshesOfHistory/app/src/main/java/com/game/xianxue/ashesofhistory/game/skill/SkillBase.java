@@ -8,7 +8,7 @@ public class SkillBase{
     protected int skillId;                             // 技能id,唯一标识一个技能
     protected String name;                             // 技能名字
     protected String introduce;                        // 技能说明
-    protected int skillNature;                         // 技能的性质(分为主动技能和被动技能)
+    protected int skillNature;                         // 技能的性质(0主动 1：被动)
     protected int skillType;                           // 技能类型分为攻击技能，辅助技能，恢复技能）
     protected float accuracyRate;                      // 技能命中率(技能命中率 = 人物命中率 * 技能命中率 Ex：-1 则表示必中)
     protected float criteRate;                         // 技能暴击率(技能触发暴击的概率 = 人物暴击率 * 技能暴击率 Ex：-1表示必暴击)
@@ -19,10 +19,10 @@ public class SkillBase{
     protected int effectCamp;                          // 技能的目标阵营(0对敌人 1对友方)
     protected int effectTarget;                        // 技能选择作用在什么的人物上面(0范围内随机目标 1血最少 2血最多 3最近 4最远)
     protected int damageType;                          // 技能伤害类型(0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实)
-    protected float damageConstant = 0;                  // 技能伤害 固定部分(一个技能的伤害为 技能固定部分 + 人物能力*浮动部分)
+    protected float damageConstant = 0;                // 技能伤害 固定部分(一个技能的伤害为 技能固定部分 + 人物能力*浮动部分)
     protected float damageFluctuate = 0;               // 技能伤害 浮动部分(一个技能的伤害为 技能固定部分 + 人物能力*浮动部分)
     protected float damagePenetrate;                   // 伤害穿透率
-    protected String assistEffect;                     // 技能的额外效果，指向buff的id
+    protected int assistEffect;                        // 技能的额外效果，指向buff的id
 
     // 技能升级相关
     protected float levelUpConstant;                   // 技能固定伤害部分升级提升
@@ -155,11 +155,11 @@ public class SkillBase{
         this.damageFluctuate = damageFluctuate;
     }
 
-    public String getAssistEffect() {
+    public int getAssistEffect() {
         return assistEffect;
     }
 
-    public void setAssistEffect(String assistEffect) {
+    public void setAssistEffect(int assistEffect) {
         this.assistEffect = assistEffect;
     }
 

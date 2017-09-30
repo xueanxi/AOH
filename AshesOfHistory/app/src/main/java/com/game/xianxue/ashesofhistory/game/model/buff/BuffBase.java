@@ -9,7 +9,7 @@ public class BuffBase {
     protected String name;                      // buff名字
     protected String introduce;                 // buff说明
     protected int buff_nature;                  // buff的性质   (分为主动buff和被动buff)
-    protected int buff_type;                    // buff类型    （分为攻击buff，辅助buff，恢复buff）
+    protected int buff_type;                    // buff类型     (技能类型：0：只触发一次 1：时间内每回合触发一次)
     protected int time;                         // buff持续时间
     protected int range;                        // buff的影响范围
     protected float level_up_range;             // 每升一级 作用范围 的提升

@@ -69,12 +69,9 @@ public class BattlePerson extends NormalPerson {
         this.spirit_Raw = person.getSpirit_Raw();               // 原始精神
         this.fascination_Raw = person.getFascination_Raw();     // 原始魅力
         this.luck_Raw = person.getLuck_Raw();                   // 原始运气
-
-        this.level = person.level;
-
-        setLevel(level);
-
         this.activeValues = 0;
+
+        setLevel(person.level);
     }
 
     /**

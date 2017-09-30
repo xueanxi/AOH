@@ -1,9 +1,12 @@
 package com.game.xianxue.ashesofhistory.game.model.person;
 
+import com.game.xianxue.ashesofhistory.database.BuffDataManager;
+import com.game.xianxue.ashesofhistory.game.model.buff.BuffBase;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBattle;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 import com.game.xianxue.ashesofhistory.interfaces.Interface_Buff;
 import com.game.xianxue.ashesofhistory.interfaces.Interface_Person;
+import com.game.xianxue.ashesofhistory.interfaces.Interface_Skill;
 
 import java.util.ArrayList;
 
@@ -11,7 +14,7 @@ import java.util.ArrayList;
  * 人物普通情况下的模型
  * 包含等级 经验 技能 面板属性 装备等
  */
-public class NormalPerson extends BasePerson implements Interface_Buff, Interface_Person {
+public class NormalPerson extends BasePerson implements Interface_Buff, Interface_Person, Interface_Skill {
     private static final String TAG = "NormalPerson";
 
     /**
@@ -26,7 +29,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
     public int intellect;      // 智力  （影响 大量魔法伤害、少量魔抗）
     public int dexterity;      // 敏捷  （影响 速度、中量物理伤害、真实伤害、大量命中率、大量闪避、大量速度、中量暴击率）
     public int physique;       // 体魄  （影响 大量HP、大量护甲、少量魔抗、大量生命恢复、少量魅力、少量格档）
-    public int spirit;         // 精神  （影响 大量魔抗，少量魔法伤害，少量暴击率，少量闪避概率，少量格档概率、少量生命恢复、少量魔法伤害）
+    public int spirit;         // 精神  （影响 大量魔抗，少量魔法伤害，少量暴击率，少量闪避概率，少量格档概率、少量生命恢复）
     //以下2个属性，不会随等级提高
     public int luck;           // 运气  （影响 暴击率、被暴击率、格档概率、闪避概率、命中率、优秀装备和物品的爆率）
     public int fascination;    // 魅力  （影响 收服武将的概率、商品购买和出售的价格、增加对异性的伤害、增加对异性的闪避）
@@ -45,8 +48,8 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
     public int experience_max;     // 升级总经验
 
     ArrayList<SkillBase> skillArrays = null;       // 当前拥有的技能，包括天赋技能 和 其他途径获得的技能
-    ArrayList<BuffBattle> buffActive = null;       // 主动加持的buff
-    ArrayList<BuffBattle> buffPassive = null;      // 被动加持的buff
+    ArrayList<BuffBattle> buffActive = null;       // 主动加持的buff(指战斗中，使用技能加持的)
+    ArrayList<BuffBattle> buffPassive = null;      // 被动加持的buff（被动技能加持的）
 
     /**
      * 面板属性
@@ -69,6 +72,9 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
     public int hpRestore;          // 生命恢复
     public int actionSpeed;        // 行动速度，行动速度越快,积累行动值的速度越快，当积累的行动值到达最大行动值就可以发动进攻
     public int actionValuesMax;    // 最大行动值，这个值越小，每次进攻需要的行动值越少，一般情况下默认为 DEFAULT_ACTIVE_VALUES_MAX,可以通过坐骑或者技能缩短
+    public int skillRate;          // 技能触发几率（原来一次行动中 普通攻击概率为40% 技能发动概率为60%)
+    public int attackRangeUp;      // 攻击范围增加(这个值只能从 技能和装备 获得提升)
+    public int attackNumberUp;     // 攻击的人数增加(这个值只能从 技能和装备 获得提升)
 
     public NormalPerson() {
 
@@ -96,7 +102,48 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         this.fascination_Raw = basePerson.getFascination_Raw();     // 原始魅力
         this.luck_Raw = basePerson.getLuck_Raw();                   // 原始运气
 
+        // 初始化技能
+        this.skillStrings = basePerson.skillStrings;
+        initSkill(basePerson.skillLists);
+
+
         setLevel(1);
+    }
+
+    /**
+     * 进行技能的初始化，包括以下操作
+     * 1：从人物的技能字符串里面解析出技能，添加到 skillLists
+     * 2：把被动技能挑选出来，添加到 buffPassive
+     * @param baseSkillList
+     */
+    private void initSkill(ArrayList<SkillBean> baseSkillList) {
+        if (baseSkillList != null && baseSkillList.size() != 0) {
+            this.skillLists = baseSkillList;
+        } else {
+            parseSkillList();
+        }
+        // 把被动技能挑出来
+        SkillBean bean = null;
+        BuffBase buffBase = null;
+        BuffBattle buffBattle = null;
+        buffPassive = new ArrayList<BuffBattle>();
+        for (int i = 0; i < this.skillLists.size(); i++) {
+            bean = skillLists.get(i);
+            if (SKILL_NATURE_PASSIVITY != bean.getSkillBase().getSkillNature()) continue;
+            int buffId = bean.getSkillBase().getAssistEffect();
+            if (buffId == 0) continue;
+            buffBase = BuffDataManager.getBuffFromDataBaseById(buffId);
+            if (buffBase == null) continue;
+            buffBattle = new BuffBattle(buffBase);
+            // 通过人物的等级和技能成长来计算，当前技能的等级
+            int buffLevelup = (level - bean.unLockLevel)/bean.grow;
+            if(buffLevelup >= 0){
+                buffBattle.setLevel(bean.level + buffLevelup);
+            }else{
+                buffBattle.setLevel(bean.level);
+            }
+            buffPassive.add(buffBattle);
+        }
     }
 
     /**
@@ -173,7 +220,6 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
 
         // TODO: 8/29/17 处理 面板属性 的效果
         AddPanelBuff();
-
     }
 
     /**
@@ -204,6 +250,9 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
             float actionValuesMaxRate = 0;
             float reduceBeCriteRateRate = 0;
             float HPRate = 0;
+            float skillRateRate = 0;
+            float attackNumberRate = 0;
+            float attackRangeRate = 0;
 
             // 遍历buff数组，把buff的加成加到属性里面
             for (BuffBattle buff : buffPassive) {
@@ -282,6 +331,18 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
                                 HP += buff.getBuff_constant()[i];
                                 HPRate += buff.getBuff_fluctuate()[i];
                                 break;
+                            case BUFF_SKILL_RATE:
+                                skillRate +=buff.getBuff_constant()[i];
+                                skillRateRate +=buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_ATTACK_NUMBER:
+                                attackNumberUp +=buff.getBuff_constant()[i];
+                                attackNumberRate +=buff.getBuff_fluctuate()[i];
+                                break;
+                            case BUFF_ATTACK_RANGE:
+                                attackRangeUp +=buff.getBuff_constant()[i];
+                                attackRangeRate +=buff.getBuff_fluctuate()[i];
+                                break;
                         }
                     }
                 }
@@ -304,6 +365,9 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
                 actionValuesMax = (int) (actionValuesMax * (1f + actionValuesMaxRate));
                 reduceBeCriteRate = (int) (reduceBeCriteRate * (1f + reduceBeCriteRateRate));
                 HP = (int) (HP * (1f + HPRate));
+                skillRate = (int) (skillRate * (1f + HPRate));
+                attackNumberUp = (int) (attackNumberUp * (1f + HPRate));
+                attackRangeUp = (int) (attackRangeUp * (1f + HPRate));
             }
         }
     }

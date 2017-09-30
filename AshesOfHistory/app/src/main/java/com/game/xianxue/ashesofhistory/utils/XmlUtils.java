@@ -153,7 +153,7 @@ public class XmlUtils {
                     } else if (SkillColumn.damageFluctuate.equals(tag)) {
                         skill.setDamageFluctuate(Float.valueOf(pullParser.nextText()));
                     } else if (SkillColumn.assisteffect.equals(tag)) {
-                        skill.setAssistEffect(pullParser.nextText());
+                        skill.setAssistEffect(Integer.valueOf(pullParser.nextText()));
                     } else if (SkillColumn.levelUpFluctuate.equals(tag)) {
                         skill.setLevelUpFluctuate(Float.valueOf(pullParser.nextText()));
                     } else if (SkillColumn.levelUpConstant.equals(tag)) {
