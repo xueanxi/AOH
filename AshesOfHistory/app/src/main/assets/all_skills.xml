@@ -311,7 +311,7 @@
     </item>
 
     <item>
-        <skill_id>300</skill_id><!--技能ID,唯一标识这个技能-->
+        <skill_id>301</skill_id><!--技能ID,唯一标识这个技能-->
         <name>水漫</name><!--技能名字-->
         <introduce>进行全场的魔法攻击</introduce><!--技能描述-->
         <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
@@ -338,20 +338,20 @@
     </item>
 
     <item>
-        <skill_id>300</skill_id><!--技能ID,唯一标识这个技能-->
-        <name>引雷</name><!--技能名字-->
-        <introduce>引导天雷，攻击生命最低的敌人进行必中的魔法攻击</introduce><!--技能描述-->
+        <skill_id>302</skill_id><!--技能ID,唯一标识这个技能-->
+        <name>引雷术</name><!--技能名字-->
+        <introduce>引导天雷，对生命最低的敌人进行必中的魔法攻击</introduce><!--技能描述-->
         <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <damage_type>1</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
-        <damage_constant>30</damage_constant><!--技能伤害固定部分-->
+        <damage_type>1</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实 6当前生命的百分比魔法 7当前生命的百分比物理伤害-->
+        <damage_constant>50</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
         <damage_penetrate>0</damage_penetrate><!--穿透率 浮点数-->
         <accuracy_rate>-1</accuracy_rate><!--技能命中率 = 人物命中率 * 技能命中率 Ex：如果accuracy_rate = -1 则表示必中-->
         <crite_rate>0</crite_rate><!--技能暴击率 技能触发暴击的概率 = 人物暴击率 * 技能暴击率-->
         <cd_time>1</cd_time><!--技能冷却时间0～+ -->
         <range>0</range><!--技能攻击范围，0～9 （目标是敌人时0表示全场AOE，目标是友军0表示对自己释放） -->
-        <effect_number>0</effect_number><!--技能攻击人数，0～10 （0的意思对全场AOE） -->
+        <effect_number>1</effect_number><!--技能攻击人数，0～10 （0的意思对全场AOE） -->
         <effect_camp>0</effect_camp><!--技能目标阵营 0对敌人 1对友方-->
         <effect_target>0</effect_target><!--技能作用目标 0随机目标 1血最少的 2血最多的 3最进的 4最远的-->
         <assist_effect>200</assist_effect><!-- 技能辅助效果 buff的id-->
