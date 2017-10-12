@@ -1,12 +1,15 @@
 package com.game.xianxue.ashesofhistory.game.model.person;
 
 import com.game.xianxue.ashesofhistory.database.BuffDataManager;
+import com.game.xianxue.ashesofhistory.database.SkillDataManager;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBase;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBattle;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
+import com.game.xianxue.ashesofhistory.game.skill.SkillBattle;
 import com.game.xianxue.ashesofhistory.interfaces.Interface_Buff;
 import com.game.xianxue.ashesofhistory.interfaces.Interface_Person;
 import com.game.xianxue.ashesofhistory.interfaces.Interface_Skill;
+import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 
 import java.util.ArrayList;
 
@@ -47,9 +50,10 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
     public int experience;         // 拥有经验
     public int experience_max;     // 升级总经验
 
-    ArrayList<SkillBase> skillArrays = null;       // 当前拥有的技能，包括天赋技能 和 其他途径获得的技能
-    ArrayList<BuffBattle> buffActive = null;       // 主动加持的buff(指战斗中，使用技能加持的)
-    ArrayList<BuffBattle> buffPassive = null;      // 被动加持的buff（被动技能加持的）
+    ArrayList<SkillBase> skillArrays = null;            // 当前拥有的技能，包括所有技能
+    ArrayList<SkillBattle> skillActivesLists = null;    // 战斗中可以主动释放的技能
+    ArrayList<BuffBattle> buffActive = null;            // 主动加持的buff(指战斗中，使用技能加持的)
+    ArrayList<BuffBattle> buffPassive = null;           // 被动加持的buff（被动技能加持的）
 
     /**
      * 面板属性
@@ -72,7 +76,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
     public int hpRestore;          // 生命恢复
     public int actionSpeed;        // 行动速度，行动速度越快,积累行动值的速度越快，当积累的行动值到达最大行动值就可以发动进攻
     public int actionValuesMax;    // 最大行动值，这个值越小，每次进攻需要的行动值越少，一般情况下默认为 DEFAULT_ACTIVE_VALUES_MAX,可以通过坐骑或者技能缩短
-    public int skillRate;          // 技能触发几率（原来一次行动中 普通攻击概率为40% 技能发动概率为60%)
+    public int skillRate;          // 额外技能触发几率（默认情况下一次行动中 普通攻击概率为50% 技能发动概率为50%，Ex:当skillRate=0.1时,技能概率为0.5+0.1=0.6)
     public int attackRangeUp;      // 攻击范围增加(这个值只能从 技能和装备 获得提升)
     public int attackNumberUp;     // 攻击的人数增加(这个值只能从 技能和装备 获得提升)
 
@@ -101,49 +105,13 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         this.spirit_Raw = basePerson.getSpirit_Raw();               // 原始精神
         this.fascination_Raw = basePerson.getFascination_Raw();     // 原始魅力
         this.luck_Raw = basePerson.getLuck_Raw();                   // 原始运气
+        this.skillStrings = basePerson.skillStrings;
 
         // 初始化技能
-        this.skillStrings = basePerson.skillStrings;
-        initSkill(basePerson.skillLists);
-
-
         setLevel(1);
-    }
 
-    /**
-     * 进行技能的初始化，包括以下操作
-     * 1：从人物的技能字符串里面解析出技能，添加到 skillLists
-     * 2：把被动技能挑选出来，添加到 buffPassive
-     * @param baseSkillList
-     */
-    private void initSkill(ArrayList<SkillBean> baseSkillList) {
-        if (baseSkillList != null && baseSkillList.size() != 0) {
-            this.skillLists = baseSkillList;
-        } else {
-            parseSkillList();
-        }
-        // 把被动技能挑出来
-        SkillBean bean = null;
-        BuffBase buffBase = null;
-        BuffBattle buffBattle = null;
-        buffPassive = new ArrayList<BuffBattle>();
-        for (int i = 0; i < this.skillLists.size(); i++) {
-            bean = skillLists.get(i);
-            if (SKILL_NATURE_PASSIVITY != bean.getSkillBase().getSkillNature()) continue;
-            int buffId = bean.getSkillBase().getAssistEffect();
-            if (buffId == 0) continue;
-            buffBase = BuffDataManager.getBuffFromDataBaseById(buffId);
-            if (buffBase == null) continue;
-            buffBattle = new BuffBattle(buffBase);
-            // 通过人物的等级和技能成长来计算，当前技能的等级
-            int buffLevelup = (level - bean.unLockLevel)/bean.grow;
-            if(buffLevelup >= 0){
-                buffBattle.setLevel(bean.level + buffLevelup);
-            }else{
-                buffBattle.setLevel(bean.level);
-            }
-            buffPassive.add(buffBattle);
-        }
+        // 刷新属性
+        updateAttribute();
     }
 
     /**
@@ -168,8 +136,59 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         this.spirit_Raw = basePerson.getSpirit_Raw();               // 原始精神
         this.fascination_Raw = basePerson.getFascination_Raw();     // 原始魅力
         this.luck_Raw = basePerson.getLuck_Raw();                   // 原始运气
-        // 设置等级，同时刷新属性
+        this.skillStrings = basePerson.skillStrings;
+
+        // 初始化技能
         setLevel(level);
+        initSkill(basePerson.skillLists);
+
+        // 刷新属性
+        updateAttribute();
+    }
+
+    /**
+     * 进行技能的初始化，包括以下操作
+     * 1：从人物的技能字符串里面解析出技能，添加到 skillLists
+     * 2：把被动技能挑选出来，添加到 buffPassive
+     *
+     * @param baseSkillList
+     */
+    protected void initSkill(ArrayList<SkillBean> baseSkillList) {
+        if (baseSkillList != null && baseSkillList.size() != 0) {
+            this.skillLists = baseSkillList;
+        } else {
+            parseSkillList();
+        }
+
+        SkillBean skillBean = null;
+        BuffBase buffBase = null;
+        BuffBattle buffBattle = null;
+        buffPassive = new ArrayList<BuffBattle>();
+        skillActivesLists = new ArrayList<SkillBattle>();
+
+        for (int i = 0; i < this.skillLists.size(); i++) {
+            skillBean = skillLists.get(i);
+            // 如果人物等级小于技能的解锁等级，则此技能还不能使用
+            if (this.level < skillBean.getUnLockLevel()) continue;
+            // 把技能根据 主动技能和被动技能分类 初始化到变量里面
+            if (SKILL_NATURE_ACTIVE == skillBean.getSkill().getSkillNature()) {
+                // 处理主动技能
+                int skillID = skillBean.getSkillID();
+                if (skillID == 0) continue;
+                SkillBase skillBase = SkillDataManager.getSkillFromDataBaseById(skillID);
+                if(skillBase == null) continue;
+                SkillBattle skillBattle = new SkillBattle(skillBase, skillBean.getCurrentSkillLevel(this.level));
+                skillActivesLists.add(skillBattle);
+            } else {
+                // 处理被动技能
+                int buffId = skillBean.getSkill().getAssistEffect();
+                if (buffId == 0) continue;
+                buffBase = BuffDataManager.getBuffFromDataBaseById(buffId);
+                if (buffBase == null) continue;
+                buffBattle = new BuffBattle(buffBase, skillBean.getCurrentSkillLevel(this.level));
+                buffPassive.add(buffBattle);
+            }
+        }
     }
 
     /**
@@ -332,16 +351,16 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
                                 HPRate += buff.getBuff_fluctuate()[i];
                                 break;
                             case BUFF_SKILL_RATE:
-                                skillRate +=buff.getBuff_constant()[i];
-                                skillRateRate +=buff.getBuff_fluctuate()[i];
+                                skillRate += buff.getBuff_constant()[i];
+                                skillRateRate += buff.getBuff_fluctuate()[i];
                                 break;
                             case BUFF_ATTACK_NUMBER:
-                                attackNumberUp +=buff.getBuff_constant()[i];
-                                attackNumberRate +=buff.getBuff_fluctuate()[i];
+                                attackNumberUp += buff.getBuff_constant()[i];
+                                attackNumberRate += buff.getBuff_fluctuate()[i];
                                 break;
                             case BUFF_ATTACK_RANGE:
-                                attackRangeUp +=buff.getBuff_constant()[i];
-                                attackRangeRate +=buff.getBuff_fluctuate()[i];
+                                attackRangeUp += buff.getBuff_constant()[i];
+                                attackRangeRate += buff.getBuff_fluctuate()[i];
                                 break;
                         }
                     }
@@ -438,6 +457,49 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
     }
 
 
+    /**
+     * 设置等级的时候，同时初始化属性
+     *
+     * @param level
+     */
+    public void setLevelAndUpdate(int level) {
+        if (level <= PERSON_LEVEL_MINI) {
+            this.level = PERSON_LEVEL_MINI;
+        } else if (level <= PERSON_LEVEL_MAX) {
+            this.level = level;
+        } else {
+            this.level = PERSON_LEVEL_MAX;
+        }
+        updateAttribute();
+    }
+
+    /**
+     * 设置等级的时候，同时初始化属性
+     *
+     * @param level
+     */
+    public void setLevel(int level) {
+        if (level <= PERSON_LEVEL_MINI) {
+            this.level = PERSON_LEVEL_MINI;
+        } else if (level <= PERSON_LEVEL_MAX) {
+            this.level = level;
+        } else {
+            this.level = PERSON_LEVEL_MAX;
+        }
+    }
+
+    /**
+     * 通过等级和初始属性，获得升级之后的属性
+     *
+     * @param Initial
+     * @param level
+     * @return
+     */
+    protected int getNewAttribute(int Initial, int level) {
+        return (int) ((float) Initial + (Initial * 0.5f + aptitude * 1f) * (float) level);
+    }
+
+
     protected int calculateHp() {
         return strength * 3 + physique * 6 + spirit * 1;
     }
@@ -500,34 +562,6 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
 
     protected int calculateMaxActiveValues() {
         return 1000;
-    }
-
-
-    /**
-     * 设置等级的时候，同时初始化属性
-     *
-     * @param level
-     */
-    public void setLevel(int level) {
-        if (level <= PERSON_LEVEL_MINI) {
-            this.level = PERSON_LEVEL_MINI;
-        } else if (level <= PERSON_LEVEL_MAX) {
-            this.level = level;
-        } else {
-            this.level = PERSON_LEVEL_MAX;
-        }
-        updateAttribute();
-    }
-
-    /**
-     * 通过等级和初始属性，获得升级之后的属性
-     *
-     * @param Initial
-     * @param level
-     * @return
-     */
-    protected int getNewAttribute(int Initial, int level) {
-        return (int) ((float) Initial + (Initial * 0.5f + aptitude * 1f) * (float) level);
     }
 
     public float getAptitude() {
@@ -805,6 +839,94 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         this.buffPassive = buffPassive;
     }
 
+    public int getDatabase_id() {
+        return database_id;
+    }
+
+    public void setDatabase_id(int database_id) {
+        this.database_id = database_id;
+    }
+
+    public int getWeaponId() {
+        return weaponId;
+    }
+
+    public void setWeaponId(int weaponId) {
+        this.weaponId = weaponId;
+    }
+
+    public int getEquipId() {
+        return equipId;
+    }
+
+    public void setEquipId(int equipId) {
+        this.equipId = equipId;
+    }
+
+    public int getTreasureId() {
+        return treasureId;
+    }
+
+    public void setTreasureId(int treasureId) {
+        this.treasureId = treasureId;
+    }
+
+    public int getRiderId() {
+        return riderId;
+    }
+
+    public void setRiderId(int riderId) {
+        this.riderId = riderId;
+    }
+
+    public int getExperience() {
+        return experience;
+    }
+
+    public void setExperience(int experience) {
+        this.experience = experience;
+    }
+
+    public int getExperience_max() {
+        return experience_max;
+    }
+
+    public void setExperience_max(int experience_max) {
+        this.experience_max = experience_max;
+    }
+
+    public ArrayList<SkillBattle> getSkillActivesLists() {
+        return skillActivesLists;
+    }
+
+    public void setSkillActivesLists(ArrayList<SkillBattle> skillActivesLists) {
+        this.skillActivesLists = skillActivesLists;
+    }
+
+    public int getSkillRate() {
+        return skillRate;
+    }
+
+    public void setSkillRate(int skillRate) {
+        this.skillRate = skillRate;
+    }
+
+    public int getAttackRangeUp() {
+        return attackRangeUp;
+    }
+
+    public void setAttackRangeUp(int attackRangeUp) {
+        this.attackRangeUp = attackRangeUp;
+    }
+
+    public int getAttackNumberUp() {
+        return attackNumberUp;
+    }
+
+    public void setAttackNumberUp(int attackNumberUp) {
+        this.attackNumberUp = attackNumberUp;
+    }
+
     @Override
     public String toString() {
         return "PlayerModel{" +
@@ -850,6 +972,15 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
     }
 
     public String display() {
+        int buffPassiveSize = -1;
+        int skillActiveSize = -1;
+        if(buffPassive != null){
+            buffPassiveSize = buffPassive.size();
+        }
+        if(skillActivesLists != null){
+            skillActiveSize = skillActivesLists.size();
+        }
+
         return "Player{" +
                 ", name='" + name + '\'' +
                 ", strength=" + strength +
@@ -861,6 +992,8 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
                 ", skillStrings='" + skillStrings + '\'' +
                 ", skillArrays=" + skillArrays +
                 ", level=" + level +
+                ", skillActive size =" + skillActiveSize +
+                ", buffPassive size =" + buffPassiveSize +
                 ", HP=" + HP +
                 ", experiencePoint=" + experiencePoint +
                 ", physicDamage=" + physicDamage +
@@ -880,5 +1013,10 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
                 ", hpRestore=" + hpRestore +
                 ", fascination=" + fascination +
                 '}';
+    }
+
+    public void showSkill() {
+        ShowUtils.showArrayLists(TAG,buffPassive);
+        ShowUtils.showArrayLists(TAG,skillActivesLists);
     }
 }

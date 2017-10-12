@@ -12,9 +12,9 @@ import java.util.ArrayList;
 /**
  * 基础人物数据管理类
  */
-public class BasePersonManager {
+public class PersonDataManager {
 
-    private static final String TAG = "BasePersonManager";
+    private static final String TAG = "PersonDataManager";
 
     /**
      * 把对象转化为可以插入数据库的SQL语句
@@ -139,6 +139,7 @@ public class BasePersonManager {
                 person.setAptitude(c.getInt(c.getColumnIndex(BasePersonColumn.aptitude)));
                 person.setLuck_Raw(c.getInt(c.getColumnIndex(BasePersonColumn.luck_Raw)));
                 person.setFascination_Raw(c.getInt(c.getColumnIndex(BasePersonColumn.fascination_Raw)));
+                person.setSkillStrings(c.getString(c.getColumnIndex(BasePersonColumn.skill_lists_Raw)));
                 lists.add(person);
             }
         }
@@ -169,6 +170,7 @@ public class BasePersonManager {
             person.setAptitude(c.getInt(c.getColumnIndex(BasePersonColumn.aptitude)));
             person.setLuck_Raw(c.getInt(c.getColumnIndex(BasePersonColumn.luck_Raw)));
             person.setFascination_Raw(c.getInt(c.getColumnIndex(BasePersonColumn.fascination_Raw)));
+            person.setSkillStrings(c.getString(c.getColumnIndex(BasePersonColumn.skill_lists_Raw)));
         }
         return person;
     }

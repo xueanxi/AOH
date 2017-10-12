@@ -1,8 +1,11 @@
 package com.game.xianxue.ashesofhistory.game.engine;
 
 import com.game.xianxue.ashesofhistory.Log.BattleLog;
+import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.game.model.TeamModel;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
+import com.game.xianxue.ashesofhistory.game.skill.SkillBattle;
+import com.game.xianxue.ashesofhistory.interfaces.Interface_Skill;
 import com.game.xianxue.ashesofhistory.utils.RandomUtils;
 
 import java.util.ArrayList;
@@ -11,7 +14,7 @@ import java.util.ArrayList;
 /**
  * 战斗处理引擎 单例
  */
-public class BattleEngine {
+public class BattleEngine implements Interface_Skill{
     private static final String TAG = "BattleEngine";
     private static final Object mSyncObject = new Object();
     private static BattleEngine mInstance;
@@ -20,6 +23,7 @@ public class BattleEngine {
     // 常量
     private int TIME_INTERVAL_INCRESE_ACTIVE = 200;       // 人物每一次增加行动值的时间间隔,默认是 200 ms
     private int TIME_INTERVAL_PER_ATION = 2000;           // 人物进攻花费的时间，默认是 2000
+    private float RATE_SKILL_RELEASE = 0.5f;              // 人物正常情况下，技能释放的概率
 
     // 变量
     private boolean mIsBattleing = false;                // 是否正在战斗
@@ -148,6 +152,82 @@ public class BattleEngine {
             }
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void attack(BattlePerson actionPerson) {
+        // TODO: 5/25/17  这里要处理阵法的Buff效果，然后再进行攻击
+        // TODO: 5/25/17  这里要处理actionPlayer的技能释放效果
+        int actionCamp = actionPerson.getCamp();    // 当前行动的阵营
+        int attackNumber = 0;                       // 本次技能攻击的人数
+        int attackRange = 0;                        // 本次技能攻击的范围
+        int attackCamp = TeamModel.CAMP_NEUTRAL;    // 技能作用的阵营
+        SkillBattle skill = null;                   // 本次发动的技能
+
+        // TODO: 10/11/17 在处理技能释放之前，先处理BattlePerson 继承 NormalPerson
+        if(RandomUtils.isHappen(RATE_SKILL_RELEASE+actionPerson.getSkillRate())){
+            BattleLog.log(actionPerson.getName()+"准备进行技能攻击");
+            //skill = actionPlayer.gets
+        }else{
+            BattleLog.log(actionPerson.getName()+"准备进行普通攻击");
+            skill = actionPerson.getSkillActivesLists().get(0);
+            attackNumber = skill.getEffectNumber() + actionPerson.getAttackNumberUp();
+            attackRange = skill.getRange() + actionPerson.getAttackRangeUp();
+            ArrayList<BattlePerson> personsBeAttackList = new ArrayList<BattlePerson>();
+            TeamModel teamBeAttack = null;
+
+            // 计算本次技能作用的阵营
+            if(SKILL_CAMP_ENEMY == skill.getEffectCamp()){
+                if(actionCamp == TeamModel.CAMP_LEFT){
+                    attackCamp = TeamModel.CAMP_RIGHT;
+                }else if(actionCamp == TeamModel.CAMP_RIGHT){
+                    attackCamp = TeamModel.CAMP_LEFT;
+                }
+            } else if(SKILL_CAMP_FRIEND == skill.getEffectCamp()){
+                if(actionCamp == TeamModel.CAMP_LEFT){
+                    attackCamp = TeamModel.CAMP_LEFT;
+                }else if(actionCamp == TeamModel.CAMP_RIGHT){
+                    attackCamp = TeamModel.CAMP_RIGHT;
+                }
+            }
+
+            // 挑选出承受此次技能的阵营
+            if(t1.getmCamp() == attackCamp){
+                teamBeAttack = t1;
+            }else if(t2.getmCamp() == attackCamp){
+                teamBeAttack = t2;
+            }else{
+                SimpleLog.loge(TAG,"Error !!! 技能找不到攻击的阵营");
+            }
+
+            // 挑选出承受此次技能的人
+            if(attackRange == SKILL_RANGE_AOE){
+                // 技能是全场范围
+                personsBeAttackList = teamBeAttack.getMembersList();
+            }else if(attackRange == SKILL_RANGE_SELF){
+                // 技能只能对自己释放
+                personsBeAttackList.add(actionPerson);
+            }else{
+                // 技能范围是具体的数字，此时需要结合此技能的攻击人数进行双重判断
+                teamBeAttack.getLineup().
+            }
+        }
+
+
+        BattlePerson beAttackPlayer = getBeAttackedPlayer(beAttackedTeam);//挑选出被攻击的人员
+        if (beAttackPlayer == null) {
+            mIsBattleing = false;
+            BattleLog.log((actionCamp == TeamModel.CAMP_LEFT ? "敌方" : "我方") + " 已经没有可以战斗的人员。");
+        } else {
+            String actionPlayerName = actionPerson.getName();
+            String beAttackedPlayName = beAttackPlayer.getName();
+            BattleLog.log("=============" + actionPlayerName + " 对 " + beAttackedPlayName + "发起攻击" + "=============");
+            //随机判断对方进行格档还是闪避，
+            if (RandomUtils.flipCoin()) {
+                attackBlock(actionPerson, beAttackPlayer);
+            } else {
+                attackDodge(actionPerson, beAttackPlayer);
+            }
         }
     }
 

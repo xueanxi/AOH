@@ -21,11 +21,11 @@ public class SkillBean {
         this.skillID = skillID;
     }
 
-    public SkillBase getSkillBase() {
+    public SkillBase getSkill() {
         return skillBase;
     }
 
-    public void setSkillBase(SkillBase skillBase) {
+    public void setSkill(SkillBase skillBase) {
         this.skillBase = skillBase;
     }
 
@@ -51,6 +51,21 @@ public class SkillBean {
 
     public void setGrow(int grow) {
         this.grow = grow;
+    }
+
+    /**
+     * 根据人物当前的等级，返回 此技能成长之后的等级
+     * @param personLevel
+     * @return
+     */
+    public int getCurrentSkillLevel(int personLevel){
+        int skillLevel = 1;
+        if(personLevel <= this.unLockLevel){
+            skillLevel =  this.level;
+        }else{
+            skillLevel = this.level + (personLevel - this.unLockLevel)/this.grow;
+        }
+        return skillLevel;
     }
 
     @Override

@@ -5,7 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
-import com.game.xianxue.ashesofhistory.database.BasePersonManager;
+import com.game.xianxue.ashesofhistory.database.PersonDataManager;
 import com.game.xianxue.ashesofhistory.database.BuffDataManager;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBase;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBattle;
@@ -41,7 +41,7 @@ public class BuffTest {
     public void TestBasisBuff() {
         init();
 
-        BasePerson play1 = BasePersonManager.getPersonFromDataBaseByPinyin("guanyu");
+        BasePerson play1 = PersonDataManager.getPersonFromDataBaseByPinyin("guanyu");
         NormalPerson b1 = new NormalPerson(play1,1);
         SimpleLog.logd(TAG,"TestBasisBuff():before "+b1.display());
 
@@ -60,7 +60,7 @@ public class BuffTest {
 
 
         b1.setBuffPassive(bufflist);
-        b1.setLevel(1);
+        b1.setLevelAndUpdate(1);
 
         SimpleLog.logd(TAG,"TestBasisBuff():after "+b1.display());
     }
@@ -69,7 +69,7 @@ public class BuffTest {
     public void TestPanelBuff() {
         init();
 
-        BasePerson play1 = BasePersonManager.getPersonFromDataBaseByPinyin("zhangfei");
+        BasePerson play1 = PersonDataManager.getPersonFromDataBaseByPinyin("zhangfei");
         NormalPerson b1 = new NormalPerson(play1,1);
         SimpleLog.logd(TAG,"TestBasisBuff():before "+b1.display());
 
@@ -88,7 +88,7 @@ public class BuffTest {
 
 
         b1.setBuffPassive(bufflist);
-        b1.setLevel(1);
+        b1.setLevelAndUpdate(1);
 
         SimpleLog.logd(TAG,"TestBasisBuff():after "+b1.display());
     }
@@ -100,7 +100,7 @@ public class BuffTest {
     public void TestDoubleBuff() {
         init();
 
-        BasePerson play1 = BasePersonManager.getPersonFromDataBaseByPinyin("guanyu");
+        BasePerson play1 = PersonDataManager.getPersonFromDataBaseByPinyin("guanyu");
         NormalPerson b1 = new NormalPerson(play1,1);
         SimpleLog.logd(TAG,"TestBasisBuff():before "+b1.display());
 
@@ -119,7 +119,7 @@ public class BuffTest {
 
 
         b1.setBuffPassive(bufflist);
-        b1.setLevel(1);
+        b1.setLevelAndUpdate(1);
 
         SimpleLog.logd(TAG,"TestBasisBuff():after "+b1.display());
     }

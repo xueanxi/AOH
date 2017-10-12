@@ -38,17 +38,8 @@ public interface Interface_Skill {
     int SKILL_LAST_TIME_5 = 5;          // 技能命中后，会令敌人持续后续伤害5个回合
 
     // 技能的作用范围
-    int SKILL_RANGE_0 = 0;              // 技能范围是0 只能对自己释放
-    int SKILL_RANGE_1 = 1;              // 技能范围是1
-    int SKILL_RANGE_2 = 2;              // 技能范围是2
-    int SKILL_RANGE_3 = 3;              // 技能范围是3
-    int SKILL_RANGE_4 = 4;              // 技能范围是4
-    int SKILL_RANGE_5 = 5;              // 技能范围是5
-    int SKILL_RANGE_6 = 6;              // 技能范围是6
-    int SKILL_RANGE_7 = 7;              // 技能范围是7
-    int SKILL_RANGE_8 = 8;              // 技能范围是8
-    int SKILL_RANGE_9 = 9;              // 技能范围是9
-    int SKILL_RANGE_MAX = 10;           // 技能范围是无限
+    int SKILL_RANGE_AOE = -1;           // -1表示，技能范围是全场
+    int SKILL_RANGE_SELF = 0;              // 0表示只能对自己释放
 
     // 技能的作用人数
     int SKILL_EFFECT_NUMBER_0 = 0;      // 技能作用人数为无限

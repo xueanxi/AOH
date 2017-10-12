@@ -12,7 +12,6 @@ import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpBase;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.*;
 import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
-import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 import com.game.xianxue.ashesofhistory.utils.XmlUtils;
 
 import java.util.ArrayList;
@@ -269,7 +268,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
 
         for (BasePerson player : lists) {
-            db.execSQL(BasePersonManager.getInsertString(player));
+            db.execSQL(PersonDataManager.getInsertString(player));
         }
         db.setTransactionSuccessful();
         db.endTransaction();

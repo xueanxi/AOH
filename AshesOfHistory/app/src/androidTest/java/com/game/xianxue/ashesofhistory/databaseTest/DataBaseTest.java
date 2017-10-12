@@ -5,7 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
-import com.game.xianxue.ashesofhistory.database.BasePersonManager;
+import com.game.xianxue.ashesofhistory.database.PersonDataManager;
 import com.game.xianxue.ashesofhistory.database.BuffDataManager;
 import com.game.xianxue.ashesofhistory.database.SkillDataManager;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBase;
@@ -45,7 +45,7 @@ public class DataBaseTest {
     @Test
     public void TestgetAllPlayer() {
         init();
-        BasePersonManager.showAllPersonFromDataBase();
+        PersonDataManager.showAllPersonFromDataBase();
     }
 
     /**
@@ -54,7 +54,7 @@ public class DataBaseTest {
     @Test
     public void TestgetPlayerByName() {
         init();
-        BasePerson p1 = BasePersonManager.getPersonFromDataBaseByPinyin("guanyu");
+        BasePerson p1 = PersonDataManager.getPersonFromDataBaseByPinyin("guanyu");
         if (p1 == null) {
             SimpleLog.loge(TAG, "TestgetPlayerByName() : p1 == null");
         } else {

@@ -23,7 +23,6 @@ public class BattlePerson extends NormalPerson {
      * @param camp
      */
     public BattlePerson(NormalPerson person,int camp) {
-
         // 原始资料
         this.psersonId = person.getPsersonId();                 // id唯一标识这个人物
         this.aptitude = person.getAptitude();                   // 资质（影响每次升级 基础属性的增加数量 资质取值为1～5 1为庸碌无为 5为天神下凡）
@@ -39,12 +38,17 @@ public class BattlePerson extends NormalPerson {
         this.spirit_Raw = person.getSpirit_Raw();               // 原始精神
         this.fascination_Raw = person.getFascination_Raw();     // 原始魅力
         this.luck_Raw = person.getLuck_Raw();                   // 原始运气
+        this.skillStrings = person.getSkillStrings();           // 原始技能字符串
 
-        this.level = person.level;
+        // 初始化技能
+        setLevel(person.level);
+        initSkill(person.skillLists);
 
-        setLevel(level);
+        // 刷新属性
+        updateAttribute();
 
-        this.activeValues = 0;
+        // 初始战斗相关的数据
+        this.activeValues = 0;// 战斗活跃值初始为0
         this.camp = camp;
     }
 
@@ -53,7 +57,6 @@ public class BattlePerson extends NormalPerson {
      * @param person
      */
     public BattlePerson(NormalPerson person) {
-
         // 原始资料
         this.psersonId = person.getPsersonId();                 // id唯一标识这个人物
         this.aptitude = person.getAptitude();                   // 资质（影响每次升级 基础属性的增加数量 资质取值为1～5 1为庸碌无为 5为天神下凡）
@@ -69,9 +72,17 @@ public class BattlePerson extends NormalPerson {
         this.spirit_Raw = person.getSpirit_Raw();               // 原始精神
         this.fascination_Raw = person.getFascination_Raw();     // 原始魅力
         this.luck_Raw = person.getLuck_Raw();                   // 原始运气
-        this.activeValues = 0;
+        this.skillStrings = person.getSkillStrings();           // 获得原始技能列表
 
+        // 初始化技能
         setLevel(person.level);
+        initSkill(person.skillLists);
+
+        // 刷新属性
+        updateAttribute();
+
+        // 初始战斗相关的数据
+        this.activeValues = 0;// 战斗活跃值初始为0
     }
 
     /**

@@ -82,6 +82,7 @@ public class XmlUtils {
                     break;
                 case XmlPullParser.END_TAG:
                     if ("item".equals(pullParser.getName())) {
+                        SimpleLog.logd(TAG,"person : "+person);
                         persons.add(person);
                         person = null;
                     }
@@ -157,7 +158,7 @@ public class XmlUtils {
                     } else if (SkillColumn.levelUpFluctuate.equals(tag)) {
                         skill.setLevelUpFluctuate(Float.valueOf(pullParser.nextText()));
                     } else if (SkillColumn.levelUpConstant.equals(tag)) {
-                        skill.setLevelUpConstant(Float.valueOf(pullParser.nextText()));
+                        skill.setLevelUpConstant(Integer.valueOf(pullParser.nextText()));
                     } else if (SkillColumn.levelUpEffectRate.equals(tag)) {
                         skill.setLevelUpEffectRate(Float.valueOf(pullParser.nextText()));
                     } else if (SkillColumn.levelUpNumber.equals(tag)) {
@@ -172,7 +173,7 @@ public class XmlUtils {
                     break;
                 case XmlPullParser.END_TAG:
                     if ("item".equals(pullParser.getName())) {
-                        SimpleLog.logd("SkillDataManager","skill "+skill);
+                        SimpleLog.logd(TAG,"skill "+skill);
                         skillLists.add(skill);
                         skill = null;
                     }

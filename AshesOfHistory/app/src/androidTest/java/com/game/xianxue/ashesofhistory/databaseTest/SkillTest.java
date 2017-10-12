@@ -4,15 +4,7 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.game.xianxue.ashesofhistory.Log.SimpleLog;
-import com.game.xianxue.ashesofhistory.database.BasePersonManager;
-import com.game.xianxue.ashesofhistory.database.BuffDataManager;
 import com.game.xianxue.ashesofhistory.database.SkillDataManager;
-import com.game.xianxue.ashesofhistory.game.model.TeamModel;
-import com.game.xianxue.ashesofhistory.game.model.buff.BuffBase;
-import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
-import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
-import com.game.xianxue.ashesofhistory.game.model.person.NormalPerson;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 import com.game.xianxue.ashesofhistory.utils.XmlUtils;

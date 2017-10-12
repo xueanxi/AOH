@@ -53,9 +53,9 @@ public class SkillDataManager {
                 + SkillColumn.levelUpCDTime + " ,"
                 + SkillColumn.levelUpPenetrate + " )"
                 + " VALUES ("
-                + " '%d','%s','%s','%d','%d','%f','%f','%f','%d','%d','%d','%d','%d','%d','%d','%f','%f','%d','%f','%f','%f','%f','%f','%f','%f'"
+                + " '%d','%s','%s','%d','%d','%f','%f','%f','%d','%d','%d','%d','%d','%d','%f','%f','%f','%d','%f','%f','%f','%f','%f','%f','%f'"
                 + " )";
-
+        SimpleLog.logd(TAG,"getInsertString() : format = "+format);
         String result = String.format(format,
                 skill.getSkillId(),
                 skill.getName(),
@@ -83,7 +83,7 @@ public class SkillDataManager {
                 skill.getLevelUpCDTime(),
                 skill.getLevelUpPenetrate()
         );
-        SimpleLog.logd(TAG,"skill2 = "+result);
+        SimpleLog.logd(TAG,"getInsertString() : result = "+result);
         return result;
     }
 

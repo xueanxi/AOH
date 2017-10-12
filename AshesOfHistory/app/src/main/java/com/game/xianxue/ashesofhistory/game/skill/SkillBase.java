@@ -14,7 +14,7 @@ public class SkillBase{
     protected float criteRate;                         // 技能暴击率(技能触发暴击的概率 = 人物暴击率 * 技能暴击率 Ex：-1表示必暴击)
     protected float effectRate;                        // 效果触发概率(当有技能特效时，技能触发的概率 0~1,无视对方的闪避）
     protected int cdTime;                              // 技能的冷却回合数
-    protected int range;                               // 技能的影响范围(0～9 :0的意思是只能对自己释放)
+    protected int range;                               // 技能的影响范围(-1~9 其中-1表示范围是全场,0表示只能对自己释放）
     protected int effectNumber;                        // 技能的作用数量(0～10 :0的意思对全场AOE)
     protected int effectCamp;                          // 技能的目标阵营(0对敌人 1对友方)
     protected int effectTarget;                        // 技能选择作用在什么的人物上面(0范围内随机目标 1血最少 2血最多 3最近 4最远)

@@ -2,7 +2,6 @@ package com.game.xianxue.ashesofhistory.game.model.person;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.database.SkillDataManager;
-import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -182,7 +181,7 @@ public class BasePerson implements Serializable {
                 skillBean.setLevel(level);
                 skillBean.setUnLockLevel(unLockLevel);
                 skillBean.setGrow(grow);
-                skillBean.setSkillBase(SkillDataManager.getSkillFromDataBaseById(skillID));
+                skillBean.setSkill(SkillDataManager.getSkillFromDataBaseById(skillID));
 
                 SimpleLog.logd(TAG,"");
                 skillLists.add(skillBean);

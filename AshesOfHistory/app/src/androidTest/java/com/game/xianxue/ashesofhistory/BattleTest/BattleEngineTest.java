@@ -5,7 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
-import com.game.xianxue.ashesofhistory.database.BasePersonManager;
+import com.game.xianxue.ashesofhistory.database.PersonDataManager;
 import com.game.xianxue.ashesofhistory.database.LineUpDataManager;
 import com.game.xianxue.ashesofhistory.game.engine.BattleEngine;
 import com.game.xianxue.ashesofhistory.game.model.TeamModel;
@@ -44,10 +44,10 @@ public class BattleEngineTest {
     @Test
     public void TestStartBattle() {
         init();
-        BasePerson play1 = BasePersonManager.getPersonFromDataBaseByPinyin("guanyu");
-        BasePerson play2 = BasePersonManager.getPersonFromDataBaseByPinyin("lvbu");
-        BasePerson play3 = BasePersonManager.getPersonFromDataBaseByPinyin("zhugeliang");
-        BasePerson play4 = BasePersonManager.getPersonFromDataBaseByPinyin("zhangfei");
+        BasePerson play1 = PersonDataManager.getPersonFromDataBaseByPinyin("guanyu");
+        BasePerson play2 = PersonDataManager.getPersonFromDataBaseByPinyin("lvbu");
+        BasePerson play3 = PersonDataManager.getPersonFromDataBaseByPinyin("zhugeliang");
+        BasePerson play4 = PersonDataManager.getPersonFromDataBaseByPinyin("zhangfei");
 
         NormalPerson n1 = new NormalPerson(play1);
         NormalPerson n2 = new NormalPerson(play2);
@@ -83,11 +83,11 @@ public class BattleEngineTest {
 
         // 初始化人物
         // 第一队
-        BasePerson play1 = BasePersonManager.getPersonFromDataBaseByPinyin("guanyu");
-        BasePerson play2 = BasePersonManager.getPersonFromDataBaseByPinyin("zhangfei");
-        BasePerson play3 = BasePersonManager.getPersonFromDataBaseByPinyin("liubei");
-        BasePerson play4 = BasePersonManager.getPersonFromDataBaseByPinyin("zhaoyun");
-        BasePerson play5 = BasePersonManager.getPersonFromDataBaseByPinyin("zhugeliang");
+        BasePerson play1 = PersonDataManager.getPersonFromDataBaseByPinyin("guanyu");
+        BasePerson play2 = PersonDataManager.getPersonFromDataBaseByPinyin("zhangfei");
+        BasePerson play3 = PersonDataManager.getPersonFromDataBaseByPinyin("liubei");
+        BasePerson play4 = PersonDataManager.getPersonFromDataBaseByPinyin("zhaoyun");
+        BasePerson play5 = PersonDataManager.getPersonFromDataBaseByPinyin("zhugeliang");
         SimpleLog.logd("TestPerson","play5 = "+play5);
 
         BattlePerson b1 = new BattlePerson(new NormalPerson(play1));
@@ -107,13 +107,13 @@ public class BattleEngineTest {
         playerList1.add(b5);
 
         // 第二队
-        BasePerson play6 = BasePersonManager.getPersonFromDataBaseByPinyin("caocao");
-        BasePerson play7 = BasePersonManager.getPersonFromDataBaseByPinyin("caoren");
-        BasePerson play8 = BasePersonManager.getPersonFromDataBaseByPinyin("dianwei");
-        BasePerson play9 = BasePersonManager.getPersonFromDataBaseByPinyin("zhangliao");
-        BasePerson play10 = BasePersonManager.getPersonFromDataBaseByPinyin("xvchu");
-        BasePerson play11 = BasePersonManager.getPersonFromDataBaseByPinyin("gongjianbing");
-        BasePerson play12 = BasePersonManager.getPersonFromDataBaseByPinyin("bubing");
+        BasePerson play6 = PersonDataManager.getPersonFromDataBaseByPinyin("caocao");
+        BasePerson play7 = PersonDataManager.getPersonFromDataBaseByPinyin("caoren");
+        BasePerson play8 = PersonDataManager.getPersonFromDataBaseByPinyin("dianwei");
+        BasePerson play9 = PersonDataManager.getPersonFromDataBaseByPinyin("zhangliao");
+        BasePerson play10 = PersonDataManager.getPersonFromDataBaseByPinyin("xvchu");
+        BasePerson play11 = PersonDataManager.getPersonFromDataBaseByPinyin("gongjianbing");
+        BasePerson play12 = PersonDataManager.getPersonFromDataBaseByPinyin("bubing");
 
         BattlePerson b6 = new BattlePerson(new NormalPerson(play6));
         BattlePerson b7 = new BattlePerson(new NormalPerson(play7));
@@ -165,10 +165,10 @@ public class BattleEngineTest {
     public void TestSerializableUtils() {
         init();
 
-        BasePerson play1 = BasePersonManager.getPersonFromDataBaseByPinyin("guanyu");
-        BasePerson play2 = BasePersonManager.getPersonFromDataBaseByPinyin("lvbu");
-        BasePerson play3 = BasePersonManager.getPersonFromDataBaseByPinyin("zhugeliang");
-        BasePerson play4 = BasePersonManager.getPersonFromDataBaseByPinyin("zhangfei");
+        BasePerson play1 = PersonDataManager.getPersonFromDataBaseByPinyin("guanyu");
+        BasePerson play2 = PersonDataManager.getPersonFromDataBaseByPinyin("lvbu");
+        BasePerson play3 = PersonDataManager.getPersonFromDataBaseByPinyin("zhugeliang");
+        BasePerson play4 = PersonDataManager.getPersonFromDataBaseByPinyin("zhangfei");
 
         ArrayList<BasePerson> list = new ArrayList<BasePerson>();
         list.add(play1);
@@ -187,7 +187,7 @@ public class BattleEngineTest {
     @Test
     public void TestSaveBasePersonToFile() {
         init();
-        ArrayList<BasePerson> list = BasePersonManager.getAllPersonFromDataBase();
+        ArrayList<BasePerson> list = PersonDataManager.getAllPersonFromDataBase();
         SerializableUtils.writeObjectToFile(list, "baseperson");
         SimpleLog.logd(TAG, "=======");
         list = null;
@@ -201,11 +201,11 @@ public class BattleEngineTest {
 
         // 初始化人物
         // 第一队
-        BasePerson play1 = BasePersonManager.getPersonFromDataBaseByPinyin("guanyu");
-        BasePerson play2 = BasePersonManager.getPersonFromDataBaseByPinyin("zhangfei");
-        BasePerson play3 = BasePersonManager.getPersonFromDataBaseByPinyin("liubei");
-        BasePerson play4 = BasePersonManager.getPersonFromDataBaseByPinyin("zhaoyun");
-        BasePerson play5 = BasePersonManager.getPersonFromDataBaseByPinyin("zhugeliang");
+        BasePerson play1 = PersonDataManager.getPersonFromDataBaseByPinyin("guanyu");
+        BasePerson play2 = PersonDataManager.getPersonFromDataBaseByPinyin("zhangfei");
+        BasePerson play3 = PersonDataManager.getPersonFromDataBaseByPinyin("liubei");
+        BasePerson play4 = PersonDataManager.getPersonFromDataBaseByPinyin("zhaoyun");
+        BasePerson play5 = PersonDataManager.getPersonFromDataBaseByPinyin("zhugeliang");
         SimpleLog.logd("TestPerson","play5 = "+play5);
 
         BattlePerson b1 = new BattlePerson(new NormalPerson(play1));
@@ -225,12 +225,12 @@ public class BattleEngineTest {
         playerList1.add(b5);
 
         // 第二队
-        BasePerson play6 = BasePersonManager.getPersonFromDataBaseByPinyin("caocao");
-        BasePerson play7 = BasePersonManager.getPersonFromDataBaseByPinyin("caoren");
-        BasePerson play8 = BasePersonManager.getPersonFromDataBaseByPinyin("dianwei");
-        BasePerson play9 = BasePersonManager.getPersonFromDataBaseByPinyin("zhangliao");
-        BasePerson play10 = BasePersonManager.getPersonFromDataBaseByPinyin("xvchu");
-        BasePerson play11 = BasePersonManager.getPersonFromDataBaseByPinyin("gongjianbing");
+        BasePerson play6 = PersonDataManager.getPersonFromDataBaseByPinyin("caocao");
+        BasePerson play7 = PersonDataManager.getPersonFromDataBaseByPinyin("caoren");
+        BasePerson play8 = PersonDataManager.getPersonFromDataBaseByPinyin("dianwei");
+        BasePerson play9 = PersonDataManager.getPersonFromDataBaseByPinyin("zhangliao");
+        BasePerson play10 = PersonDataManager.getPersonFromDataBaseByPinyin("xvchu");
+        BasePerson play11 = PersonDataManager.getPersonFromDataBaseByPinyin("gongjianbing");
 
         BattlePerson b6 = new BattlePerson(new NormalPerson(play6));
         BattlePerson b7 = new BattlePerson(new NormalPerson(play7));
@@ -248,6 +248,64 @@ public class BattleEngineTest {
         playerList2.add(b9);
         playerList2.add(b10);
         playerList2.add(b11);
+
+        ShowUtils.showArrayLists(TAG,playerList1);
+        ShowUtils.showArrayLists(TAG,playerList2);
+
+        // 初始化阵型1
+        LineUpBase lineUp1 = LineUpDataManager.getDataFromDataBaseById(0);//普通阵容
+        LineUpBattle lb1 = new LineUpBattle(lineUp1,playerList1);
+        // 初始化阵型2
+        LineUpBase lineUp2 = LineUpDataManager.getDataFromDataBaseById(1);//长蛇阵
+        LineUpBattle lb2 = new LineUpBattle(lineUp2,playerList2);
+
+        // 初始化阵营
+        TeamModel t1 = new TeamModel(TeamModel.CAMP_LEFT, lb1);
+        TeamModel t2 = new TeamModel(TeamModel.CAMP_RIGHT, lb2);
+
+        BattleEngine engine = BattleEngine.getInstance();
+        engine.setmTimeActiveIncrese(50);
+        engine.setmTimePersonAction(50);
+        engine.setBattleTeam(t1, t2);
+        engine.startBattle();
+
+        try {
+            Thread.sleep(999999);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    public void TestSkill2() {
+        init();
+
+        // 初始化人物
+        // 第一队
+        BasePerson play1 = PersonDataManager.getPersonFromDataBaseByPinyin("guanyu");
+        BasePerson play2 = PersonDataManager.getPersonFromDataBaseByPinyin("zhangfei");
+
+        BattlePerson b1 = new BattlePerson(new NormalPerson(play1));
+        BattlePerson b2 = new BattlePerson(new NormalPerson(play2));
+        b1.setLeader(true);
+        b2.setCounsellor(true);
+
+        ArrayList<BattlePerson> playerList1 = new ArrayList<BattlePerson>();
+        playerList1.add(b1);
+        playerList1.add(b2);
+
+        // 第二队
+        BasePerson play8 = PersonDataManager.getPersonFromDataBaseByPinyin("dianwei");
+        BasePerson play10 = PersonDataManager.getPersonFromDataBaseByPinyin("xvchu");
+
+        BattlePerson b8 = new BattlePerson(new NormalPerson(play8));
+        BattlePerson b10 = new BattlePerson(new NormalPerson(play10));
+        b8.setLeader(true);
+        b10.setCounsellor(true);
+
+        ArrayList<BattlePerson> playerList2 = new ArrayList<BattlePerson>();
+        playerList2.add(b8);
+        playerList2.add(b10);
 
         ShowUtils.showArrayLists(TAG,playerList1);
         ShowUtils.showArrayLists(TAG,playerList2);
