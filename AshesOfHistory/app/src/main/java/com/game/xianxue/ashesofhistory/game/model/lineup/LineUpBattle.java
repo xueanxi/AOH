@@ -187,18 +187,36 @@ public class LineUpBattle extends LineUpBase {
         // 比如 第0列和第1列所有人都挂了，第2列还有人存活，此时nearCol等于2，而不是1或者0
         int nearCol = 0;
         if(membersList == null ) return null;
-        for(int y=0;y<LINEUP_MAX_COL;y++){
+
+        // 计算出 nearCol
+        for(int x=0;x<LINEUP_MAX_COL;x++){
             boolean colHasPersonLift = false;
-            for(int x=0;x<LINEUP_MAX_COL;x++){
+            for(int y=0;y<LINEUP_MAX_COL;y++){
                 unit = LineupMatrixs[x][y];
                 if(unit ==null)continue;
                 int HP = membersList.get(unit.getPersonIndex()).getHP();
                 if(HP>0){
                     colHasPersonLift = true;
+                    nearCol = x;
+                    break;
+                }
+            }
+            if(colHasPersonLift)break;
+        }
+
+        // 得到所有攻击范围内存活的目标
+        result = new ArrayList<BattlePerson>();
+        int farCol = nearCol + distance -1;
+        for(int x = nearCol;x<=farCol;x++){
+            for(int y=0;y<LINEUP_MAX_COL;y++){
+                unit = LineupMatrixs[x][y];
+                if(unit == null)continue;
+                int HP = membersList.get(unit.getPersonIndex()).getHP();
+                if( HP > 0){
+                    result.add(membersList.get(unit.getPersonIndex()));
                 }
             }
         }
-
         return result;
     }
 
