@@ -174,7 +174,6 @@ public class LineUpBattle extends LineUpBase {
 
     /**
      * 根据距离返回 在这个距离之内的人物列表
-     *
      * @param distance
      * @return
      */
@@ -207,13 +206,16 @@ public class LineUpBattle extends LineUpBase {
         // 得到所有攻击范围内存活的目标
         result = new ArrayList<BattlePerson>();
         int farCol = nearCol + distance -1;
+        BattlePerson personInRange = null;
         for(int x = nearCol;x<=farCol;x++){
             for(int y=0;y<LINEUP_MAX_COL;y++){
                 unit = LineupMatrixs[x][y];
                 if(unit == null)continue;
-                int HP = membersList.get(unit.getPersonIndex()).getHP();
+                personInRange = membersList.get(unit.getPersonIndex());
+                int HP = personInRange.getHP();
                 if( HP > 0){
-                    result.add(membersList.get(unit.getPersonIndex()));
+                    personInRange.setDistance(x); // 设置personInRange与攻击者之间的距离
+                    result.add(personInRange);
                 }
             }
         }
@@ -225,13 +227,26 @@ public class LineUpBattle extends LineUpBase {
      */
     public void displayMatrix(){
         UnitBattle unit = null;
+        Log.d(TAG,"======"+this.name+"的阵型 start ======");
         for(int x=0;x<LINEUP_MAX_ROW;x++) {
+            StringBuilder sb = new StringBuilder();
             for (int y = 0; y < LINEUP_MAX_COL; y++) {
                 unit = LineupMatrixs[x][y];
                 if(unit != null){
-                    Log.d(TAG,"("+x+","+y+")"+unit);
+                    String name = membersList.get(unit.getPersonIndex()).getName();
+                    if(name.length() == 2){
+                        sb.append(name+"   ");
+                    }else if(name.length() == 3){
+                        sb.append(name+"  ");
+                    }else if(name.length() == 4){
+                        sb.append(name+" ");
+                    }
+                }else{
+                    sb.append("空    ");
                 }
             }
+            Log.d(TAG,sb.toString());
         }
+        Log.d(TAG,"======"+this.name+"的阵型 end ======");
     }
 }

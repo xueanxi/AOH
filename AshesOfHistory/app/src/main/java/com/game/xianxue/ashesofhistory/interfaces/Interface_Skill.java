@@ -42,16 +42,7 @@ public interface Interface_Skill {
     int SKILL_RANGE_SELF = 0;              // 0表示只能对自己释放
 
     // 技能的作用人数
-    int SKILL_EFFECT_NUMBER_0 = 0;      // 技能作用人数为无限
-    int SKILL_EFFECT_NUMBER_1 = 1;      // 技能作用人数为1
-    int SKILL_EFFECT_NUMBER_2 = 2;      // 技能作用人数为2
-    int SKILL_EFFECT_NUMBER_3 = 3;      // 技能作用人数为3
-    int SKILL_EFFECT_NUMBER_4 = 4;      // 技能作用人数为4
-    int SKILL_EFFECT_NUMBER_5 = 5;      // 技能作用人数为5
-    int SKILL_EFFECT_NUMBER_6 = 6;      // 技能作用人数为6
-    int SKILL_EFFECT_NUMBER_7 = 7;      // 技能作用人数为7
-    int SKILL_EFFECT_NUMBER_8 = 8;      // 技能作用人数为8
-    int SKILL_EFFECT_NUMBER_9 = 9;      // 技能作用人数为9
+    int SKILL_EFFECT_NUMBER_ALL = 0;      // 技能作用人数为无限
 
     // 技能触发效果阵营
     int SKILL_CAMP_ENEMY = 0;              // 技能目标：敌人
@@ -63,7 +54,6 @@ public interface Interface_Skill {
     int SKILL_TARGET_MAX_HP = 2;           // 触发目标为攻击范围内生命值最高的目标
     int SKILL_TARGET_DISTANCE_NEAR = 3;    // 触发目标为攻击范围内最近的目标
     int SKILL_TARGET_DISTANCE_FAR = 4;     // 触发目标为攻击范围内最远的目标
-
 
     // =======================攻击技能 部分===========================
     public int DAMGE_TYPE_PHYSICS = 0;         // 伤害为物理伤害

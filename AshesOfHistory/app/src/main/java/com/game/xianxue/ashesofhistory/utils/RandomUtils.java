@@ -1,5 +1,6 @@
 package com.game.xianxue.ashesofhistory.utils;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -15,6 +16,12 @@ public class RandomUtils {
      * @return
      */
     public static boolean isHappen(float probability) {
+        // 如果发生的概率是0.5 则调用 nextBoolean（）
+        if(probability == 0.5){
+            return new Random().nextBoolean();
+        }
+
+        // 如果发生的概率不是0.5 则调用 nextDouble
         Random random = new Random();
         double rNumber = random.nextDouble();
         if (rNumber < probability) {
@@ -22,16 +29,6 @@ public class RandomUtils {
         } else {
             return false;
         }
-    }
-
-    /**
-     * 随机拋硬币方法：
-     * 百分之五十概率 返回 true，百分之五十概率 返回 false，
-     *
-     * @return
-     */
-    public static boolean flipCoin() {
-        return new Random().nextBoolean();
     }
 
     /**
@@ -73,6 +70,40 @@ public class RandomUtils {
                 break;
             } else {
                 temp += args[i];
+            }
+        }
+        return result;
+    }
+
+    /**
+     * 从 allNumber 个目标里面挑出 selectNumber 目标
+     * 其中 allNumber 个目标使用索引[0,1,2,3,4....]表示
+     * 返回一个被选择的目标索引数组，比如[2,4,7]
+     * @param allNumber
+     * @param selectNumber
+     * @return
+     */
+    public static int[] getRandomTarget(int allNumber,int selectNumber){
+        int[] result;
+        // 如果 allNumber <= selectNumber 的条件下，返回所有 allNumber 的索引
+        if(allNumber <= selectNumber){
+            result = new int[allNumber];
+            for(int i=0;i<allNumber;i++){
+                result[i] = i;
+            }
+        }else{
+            result = new int[selectNumber];
+            Random random = new Random();
+            ArrayList<Integer> list = new ArrayList<Integer>();
+            for(int i=0;i<allNumber;i++){
+                list.add(i);
+            }
+            int selectIndex = 0;
+            for(int i=0;i<selectNumber;i++) {
+                selectIndex = random.nextInt(allNumber);
+                result[i] = list.get(selectIndex);
+                list.remove(selectIndex);
+                allNumber--;
             }
         }
         return result;

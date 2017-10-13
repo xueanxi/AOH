@@ -69,7 +69,7 @@ public class TeamModel {
         return mLineup.getMemberList();
     }
 
-    public LineUpBase getLineup() {
+    public LineUpBattle getLineup() {
         return mLineup;
     }
 

@@ -33,7 +33,7 @@ public class RamdomTest {
         int truetime = 0;
         int falsetime = 0;
         for(int i=0;i<1000;i++){
-            if(RandomUtils.flipCoin()){
+            if(RandomUtils.isHappen(0.5f)){
                 truetime++;
             }else{
                 falsetime++;
@@ -76,5 +76,25 @@ public class RamdomTest {
         System.out.println("thr = "+thr);
         System.out.println("fou = "+fou);
         System.out.println("fiv = "+fiv);
+    }
+
+    @Test
+    public void testNextInt() throws Exception {
+        Random random = new Random();
+        for(int i = 0;i< 100 ;i++){
+            System.out.println(random.nextInt(10));
+        }
+    }
+
+    @Test
+    public void testGetRandomTarget() throws Exception {
+        int[] result;
+        for(int x = 0;x<100;x++){
+            result = RandomUtils.getRandomTarget(7,5);
+            for(int i = 0;i< result.length ;i++){
+                System.out.print(result[i]+"");
+            }
+            System.out.println("");
+        }
     }
 }

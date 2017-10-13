@@ -14,6 +14,7 @@ public class BattlePerson extends NormalPerson {
     private int camp;                       // 阵营
     private boolean isLeader = false;       // 是否统帅
     private boolean isCounsellor = false;   // 是否军师
+    private int distance;                   // 与攻击者的距离
 
     public BattlePerson() {}
 
@@ -151,6 +152,13 @@ public class BattlePerson extends NormalPerson {
 
     public void setCamp(int camp) {
         this.camp = camp;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+    public void setDistance(int distance) {
+        this.distance = distance;
     }
 
     /**
