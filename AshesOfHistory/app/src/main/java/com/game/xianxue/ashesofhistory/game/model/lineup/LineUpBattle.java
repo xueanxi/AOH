@@ -1,5 +1,7 @@
 package com.game.xianxue.ashesofhistory.game.model.lineup;
 
+import android.util.Log;
+
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 
@@ -12,14 +14,14 @@ public class LineUpBattle extends LineUpBase {
     final static String TAG = "LineUpBattle";
 
     int battlePersonNumber;                 // 这个阵型中的人数
-    ArrayList<UnitBattle> lineupList;       // 阵型中的每一个位置的数组
+    //ArrayList<UnitBattle> lineupList;       // 阵型中的每一个位置的数组
+    UnitBattle[][] LineupMatrixs;           // 阵型矩阵，相当于阵型的实体化
     ArrayList<BattlePerson> membersList;    // 阵型中的人物列表
     boolean isLineupWork = false;           // 阵型的效果是否发挥出来
     BattlePerson counsellor;                // 军师(可以布置军师懂得的阵型，对队伍有buff加成，如果军师被击杀，阵型buff还会存在)
     BattlePerson leader;                    // 队长、统帅(可以发挥统帅技能buff，但是统帅如果被击杀，buff会取消)
     int counsellorIndex = -1;               // 军师在 membersList 中的索引值
     int leaderIndex = -1;                   // 队长、统帅在 membersList 中的索引值
-
 
     public LineUpBattle(LineUpBase lineup, ArrayList<BattlePerson> membersList) {
         this.lineup_id = lineup.getLineup_id();
@@ -37,9 +39,14 @@ public class LineUpBattle extends LineUpBase {
             SimpleLog.loge(TAG, "Error!!! LineUpBattle 初始化失败，因为读取 rawUnitLists 信息不合法");
             return;
         }
-        this.lineupList = new ArrayList<UnitBattle>();
+/*        this.lineupList = new ArrayList<UnitBattle>();
         for (UnitBase data : rawUnitLists) {
             this.lineupList.add(new UnitBattle(data));
+        }*/
+
+        LineupMatrixs = new UnitBattle[LINEUP_MAX_ROW][LINEUP_MAX_COL];
+        for (UnitBase data : rawUnitLists) {
+            LineupMatrixs[data.getX()][data.getY()] = new UnitBattle(data);
         }
 
         fillPerson();
@@ -70,35 +77,56 @@ public class LineUpBattle extends LineUpBase {
             return;
         }
 
+        UnitBattle unit = null;
+        boolean isOver = false;
+
         // 开始往阵型里面填充人
         for (int i = 0; i < membersList.size(); i++) {
             BattlePerson person = membersList.get(i);
             // 填充团长
             if (person.isLeader()) {
-                for (UnitBattle unit : lineupList) {
-                    if (unit.isLeader()) {
-                        unit.setPersonIndex(i);
-                        unit.setEmpty(false);
-                        break;
+                isOver = false;
+                for(int x=0;x<LINEUP_MAX_ROW;x++){
+                    for(int y =0;y<LINEUP_MAX_COL;y++){
+                        unit = LineupMatrixs[x][y];
+                        if (unit!=null && unit.isLeader()) {
+                            unit.setPersonIndex(i);
+                            unit.setEmpty(false);
+                            isOver = true;
+                            break;
+                        }
                     }
+                    if(isOver)break;
                 }
             } else if (person.isCounsellor()) {
                 // 填充军师
-                for (UnitBattle unit : lineupList) {
-                    if (unit.isCounsellor()) {
-                        unit.setPersonIndex(i);
-                        unit.setEmpty(false);
-                        break;
+                isOver = false;
+                for(int x=0;x<LINEUP_MAX_ROW;x++){
+                    for(int y =0;y<LINEUP_MAX_COL;y++){
+                        unit = LineupMatrixs[x][y];
+                        if (unit!=null && unit.isCounsellor()) {
+                            unit.setPersonIndex(i);
+                            unit.setEmpty(false);
+                            isOver = true;
+                            break;
+                        }
                     }
+                    if(isOver)break;
                 }
             } else if (!person.isLeader() && !person.isCounsellor()) {
                 // 填充其他
-                for (UnitBattle unit : lineupList) {
-                    if (unit.isEmpty() && !unit.isCounsellor() && !unit.isLeader()) {
-                        unit.setPersonIndex(i);
-                        unit.setEmpty(false);
-                        break;
+                isOver = false;
+                for(int x=0;x<LINEUP_MAX_ROW;x++){
+                    for(int y =0;y<LINEUP_MAX_COL;y++){
+                        unit = LineupMatrixs[x][y];
+                        if (unit!=null && unit.isEmpty() && !unit.isCounsellor() && !unit.isLeader()) {
+                            unit.setPersonIndex(i);
+                            unit.setEmpty(false);
+                            isOver = true;
+                            break;
+                        }
                     }
+                    if(isOver)break;
                 }
             }
         }
@@ -152,8 +180,40 @@ public class LineUpBattle extends LineUpBase {
      */
     public ArrayList<BattlePerson> getPersonsByDistance(int distance) {
         ArrayList<BattlePerson> result = null;
-
+        UnitBattle unit = null;
+        // nearCol 为距离敌人最近的一列的索引，
+        // 比如 第0列，还有人存活着，那么nearCol =0
+        // 比如 第0列，所有人都挂了，第1列还有人存活，此时nearCol等于1，而不是0
+        // 比如 第0列和第1列所有人都挂了，第2列还有人存活，此时nearCol等于2，而不是1或者0
+        int nearCol = 0;
+        if(membersList == null ) return null;
+        for(int y=0;y<LINEUP_MAX_COL;y++){
+            boolean colHasPersonLift = false;
+            for(int x=0;x<LINEUP_MAX_COL;x++){
+                unit = LineupMatrixs[x][y];
+                if(unit ==null)continue;
+                int HP = membersList.get(unit.getPersonIndex()).getHP();
+                if(HP>0){
+                    colHasPersonLift = true;
+                }
+            }
+        }
 
         return result;
+    }
+
+    /**
+     * 展示 矩阵
+     */
+    public void displayMatrix(){
+        UnitBattle unit = null;
+        for(int x=0;x<LINEUP_MAX_ROW;x++) {
+            for (int y = 0; y < LINEUP_MAX_COL; y++) {
+                unit = LineupMatrixs[x][y];
+                if(unit != null){
+                    Log.d(TAG,"("+x+","+y+")"+unit);
+                }
+            }
+        }
     }
 }

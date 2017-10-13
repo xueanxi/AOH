@@ -209,12 +209,12 @@ public class BattleEngine implements Interface_Skill{
                 personsBeAttackList.add(actionPerson);
             }else{
                 // 技能范围是具体的数字，此时需要结合此技能的攻击人数进行双重判断
-                teamBeAttack.getLineup().
+                //teamBeAttack.getLineup().
             }
         }
 
 
-        BattlePerson beAttackPlayer = getBeAttackedPlayer(beAttackedTeam);//挑选出被攻击的人员
+        BattlePerson beAttackPlayer = getBeAttackedPlayer(t1);//挑选出被攻击的人员
         if (beAttackPlayer == null) {
             mIsBattleing = false;
             BattleLog.log((actionCamp == TeamModel.CAMP_LEFT ? "敌方" : "我方") + " 已经没有可以战斗的人员。");
