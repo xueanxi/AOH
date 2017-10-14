@@ -13,7 +13,6 @@ public class SimpleLog {
         if (isNeedLog) {
             Log.d(TAG_LOG, TAG + " " + content);
         }
-
     }
 
     public static void loge(String TAG, String content) {

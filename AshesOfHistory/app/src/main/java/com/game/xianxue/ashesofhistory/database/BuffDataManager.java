@@ -15,11 +15,7 @@ import java.util.ArrayList;
  */
 
 public class BuffDataManager {
-
     private static final String TAG = "BuffDataManager";
-
-
-
     /**
      * 把对象转化为可以插入数据库的SQL语句
      *
@@ -89,7 +85,7 @@ public class BuffDataManager {
         BuffBase buff = cursorToBuff(cursor);
         cursor.close();
         db.close();
-        SimpleLog.logd(TAG, buff.toString());
+        //SimpleLog.logd(TAG, buff.toString());
         return buff;
     }
 

@@ -39,10 +39,6 @@ public class LineUpBattle extends LineUpBase {
             SimpleLog.loge(TAG, "Error!!! LineUpBattle 初始化失败，因为读取 rawUnitLists 信息不合法");
             return;
         }
-/*        this.lineupList = new ArrayList<UnitBattle>();
-        for (UnitBase data : rawUnitLists) {
-            this.lineupList.add(new UnitBattle(data));
-        }*/
 
         LineupMatrixs = new UnitBattle[LINEUP_MAX_ROW][LINEUP_MAX_COL];
         for (UnitBase data : rawUnitLists) {
@@ -56,6 +52,7 @@ public class LineUpBattle extends LineUpBase {
      * 初始化阵型，把人物按照默认位置放进阵型中
      */
     private void fillPerson() {
+        SimpleLog.logd(TAG,"fillPerson()");
         // 盘但阵容是否容纳的下队伍的人数
         if (this.maxPerson < membersList.size()) {
             SimpleLog.loge(TAG, "Error !!! fillPerson faile . 阵型无法容纳那么多人");
@@ -178,6 +175,11 @@ public class LineUpBattle extends LineUpBase {
      * @return
      */
     public ArrayList<BattlePerson> getPersonsByDistance(int distance) {
+        if(distance<LINEUP_MINI_COL){
+            distance = LINEUP_MINI_COL;
+        }else if(distance>LINEUP_MAX_COL){
+            distance = LINEUP_MAX_COL;
+        }
         ArrayList<BattlePerson> result = null;
         UnitBattle unit = null;
         // nearCol 为距离敌人最近的一列的索引，
@@ -188,9 +190,9 @@ public class LineUpBattle extends LineUpBase {
         if(membersList == null ) return null;
 
         // 计算出 nearCol
-        for(int x=0;x<LINEUP_MAX_COL;x++){
+        for(int y=0;y<LINEUP_MAX_COL;y++){
             boolean colHasPersonLift = false;
-            for(int y=0;y<LINEUP_MAX_COL;y++){
+            for(int x=0;x<LINEUP_MAX_ROW;x++){
                 unit = LineupMatrixs[x][y];
                 if(unit ==null)continue;
                 int HP = membersList.get(unit.getPersonIndex()).getHP();
@@ -206,15 +208,18 @@ public class LineUpBattle extends LineUpBase {
         // 得到所有攻击范围内存活的目标
         result = new ArrayList<BattlePerson>();
         int farCol = nearCol + distance -1;
+        if(farCol > LINEUP_MAX_ROW){
+            farCol = LINEUP_MAX_ROW;
+        }
         BattlePerson personInRange = null;
-        for(int x = nearCol;x<=farCol;x++){
-            for(int y=0;y<LINEUP_MAX_COL;y++){
+        for(int y = nearCol;y<=farCol;y++){
+            for(int x=0;x<LINEUP_MAX_ROW;x++){
                 unit = LineupMatrixs[x][y];
                 if(unit == null)continue;
                 personInRange = membersList.get(unit.getPersonIndex());
                 int HP = personInRange.getHP();
                 if( HP > 0){
-                    personInRange.setDistance(x); // 设置personInRange与攻击者之间的距离
+                    personInRange.setDistance(y+1); // 设置personInRange与攻击者之间的距离
                     result.add(personInRange);
                 }
             }
@@ -226,13 +231,13 @@ public class LineUpBattle extends LineUpBase {
      * 展示 矩阵
      */
     public void displayMatrix(){
+        SimpleLog.logd(TAG,"======"+this.name+"的阵型 start ======");
         UnitBattle unit = null;
-        Log.d(TAG,"======"+this.name+"的阵型 start ======");
         for(int x=0;x<LINEUP_MAX_ROW;x++) {
             StringBuilder sb = new StringBuilder();
             for (int y = 0; y < LINEUP_MAX_COL; y++) {
                 unit = LineupMatrixs[x][y];
-                if(unit != null){
+                if(unit != null && !unit.isEmpty()){
                     String name = membersList.get(unit.getPersonIndex()).getName();
                     if(name.length() == 2){
                         sb.append(name+"   ");
@@ -245,8 +250,8 @@ public class LineUpBattle extends LineUpBase {
                     sb.append("空    ");
                 }
             }
-            Log.d(TAG,sb.toString());
+            SimpleLog.logd(TAG,sb.toString());
         }
-        Log.d(TAG,"======"+this.name+"的阵型 end ======");
+        SimpleLog.logd(TAG,"======"+this.name+"的阵型 end ======");
     }
 }

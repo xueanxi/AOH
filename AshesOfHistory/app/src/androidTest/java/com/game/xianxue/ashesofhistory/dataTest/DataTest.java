@@ -52,14 +52,12 @@ public class DataTest {
         BasePerson play3 = PersonDataManager.getPersonFromDataBaseByPinyin("liubei");
         BasePerson play4 = PersonDataManager.getPersonFromDataBaseByPinyin("zhaoyun");
         BasePerson play5 = PersonDataManager.getPersonFromDataBaseByPinyin("zhugeliang");
-        SimpleLog.logd("TestPerson","play5 = "+play5);
 
         BattlePerson b1 = new BattlePerson(new NormalPerson(play1));
         BattlePerson b2 = new BattlePerson(new NormalPerson(play2));
         BattlePerson b3 = new BattlePerson(new NormalPerson(play3));
         BattlePerson b4 = new BattlePerson(new NormalPerson(play4));
         BattlePerson b5 = new BattlePerson(new NormalPerson(play5));
-        SimpleLog.logd("TestPerson","b5 = "+b5);
         b3.setLeader(true);
         b5.setCounsellor(true);
 
@@ -106,9 +104,9 @@ public class DataTest {
         LineUpBattle lb1 = new LineUpBattle(lineUp1,playerList1);
         lb1.displayMatrix();
         // 初始化阵型2
-        //LineUpBase lineUp2 = LineUpDataManager.getDataFromDataBaseById(1);//长蛇阵
-        //LineUpBattle lb2 = new LineUpBattle(lineUp2,playerList2);
-
+        LineUpBase lineUp2 = LineUpDataManager.getDataFromDataBaseById(1);//长蛇阵
+        LineUpBattle lb2 = new LineUpBattle(lineUp2,playerList2);
+        lb2.displayMatrix();
         // 初始化阵营
         //TeamModel t1 = new TeamModel(TeamModel.CAMP_LEFT, lb1);
         //TeamModel t2 = new TeamModel(TeamModel.CAMP_RIGHT, lb2);

@@ -242,7 +242,6 @@ public class XmlUtils {
                     break;
                 case XmlPullParser.END_TAG:
                     if ("item".equals(pullParser.getName())) {
-                        SimpleLog.logd(TAG, "buff === " + buff);
                         buffLists.add(buff);
                         buff = null;
                     }
@@ -308,7 +307,6 @@ public class XmlUtils {
             }
             event = pullParser.next();
         }
-        ShowUtils.showArrayLists("anxii", dataLists);
         SimpleLog.logd(TAG, "解析所有阵型使用的时间:" + (System.currentTimeMillis() - startTime));
         return dataLists;
     }

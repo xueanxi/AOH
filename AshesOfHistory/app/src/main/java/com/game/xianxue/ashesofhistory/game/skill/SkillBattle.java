@@ -1,5 +1,6 @@
 package com.game.xianxue.ashesofhistory.game.skill;
 
+import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.game.model.TeamModel;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.interfaces.Interface_Skill;
@@ -10,7 +11,7 @@ import com.game.xianxue.ashesofhistory.interfaces.Interface_Skill;
  */
 
 public class SkillBattle extends SkillBase implements Interface_Skill {
-
+    private static final String TAG = "SkillBattle";
     private SkillBase base;                             // 技能的初始数据
     private int level = SKILL_LIMIT_MINI_LEVEL;         // 技能的等级
     private int recoverTime;                            // 技能恢复冷却还需要多少时间
@@ -108,12 +109,14 @@ public class SkillBattle extends SkillBase implements Interface_Skill {
         this.level = level;
 
         this.damageConstant = base.damageConstant + (level -1)*base.levelUpConstant;
-        this.levelUpFluctuate = base.levelUpFluctuate + (level -1)*base.levelUpFluctuate;
-        this.levelUpRange = base.levelUpRange + (level -1)*base.levelUpRange;
-        this.levelUpNumber = base.levelUpNumber + (level -1)*base.levelUpNumber;
-        this.levelUpCDTime = base.levelUpCDTime + (level -1)*base.levelUpCDTime;
-        this.levelUpPenetrate = base.levelUpPenetrate + (level -1)*base.levelUpPenetrate;
-        this.levelUpEffectRate = base.levelUpEffectRate + (level -1)*base.levelUpEffectRate;
+        this.damageFluctuate = base.damageFluctuate + (level -1)*base.levelUpFluctuate;
+        this.range = (int)(base.range + (level -1)*base.levelUpRange);
+        this.effectNumber = (int)(base.effectNumber + (level -1)*base.levelUpNumber);
+        this.cdTime = (int)(base.cdTime + (level -1)*base.levelUpCDTime);
+        this.damagePenetrate = (int)(base.damagePenetrate + (level -1)*base.levelUpPenetrate);
+        this.effectRate = base.effectRate + (level -1)*base.levelUpEffectRate;
+
+        //SimpleLog.logd(TAG,"setLevel before:"+this.name+" number= "+effectNumber);
     }
 
     public int getRecoverTime() {
@@ -131,5 +134,13 @@ public class SkillBattle extends SkillBase implements Interface_Skill {
         if(this.recoverTime >0){
             this.recoverTime--;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "SkillBattle{" +
+                " level=" + level +
+                ", recoverTime=" + recoverTime +
+                "} " + super.toString();
     }
 }

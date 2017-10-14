@@ -13,9 +13,13 @@ public class ShowUtils {
 
     //=====================显示ArrayList start========================
     public static void showArrayLists(String tag, ArrayList lists) {
-        if (lists == null) SimpleLog.logd(tag, "ArrayList is null !!! ");
-        for (Object data : lists) {
-            SimpleLog.logd(tag, data.toString());
+        if (lists == null) {
+            SimpleLog.logd(tag, "ArrayList is null !!! ");
+            return;
+        }
+
+        for(int i = 0;i<lists.size();i++){
+            SimpleLog.logd(tag,i+":" + lists.get(i).toString());
         }
     }
 

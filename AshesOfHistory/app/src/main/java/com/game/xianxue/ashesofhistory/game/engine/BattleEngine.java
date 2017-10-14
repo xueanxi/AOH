@@ -1,5 +1,7 @@
 package com.game.xianxue.ashesofhistory.game.engine;
 
+import android.util.Log;
+
 import com.game.xianxue.ashesofhistory.Log.BattleLog;
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.game.model.TeamModel;
@@ -7,6 +9,7 @@ import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBattle;
 import com.game.xianxue.ashesofhistory.interfaces.Interface_Skill;
 import com.game.xianxue.ashesofhistory.utils.RandomUtils;
+import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 
 import java.util.ArrayList;
 
@@ -226,6 +229,12 @@ public class BattleEngine implements Interface_Skill{
                     ArrayList<BattlePerson> tempList = new ArrayList<BattlePerson>();
                     BattlePerson temp = null;   // 临时变量
 
+                    int farDistance;// 最远目标的距离
+                    int nearDistance;//最近目标的距离
+                    int[] distanceArrays ;
+                    int currentDistance ;
+                    int totalNumber;// 从最近距离开始，一列一列加起来的人数
+
                     switch(skillTarget){
                         case SKILL_TARGET_RANDOM:
                             // 从所有攻击范围内的人里面，随机挑选出 skillTarget 个攻击目标
@@ -270,32 +279,62 @@ public class BattleEngine implements Interface_Skill{
                             personsBeAttackList = tempList;
                             break;
                         case SKILL_TARGET_DISTANCE_NEAR:
-                            // 获得当前距离最远的攻击目标
-                            int farDistance = personsBeAttackList.get(personsBeAttackList.size()-1).getDistance();
-                            int currentNumbner = 0;
-                            for(int i =1;i<farDistance;i++){
-                                for(int j=0;j<personsBeAttackList.size();j++){
-                                    if(personsBeAttackList.get(j).getDistance()<=i){
-                                        currentNumbner++;
-                                    }else{
-                                        break;
-                                    }
-                                }
-                                if(effectNumber <= currentNumbner){
-                                    a
-                                }else{
-
-                                }
+                            // 获得当前距离最近的攻击目标
+                            farDistance = personsBeAttackList.get(personsBeAttackList.size()-1).getDistance(); // 最远目标的距离
+                            nearDistance = personsBeAttackList.get(0).getDistance();//最近目标的距离
+                            distanceArrays = new int[farDistance - nearDistance +1];
+                             currentDistance = 0;
+                             totalNumber = 0;// 从最近距离开始，一列一列加起来的人数
+                            // 获得每个距离的人数 放在distanceArrays数组里面
+                            for(int i=0;i<personsBeAttackList.size();i++){
+                                currentDistance = personsBeAttackList.get(i).getDistance();
+                                distanceArrays[currentDistance-1] = distanceArrays[currentDistance-1]++;
                             }
 
+
+                            for(int i = 0;i<distanceArrays.length;i++){
+                                totalNumber += distanceArrays[i];
+                                // 作用人数，少于最近累加的人数，则开始从最近累加的人里面挑出 effectNumber 个攻击目标
+                                if(effectNumber<=totalNumber){
+                                    attackResultIndex = RandomUtils.getRandomTarget(totalNumber,effectNumber);
+                                    for(int j = 0;j<attackResultIndex.length;j++){
+                                        tempList.add(personsBeAttackList.get(attackResultIndex[j]));
+                                        personsBeAttackList = tempList;
+                                    }
+                                    break;
+                                }
+                            }
                             break;
                         case SKILL_TARGET_DISTANCE_FAR:
+                            // 获得当前距离最远的攻击目标
+                            farDistance = personsBeAttackList.get(personsBeAttackList.size()-1).getDistance(); // 最远目标的距离
+                            nearDistance = personsBeAttackList.get(0).getDistance();//最近目标的距离
+                            distanceArrays = new int[farDistance - nearDistance +1];
+                            currentDistance = 0;
+                            totalNumber = 0;// 从最远距离开始，一列一列加起来的人数
+                            // 获得每个距离的人数 放在distanceArrays数组里面
+                            for(int i=0;i<personsBeAttackList.size();i++){
+                                currentDistance = personsBeAttackList.get(i).getDistance();
+                                distanceArrays[currentDistance-1] = distanceArrays[currentDistance-1]++;
+                            }
+
+                            for(int i = farDistance-1;i>=0;i--){
+                                totalNumber += distanceArrays[i];
+                                // 作用人数，少于最近累加的人数，则开始从最近累加的人里面挑出 effectNumber 个攻击目标
+                                if(effectNumber<=totalNumber){
+                                    attackResultIndex = RandomUtils.getRandomTarget(totalNumber,effectNumber);
+                                    for(int j = 0;j<attackResultIndex.length;j++){
+                                        tempList.add(personsBeAttackList.get(attackResultIndex[j]));
+                                        personsBeAttackList = tempList;
+                                    }
+                                    break;
+                                }
+                            }
                             break;
                         default:
                             break;
                     }
                 }
-
             }
         }
 
@@ -315,6 +354,231 @@ public class BattleEngine implements Interface_Skill{
                 attackDodge(actionPerson, beAttackPlayer);
             }
         }
+    }
+
+    public void attackNormal(BattlePerson actionPerson){
+        BattleLog.log(actionPerson.getName()+"准备进行普通攻击");
+
+        int actionCamp = actionPerson.getCamp();    // 当前行动的阵营
+        int effectCamp = TeamModel.CAMP_NEUTRAL;    // 技能作用的阵营
+        int effectNumber = 0;                       // 本次技能影响的人数
+        int effectRange = 0;                        // 本次技能影响的范围
+        SkillBattle skill = null;                   // 本次发动的技能
+
+        skill = actionPerson.getSkillActivesLists().get(0);                          // 获得普通攻击技能
+        effectNumber = skill.getEffectNumber() + actionPerson.getAttackNumberUp();   // 技能的影响人数
+        effectRange = skill.getRange() + actionPerson.getAttackRangeUp();            // 技能的影响范围
+        ArrayList<BattlePerson> personsBeAttackList = new ArrayList<BattlePerson>(); // 被技能攻击的目标
+        TeamModel teamBeAttack = null;                                               // 被技能影响的阵营
+        SimpleLog.logd(TAG,actionPerson.getName()+"的 "+ skill.getName()+" 的距离为:"+effectRange+",人数为:"+effectNumber);
+
+        // 计算本次技能作用的阵营
+        if(SKILL_CAMP_ENEMY == skill.getEffectCamp()){
+            if(actionCamp == TeamModel.CAMP_LEFT){
+                effectCamp = TeamModel.CAMP_RIGHT;
+            }else if(actionCamp == TeamModel.CAMP_RIGHT){
+                effectCamp = TeamModel.CAMP_LEFT;
+            }
+        } else if(SKILL_CAMP_FRIEND == skill.getEffectCamp()){
+            if(actionCamp == TeamModel.CAMP_LEFT){
+                effectCamp = TeamModel.CAMP_LEFT;
+            }else if(actionCamp == TeamModel.CAMP_RIGHT){
+                effectCamp = TeamModel.CAMP_RIGHT;
+            }
+        }
+
+        // 挑选出承受此次技能的阵营是 t1 还是 t2
+        if(t1.getmCamp() == effectCamp){
+            teamBeAttack = t1;
+        }else if(t2.getmCamp() == effectCamp){
+            teamBeAttack = t2;
+        }else{
+            SimpleLog.loge(TAG,"Error !!! 技能找不到攻击的阵营");
+        }
+
+        // 挑选出承受此次技能的人
+        if(effectRange == SKILL_RANGE_AOE){
+            // 技能是全场范围
+            personsBeAttackList = teamBeAttack.getMembersList();
+        }else if(effectRange == SKILL_RANGE_SELF){
+            // 技能只能对自己释放
+            personsBeAttackList.add(actionPerson);
+        }else{
+            // 技能范围是具体的数字，此时需要结合此技能的攻击人数进行双重判断
+            // 1.挑选出攻击范围内的人
+            personsBeAttackList = teamBeAttack.getLineup().getPersonsByDistance(effectRange);
+            // 2.查看这个技能是否是全场AOE，如果是则跳过第三步
+            if(SKILL_EFFECT_NUMBER_ALL == effectNumber){
+                // 全场AOE 情况下 personsBeAttackList 就是最终的结果
+            }
+            // 3.如果 effectNumber 大于范围内的人数，则 personsBeAttackList 都是影响目标，不需要进一步筛选
+            else if(effectNumber >= personsBeAttackList.size()){
+                // 同全场AOE，personsBeAttackList 就是最终的结果
+            }
+            // 4.根据此技能的攻击目标选择方式，对 personsBeAttackList 进行筛选
+            else{
+                int skillTarget = skill.getEffectTarget();
+                int[] attackResultIndex;
+                ArrayList<BattlePerson> tempList = new ArrayList<BattlePerson>();
+                ArrayList<BattlePerson> tempList2 = new ArrayList<BattlePerson>();
+                BattlePerson temp = null;   // 临时变量
+
+                int farDistance;// 最远目标的距离
+                int nearDistance;//最近目标的距离
+                int currentDistance;// 当前遍历到的距离
+                int[] distanceArrays ;
+                int attackNumberRemain;// 还剩余多少个人需要攻击攻击
+
+
+                // 根据这个技能的特性，挑选出可以影响到的目标，结果存放在 personsBeAttackList
+                switch(skillTarget){
+                    case SKILL_TARGET_RANDOM:
+                        SimpleLog.logd(TAG,"技能随机选择攻击目标");
+                        // 从所有攻击范围内的人里面，随机挑选出 effectNumber 个攻击目标
+                        attackResultIndex = RandomUtils.getRandomTarget(personsBeAttackList.size(),effectNumber);
+                        for(int i= 0;i<attackResultIndex.length;i++){
+                            tempList.add(personsBeAttackList.get(attackResultIndex[i]));
+                        }
+                        personsBeAttackList = tempList;
+                        break;
+                    case SKILL_TARGET_MINI_HP:
+                        SimpleLog.logd(TAG,"技能选择攻击生命低的目标");
+                        // 使用冒泡排序法，对被选中的人物按照HP从少到多进行排序
+                        for(int x =0;x<personsBeAttackList.size()-1;x++){
+                            for(int y=x+1;y<personsBeAttackList.size();y++){
+                                if(personsBeAttackList.get(x).getHP() > personsBeAttackList.get(y).getHP()){
+                                    temp = personsBeAttackList.get(x);
+                                    personsBeAttackList.set(x,personsBeAttackList.get(y));
+                                    personsBeAttackList.set(y,temp);
+                                }
+                            }
+                        }
+                        // 取出HP最低的 effectNumber 个人放在 tempList
+                        for(int i = 0;i< effectNumber;i++){
+                            tempList.add(personsBeAttackList.get(i));
+                        }
+                        personsBeAttackList = tempList;
+                        break;
+                    case SKILL_TARGET_MAX_HP:
+                        SimpleLog.logd(TAG,"技能选择攻击生命高的目标");
+                        // 使用冒泡排序法，对被选中的人物按照HP从多到少进行排序
+                        for(int x =0;x<personsBeAttackList.size()-1;x++){
+                            for(int y=x+1;y<personsBeAttackList.size();y++){
+                                if(personsBeAttackList.get(x).getHP() < personsBeAttackList.get(y).getHP()){
+                                    temp = personsBeAttackList.get(x);
+                                    personsBeAttackList.set(x,personsBeAttackList.get(y));
+                                    personsBeAttackList.set(y,temp);
+                                }
+                            }
+                        }
+                        // 取出HP最低的 effectNumber 个人放在 tempList
+                        for(int i = 0;i< effectNumber;i++){
+                            tempList.add(personsBeAttackList.get(i));
+                        }
+                        personsBeAttackList = tempList;
+                        break;
+                    case SKILL_TARGET_DISTANCE_NEAR:
+                        SimpleLog.logd(TAG,"技能选择攻击近距离目标");
+                        // 获得当前距离最近的攻击目标
+                        farDistance = personsBeAttackList.get(personsBeAttackList.size()-1).getDistance(); // 最远目标的距离
+                        nearDistance = personsBeAttackList.get(0).getDistance();//最近目标的距离
+                        distanceArrays = new int[farDistance - nearDistance +1];
+                        attackNumberRemain = effectNumber;
+                        tempList = new ArrayList<BattlePerson>();
+                        tempList2 = new ArrayList<BattlePerson>();
+                        //SimpleLog.logd(TAG,"farDistance = "+farDistance+" nearDistance="+nearDistance);
+                        // 获得每个距离的人数 放在distanceArrays数组里面
+                        for(int i=0;i<personsBeAttackList.size();i++){
+                            currentDistance = personsBeAttackList.get(i).getDistance();
+                            distanceArrays[currentDistance-1]++;
+                        }
+                        // 从最后的列开始，向前选择 effectNumber个目标
+                        for(int i = 0;i<distanceArrays.length;i++){
+                            // 如果当前还需要攻击的人数 大于 当前列的人数，则当前列的所有人都需要加到临时列表 tempList 中
+                            if(attackNumberRemain > distanceArrays[i]){
+                                for(int j = 0;j<personsBeAttackList.size();j++){
+                                    // i 是从0开始的，但是距离是从1开始的，所以 i+1
+                                    if(personsBeAttackList.get(j).getDistance() == (i+1)){
+                                        tempList.add(personsBeAttackList.get(j));
+                                    }
+                                }
+                                attackNumberRemain -= distanceArrays[i];// 剩余的需要攻击的人数
+                                continue;
+                            }else {
+                                // 如果当前还需要攻击的人数 小于等于 当前列的人数，则从当前列随机选择出 attackNumberRemain 人，加入到临时表 tempList
+                                for(int j = 0;j<personsBeAttackList.size();j++){
+                                    if(personsBeAttackList.get(j).getDistance() == (i+1)){
+                                        tempList2.add(personsBeAttackList.get(j));
+                                    }
+                                }
+                                int[] result = RandomUtils.getRandomTarget(distanceArrays[i],attackNumberRemain);
+                                for(int k =0;k<result.length;k++){
+                                    tempList.add(tempList2.get(result[k]));
+                                }
+                                attackNumberRemain = 0;
+                                break;
+                            }
+                        }
+                        personsBeAttackList.clear();
+                        personsBeAttackList = tempList;
+                        break;
+                    case SKILL_TARGET_DISTANCE_FAR:
+                        SimpleLog.logd(TAG,"技能选择攻击远距离目标");
+                        // 获得当前距离最远的攻击目标
+                        farDistance = personsBeAttackList.get(personsBeAttackList.size()-1).getDistance(); // 最远目标的距离
+                        nearDistance = personsBeAttackList.get(0).getDistance();//最近目标的距离
+                        distanceArrays = new int[farDistance - nearDistance +1];
+                        attackNumberRemain = effectNumber;
+                        tempList = new ArrayList<BattlePerson>();
+                        tempList2 = new ArrayList<BattlePerson>();
+                        //SimpleLog.logd(TAG,"farDistance = "+farDistance+" nearDistance="+nearDistance);
+                        // 获得每个距离的人数 放在distanceArrays数组里面
+                        for(int i=0;i<personsBeAttackList.size();i++){
+                            currentDistance = personsBeAttackList.get(i).getDistance();
+                            distanceArrays[currentDistance-1]++;
+                        }
+                        // 从最后的列开始，向前选择 effectNumber个目标
+                        for(int i = (distanceArrays.length-1);i>=0;i--){
+                            // 如果当前还需要攻击的人数 大于 当前列的人数，则当前列的所有人都需要加到临时列表 tempList 中
+                            if(attackNumberRemain > distanceArrays[i]){
+                                for(int j = 0;j<personsBeAttackList.size();j++){
+                                    // i 是从0开始的，但是距离是从1开始的，所以 i+1
+                                    if(personsBeAttackList.get(j).getDistance() == (i+1)){
+                                        tempList.add(personsBeAttackList.get(j));
+                                    }
+                                }
+                                attackNumberRemain -= distanceArrays[i];// 剩余的需要攻击的人数
+                                continue;
+                            }else {
+                                // 如果当前还需要攻击的人数 小于等于 当前列的人数，则从当前列随机选择出 attackNumberRemain 人，加入到临时表 tempList
+                                for(int j = 0;j<personsBeAttackList.size();j++){
+                                    if(personsBeAttackList.get(j).getDistance() == (i+1)){
+                                        tempList2.add(personsBeAttackList.get(j));
+                                    }
+                                }
+                                int[] result = RandomUtils.getRandomTarget(distanceArrays[i],attackNumberRemain);
+                                for(int k =0;k<result.length;k++){
+                                    tempList.add(tempList2.get(result[k]));
+                                }
+                                attackNumberRemain = 0;
+                                break;
+                            }
+                        }
+                        personsBeAttackList.clear();
+                        personsBeAttackList = tempList;
+                        break;
+                    default:
+                        SimpleLog.logd(TAG,"错误！！！ 技能选择攻击目标出错");
+                        break;
+                }
+            }
+        }
+
+        // personsBeAttackList 是技能可以影响到的目标，
+        ShowUtils.showArrayLists(TAG+" 普通攻击目标：",personsBeAttackList);
+
+        //// TODO: 2017/10/15 开始分别对 personsBeAttackList 进行攻击
+        a
     }
 
     private void attack(BattlePerson actionPlayer, TeamModel actionTeam, TeamModel beAttackedTeam) {

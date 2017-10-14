@@ -18,15 +18,15 @@ public class BuffBase {
     protected int[] buff_effect;                // buff效果，即影响什么属性
     protected float[] level_up_constant;        // 每升一级 固定部分 的提升
     protected float[] level_up_fluctuate;       // 每升一级 浮动部分 的提升
-    protected float[] buff_constant;              // buff的固定部分
+    protected float[] buff_constant;            // buff的固定部分
     protected float[] buff_fluctuate;           // buff的浮动部分
 
     // 以上5个数组的字符串，便于存储
-    protected String sbuff_effect;              // buff效果，即影响什么属性
-    protected String slevel_up_constant;        // 每升一级 固定部分 的提升
-    protected String slevel_up_fluctuate;       // 每升一级 浮动部分 的提升
-    protected String sbuff_constant;            // buff的固定部分
-    protected String sbuff_fluctuate;           // buff的浮动部分
+    protected String sbuff_effect;              // 字符串:buff效果，即影响什么属性
+    protected String slevel_up_constant;        // 字符串:每升一级 固定部分 的提升
+    protected String slevel_up_fluctuate;       // 字符串:每升一级 浮动部分 的提升
+    protected String sbuff_constant;            // 字符串:buff的固定部分
+    protected String sbuff_fluctuate;           // 字符串:buff的浮动部分
 
     public BuffBase() {
     }

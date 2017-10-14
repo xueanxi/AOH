@@ -1,7 +1,7 @@
 package com.game.xianxue.ashesofhistory.game.model.person;
 
+import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.database.BuffDataManager;
-import com.game.xianxue.ashesofhistory.database.SkillDataManager;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBase;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBattle;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
@@ -138,9 +138,11 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         this.luck_Raw = basePerson.getLuck_Raw();                   // 原始运气
         this.skillStrings = basePerson.skillStrings;
 
+        SimpleLog.logd(TAG,"NormalPerson(): skillStrings="+this.skillStrings);
+
         // 初始化技能
         setLevel(level);
-        initSkill(basePerson.skillLists);
+        initSkill();
 
         // 刷新属性
         updateAttribute();
@@ -148,17 +150,15 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
 
     /**
      * 进行技能的初始化，包括以下操作
-     * 1：从人物的技能字符串里面解析出技能，添加到 skillLists
+     * 1：从人物的技能字符串里面解析出技能，添加到 skillAllLists
      * 2：把被动技能挑选出来，添加到 buffPassive
+     * 3：把主动技能挑选出来，添加到 skillActivesLists
      *
-     * @param baseSkillList
      */
-    protected void initSkill(ArrayList<SkillBean> baseSkillList) {
-        if (baseSkillList != null && baseSkillList.size() != 0) {
-            this.skillLists = baseSkillList;
-        } else {
-            parseSkillList();
-        }
+    protected void initSkill() {
+        parseSkillList();
+
+        //ShowUtils.showArrayLists(TAG+"天赋技能列表:",skillAllLists);
 
         SkillBean skillBean = null;
         BuffBase buffBase = null;
@@ -166,16 +166,15 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         buffPassive = new ArrayList<BuffBattle>();
         skillActivesLists = new ArrayList<SkillBattle>();
 
-        for (int i = 0; i < this.skillLists.size(); i++) {
-            skillBean = skillLists.get(i);
+        for (int i = 0; i < this.skillAllLists.size(); i++) {
+            skillBean = skillAllLists.get(i);
             // 如果人物等级小于技能的解锁等级，则此技能还不能使用
             if (this.level < skillBean.getUnLockLevel()) continue;
             // 把技能根据 主动技能和被动技能分类 初始化到变量里面
+            if(skillBean.getSkill() == null) continue;
             if (SKILL_NATURE_ACTIVE == skillBean.getSkill().getSkillNature()) {
                 // 处理主动技能
-                int skillID = skillBean.getSkillID();
-                if (skillID == 0) continue;
-                SkillBase skillBase = SkillDataManager.getSkillFromDataBaseById(skillID);
+                SkillBase skillBase = skillBean.getSkill();
                 if(skillBase == null) continue;
                 SkillBattle skillBattle = new SkillBattle(skillBase, skillBean.getCurrentSkillLevel(this.level));
                 skillActivesLists.add(skillBattle);
@@ -189,6 +188,9 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
                 buffPassive.add(buffBattle);
             }
         }
+
+        ShowUtils.showArrayLists(TAG+"主动技能列表:",skillActivesLists);
+        ShowUtils.showArrayLists(TAG+"被动技能列表:",buffPassive);
     }
 
     /**
@@ -216,7 +218,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
 
         // TODO: 8/29/17 处理影响 基础属性 的效果比如增加力量的装备等等
         // TODO： 处理基础属性 包括 被动技能中涉及基础属性的部分、武器装备中涉及基础属性的部分、阵型中涉及基础属性的部分
-        AddBasisBuff();
+        addBasisBuff();
 
         HP = calculateHp();                                     // 生命值
         experiencePoint = 0;                                    // 经验值
@@ -238,7 +240,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
 
 
         // TODO: 8/29/17 处理 面板属性 的效果
-        AddPanelBuff();
+        addPanelBuff();
     }
 
     /**
@@ -248,9 +250,9 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
      * 1.buff固定部分直接加到属性里面就好
      * 2.buff的浮动部分是百分比，需要把所有加起来，再计算到属性里面
      */
-    private void AddPanelBuff() {
+    private void addPanelBuff() {
         if (buffPassive != null && buffPassive.size() > 0) {
-
+           // SimpleLog.logd(TAG,this.name+" before:numberUp = "+this.attackNumberUp);
             // 面板屬性在所有buff的影响下增幅的比例
             float physicDamageRate = 0;
             float magicDamageRate = 0;
@@ -384,17 +386,21 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
                 actionValuesMax = (int) (actionValuesMax * (1f + actionValuesMaxRate));
                 reduceBeCriteRate = (int) (reduceBeCriteRate * (1f + reduceBeCriteRateRate));
                 HP = (int) (HP * (1f + HPRate));
-                skillRate = (int) (skillRate * (1f + HPRate));
-                attackNumberUp = (int) (attackNumberUp * (1f + HPRate));
-                attackRangeUp = (int) (attackRangeUp * (1f + HPRate));
+                skillRate = (int) (skillRate * (1f + skillRateRate));
+                attackNumberUp = (int) (attackNumberUp * (1f + attackNumberRate));
+                attackRangeUp = (int) (attackRangeUp * (1f + attackRangeRate));
+
+                //SimpleLog.logd(TAG,this.name+" after:numberUp = "+this.attackNumberUp);
             }
         }
     }
 
     /**
      * 加持 基础 被动 buff效果
+     * 比如增加 力量，智力，敏捷，精神，体质，魅力，运气 这七个
      */
-    private void AddBasisBuff() {
+    private void addBasisBuff() {
+        SimpleLog.logd(TAG,this.name+" addBasisBuff()");
         if (buffPassive != null && buffPassive.size() > 0) {
 
             // 处理被动技能的浮动部分加成
@@ -405,6 +411,8 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
             float spiritRate = 0;
             float fascinationRate = 0;
             float luckRate = 0;
+
+            ShowUtils.showArrayLists(TAG+" show buffPassive:",buffPassive);
 
             // 先处理被动技能的固定加成部分
             for (BuffBattle buff : buffPassive) {
@@ -455,7 +463,6 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
             luck = (int) (luck * (1f + luckRate));
         }
     }
-
 
     /**
      * 设置等级的时候，同时初始化属性
@@ -807,7 +814,6 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         } else {
 
         }
-
         return skillArrays;
     }
 

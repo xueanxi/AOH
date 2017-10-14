@@ -25,11 +25,11 @@ public class BuffBattle extends BuffBase implements Interface_Buff {
         this.level_up_range = base.level_up_range;              // 每升一级浮动部分的提升
         this.level_up_time = base.level_up_time;                // 每升一级浮动部分的提升
 
-        this.sbuff_effect = base.sbuff_effect;        // buff的效果
-        this.sbuff_constant = base.sbuff_constant;    // buff的固定部分
-        this.sbuff_fluctuate = base.sbuff_fluctuate;  // buff的浮动部分
-        this.slevel_up_constant = base.slevel_up_constant;        // 每升一级固定部分的提升
-        this.slevel_up_fluctuate = base.slevel_up_fluctuate;      // 每升一级浮动部分的提升
+        this.sbuff_effect = base.sbuff_effect;              // 字符串:buff的效果
+        this.sbuff_constant = base.sbuff_constant;          // 字符串:buff的固定部分
+        this.sbuff_fluctuate = base.sbuff_fluctuate;        // 字符串:buff的浮动部分
+        this.slevel_up_constant = base.slevel_up_constant;  // 字符串:每升一级固定部分的提升
+        this.slevel_up_fluctuate = base.slevel_up_fluctuate;// 字符串:每升一级浮动部分的提升
 
         // 把 String 转化为 int[] / float[]
         this.buff_effect = TextUtils.getIntArrayFromString(sbuff_effect);
@@ -107,5 +107,12 @@ public class BuffBattle extends BuffBase implements Interface_Buff {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public String toString() {
+        return "BuffBattle{" +
+                "level=" + level +
+                "} " + super.toString();
     }
 }

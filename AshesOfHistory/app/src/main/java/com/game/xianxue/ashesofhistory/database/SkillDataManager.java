@@ -55,7 +55,6 @@ public class SkillDataManager {
                 + " VALUES ("
                 + " '%d','%s','%s','%d','%d','%f','%f','%f','%d','%d','%d','%d','%d','%d','%f','%f','%f','%d','%f','%f','%f','%f','%f','%f','%f'"
                 + " )";
-        SimpleLog.logd(TAG,"getInsertString() : format = "+format);
         String result = String.format(format,
                 skill.getSkillId(),
                 skill.getName(),
@@ -83,7 +82,6 @@ public class SkillDataManager {
                 skill.getLevelUpCDTime(),
                 skill.getLevelUpPenetrate()
         );
-        SimpleLog.logd(TAG,"getInsertString() : result = "+result);
         return result;
     }
 
@@ -112,7 +110,7 @@ public class SkillDataManager {
         SkillBase skill = cursorToSkill(cursor);
         cursor.close();
         db.close();
-        SimpleLog.logd(TAG, skill.toString());
+        // SimpleLog.logd(TAG, skill.toString());
         return skill;
     }
 

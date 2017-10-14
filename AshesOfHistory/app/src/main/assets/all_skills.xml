@@ -51,7 +51,7 @@
         <effect_rate>0</effect_rate><!--技能附加效果触发几率 0～1.0-->
         <level_up_constant>10</level_up_constant><!--技能升级 固定部分 效果提升 浮点数-->
         <level_up_fluctuate>0.1</level_up_fluctuate><!--技能升级 浮动部分 效果提升 浮点数-->
-        <level_up_range>0</level_up_range><!--技能升级 范围提升 浮点数 -->
+        <level_up_range>0.3</level_up_range><!--技能升级 范围提升 浮点数 -->
         <level_up_number>0.3</level_up_number><!--技能升级 攻击目标数量 浮点数-->
         <level_up_effect_rate>0</level_up_effect_rate><!--技能升级 攻击效果触发概率 浮点数-->
         <level_up_penetrate>0</level_up_penetrate><!--技能升级 穿透率增加 浮点数-->

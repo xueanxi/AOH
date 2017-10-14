@@ -2,6 +2,7 @@ package com.game.xianxue.ashesofhistory.game.model.person;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.database.SkillDataManager;
+import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
  */
 
 public class BasePerson implements Serializable {
-    private static final String TAG = "=BasePerson";
+    private static final String TAG = "BasePerson";
 
     // 基础资料
     protected int _id;                 // 保存在数据库中的_id
@@ -40,7 +41,7 @@ public class BasePerson implements Serializable {
      * 天赋技能的字符串. 一个技能的列表字符串，存储了人物在各个等级能够解锁的技能。
      */
     protected String skillStrings = null;
-    protected ArrayList<SkillBean> skillLists;
+    protected ArrayList<SkillBean> skillAllLists;
 
     public int getPsersonId() {
         return psersonId;
@@ -157,7 +158,8 @@ public class BasePerson implements Serializable {
      * 2表示技能解锁之后，人物每升2级，技能升级一次
      */
     public ArrayList<SkillBean> parseSkillList(){
-        skillLists = new ArrayList<SkillBean>();
+        SimpleLog.logd(TAG,"parseSkillList() Start");
+        skillAllLists = new ArrayList<SkillBean>();
         SkillBean skillBean = null;
         if(this.skillStrings != null && skillStrings.length()!=0){
             String[] skillDatas;
@@ -182,11 +184,12 @@ public class BasePerson implements Serializable {
                 skillBean.setUnLockLevel(unLockLevel);
                 skillBean.setGrow(grow);
                 skillBean.setSkill(SkillDataManager.getSkillFromDataBaseById(skillID));
-
-                SimpleLog.logd(TAG,"");
-                skillLists.add(skillBean);
+                skillAllLists.add(skillBean);
             }
-            return skillLists;
+            //ShowUtils.showArrayLists(TAG+"after parse skill",skillAllLists);
+            return skillAllLists;
+        }else{
+            SimpleLog.loge(TAG,"parseSkillList() Fail !!! skillStrings == null");
         }
         return null;
     }

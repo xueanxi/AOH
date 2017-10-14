@@ -225,12 +225,12 @@ buff有四种：比如 力量契约 力量衰竭 力量祝福 力量诅咒
         <buff_effect>6,7</buff_effect><!--buff 效果 1～24 -->
         <buff_type>0</buff_type><!--技能类型：0：只触发一次 1：时间内每回合触发一次 -->
         <buff_nature>0</buff_nature><!--buff 性质 0 被动加成的 1 主动释放加持的-->
-        <buff_constant>6</buff_constant><!--buff效果固定部分-->
-        <buff_fluctuate>0</buff_fluctuate><!--buff效果浮动部分 浮点数-->
+        <buff_constant>5,5</buff_constant><!--buff效果固定部分-->
+        <buff_fluctuate>0,0</buff_fluctuate><!--buff效果浮动部分 浮点数-->
         <time>0</time><!--技能持续时间，0是永久的 其他数字是buff的持续回合-->
         <range>0</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
         <level_up_constant>3,3</level_up_constant><!--技能升级 固定部分 效果提升 浮点数 0～5.0 -->
-        <level_up_fluctuate>0</level_up_fluctuate><!--技能升级 浮动部分 效果提升 浮点数 0～5.0 -->
+        <level_up_fluctuate>0,0</level_up_fluctuate><!--技能升级 浮动部分 效果提升 浮点数 0～5.0 -->
         <level_up_range>0</level_up_range><!--技能升级 范围提升 浮点数 原来的范围加上effect_range_up然后向下取整就是新的范围 -->
         <level_up_time>0</level_up_time>  <!--技能升级 时间提升 浮点数 time+effect_time_up然后向下取整就是新的持续时间 -->
     </item>
@@ -306,11 +306,11 @@ buff有四种：比如 力量契约 力量衰竭 力量祝福 力量诅咒
     <item>
         <buff_id>507</buff_id><!--buff ID,唯一标识这个技能-->
         <name>卧龙</name><!--技能名字-->
-        <introduce>被动：智力,精神大幅提升 除了普攻所有技能都是全场攻击</introduce><!--技能描述-->
+        <introduce>被动：智力,精神大幅提升 攻击人数和范围增加</introduce><!--技能描述-->
         <buff_effect>2,5,26,27</buff_effect><!--buff 效果 1～24 -->
         <buff_type>0</buff_type><!--技能类型：0：只触发一次 1：时间内每回合触发一次 -->
         <buff_nature>0</buff_nature><!--buff 性质 0 被动加成的 1 主动释放加持的-->
-        <buff_constant>0,0,100,100</buff_constant><!--buff效果固定部分-->
+        <buff_constant>0,0,2,2</buff_constant><!--buff效果固定部分-->
         <buff_fluctuate>0.3,0.3,0,0</buff_fluctuate><!--buff效果浮动部分 浮点数-->
         <time>0</time><!--技能持续时间，0是永久的 其他数字是buff的持续回合-->
         <range>0</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
