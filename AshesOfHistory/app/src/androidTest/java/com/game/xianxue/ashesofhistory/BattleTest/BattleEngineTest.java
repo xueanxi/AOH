@@ -362,8 +362,10 @@ public class BattleEngineTest {
         BattleEngine engine = BattleEngine.getInstance();
         engine.setBattleTeam(t1, t2);
 /*        for(int i = 0;i<10;i++){
-            engine.attackNormal(b1);
+            engine.startNormalAttack(b1);
         }*/
-        engine.attackNormal(b1);
+        engine.startNormalAttack(b1);
+
+
     }
 }

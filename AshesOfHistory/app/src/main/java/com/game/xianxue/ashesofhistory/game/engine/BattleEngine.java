@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.game.xianxue.ashesofhistory.Log.BattleLog;
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
+import com.game.xianxue.ashesofhistory.game.model.DamgeModel;
 import com.game.xianxue.ashesofhistory.game.model.TeamModel;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBattle;
@@ -144,219 +145,34 @@ public class BattleEngine implements Interface_Skill{
         }
     }
 
+    /**
+     * 开始执行 行动
+     * @param actionPerson
+     */
     public void doAction(BattlePerson actionPerson){
-        // 进攻
-        int currentActionCamp = actionPerson.getCamp();
-        try {
-            if (currentActionCamp == t1.getmCamp()) {
-                attack(actionPerson, t1, t2);
-            } else {
-                attack(actionPerson, t2, t1);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void attack(BattlePerson actionPerson) {
-        // TODO: 5/25/17  这里要处理阵法的Buff效果，然后再进行攻击
-        // TODO: 5/25/17  这里要处理actionPlayer的技能释放效果
-        int actionCamp = actionPerson.getCamp();    // 当前行动的阵营
-        int effectCamp = TeamModel.CAMP_NEUTRAL;    // 技能作用的阵营
-        int effectNumber = 0;                       // 本次技能影响的人数
-        int effectRange = 0;                        // 本次技能影响的范围
-        SkillBattle skill = null;                   // 本次发动的技能
-
-        // TODO: 10/11/17 在处理技能释放之前，先处理BattlePerson 继承 NormalPerson
-        if(RandomUtils.isHappen(RATE_SKILL_RELEASE+actionPerson.getSkillRate())){
-            BattleLog.log(actionPerson.getName()+"准备进行技能攻击");
-            //skill = actionPlayer.gets
+        // TODO: 2017/10/15 这里不应该直接进行释放技能或者普通攻击，应该在执行之前，判断一下，是否有什么负面状态，导致本次行动不能正常执行的。
+        if(RandomUtils.isHappen(RATE_SKILL_RELEASE)){
+            // 释放技能
+            startSpawnSkill(actionPerson);
         }else{
-            BattleLog.log(actionPerson.getName()+"准备进行普通攻击");
-            skill = actionPerson.getSkillActivesLists().get(0);
-            effectNumber = skill.getEffectNumber() + actionPerson.getAttackNumberUp();
-            effectRange = skill.getRange() + actionPerson.getAttackRangeUp();
-            ArrayList<BattlePerson> personsBeAttackList = new ArrayList<BattlePerson>();
-            TeamModel teamBeAttack = null;
-
-            // 计算本次技能作用的阵营
-            if(SKILL_CAMP_ENEMY == skill.getEffectCamp()){
-                if(actionCamp == TeamModel.CAMP_LEFT){
-                    effectCamp = TeamModel.CAMP_RIGHT;
-                }else if(actionCamp == TeamModel.CAMP_RIGHT){
-                    effectCamp = TeamModel.CAMP_LEFT;
-                }
-            } else if(SKILL_CAMP_FRIEND == skill.getEffectCamp()){
-                if(actionCamp == TeamModel.CAMP_LEFT){
-                    effectCamp = TeamModel.CAMP_LEFT;
-                }else if(actionCamp == TeamModel.CAMP_RIGHT){
-                    effectCamp = TeamModel.CAMP_RIGHT;
-                }
-            }
-
-            // 挑选出承受此次技能的阵营是 t1 还是 t2
-            if(t1.getmCamp() == effectCamp){
-                teamBeAttack = t1;
-            }else if(t2.getmCamp() == effectCamp){
-                teamBeAttack = t2;
-            }else{
-                SimpleLog.loge(TAG,"Error !!! 技能找不到攻击的阵营");
-            }
-
-            // 挑选出承受此次技能的人
-            if(effectRange == SKILL_RANGE_AOE){
-                // 技能是全场范围
-                personsBeAttackList = teamBeAttack.getMembersList();
-            }else if(effectRange == SKILL_RANGE_SELF){
-                // 技能只能对自己释放
-                personsBeAttackList.add(actionPerson);
-            }else{
-                // 技能范围是具体的数字，此时需要结合此技能的攻击人数进行双重判断
-                // 1.挑选出攻击范围内的人
-                personsBeAttackList = teamBeAttack.getLineup().getPersonsByDistance(skill.getRange());
-                // 2.查看这个技能是否是全场AOE，如果是则跳过第三步
-                if(SKILL_EFFECT_NUMBER_ALL == effectNumber){
-                    // 全场AOE 情况下 personsBeAttackList 就是最终的结果
-                }
-                // 3.如果 effectNumber 大于范围内的人数，则 personsBeAttackList 都是影响目标，不需要进一步筛选
-                else if(effectNumber >= personsBeAttackList.size()){
-
-                }
-                // 4.根据此技能的攻击目标选择方式，对 personsBeAttackList 进行筛选
-                else{
-                    int skillTarget = skill.getEffectTarget();
-                    int[] attackResultIndex;
-                    ArrayList<BattlePerson> tempList = new ArrayList<BattlePerson>();
-                    BattlePerson temp = null;   // 临时变量
-
-                    int farDistance;// 最远目标的距离
-                    int nearDistance;//最近目标的距离
-                    int[] distanceArrays ;
-                    int currentDistance ;
-                    int totalNumber;// 从最近距离开始，一列一列加起来的人数
-
-                    switch(skillTarget){
-                        case SKILL_TARGET_RANDOM:
-                            // 从所有攻击范围内的人里面，随机挑选出 skillTarget 个攻击目标
-                            attackResultIndex = RandomUtils.getRandomTarget(personsBeAttackList.size(),skillTarget);
-                            for(int i = 0;i<attackResultIndex.length;i++){
-                                tempList.add(personsBeAttackList.get(attackResultIndex[i]));
-                                personsBeAttackList = tempList;
-                            }
-                            break;
-                        case SKILL_TARGET_MINI_HP:
-                            // 使用冒泡排序法，对被选中的人物按照HP从少到多进行排序
-                            for(int x =0;x<personsBeAttackList.size()-1;x++){
-                                for(int y=x+1;y<personsBeAttackList.size();y++){
-                                    if(personsBeAttackList.get(x).getHP() > personsBeAttackList.get(y).getHP()){
-                                        temp = personsBeAttackList.get(x);
-                                        personsBeAttackList.set(x,personsBeAttackList.get(y));
-                                        personsBeAttackList.set(y,temp);
-                                    }
-                                }
-                            }
-                            // 取出HP最低的 skillTarget 个人放在 tempList
-                            for(int i = 0;i< skillTarget;i++){
-                                tempList.add(personsBeAttackList.get(i));
-                            }
-                            personsBeAttackList = tempList;
-                            break;
-                        case SKILL_TARGET_MAX_HP:
-                            // 使用冒泡排序法，对被选中的人物按照HP从多到少进行排序
-                            for(int x =0;x<personsBeAttackList.size()-1;x++){
-                                for(int y=x+1;y<personsBeAttackList.size();y++){
-                                    if(personsBeAttackList.get(x).getHP() < personsBeAttackList.get(y).getHP()){
-                                        temp = personsBeAttackList.get(x);
-                                        personsBeAttackList.set(x,personsBeAttackList.get(y));
-                                        personsBeAttackList.set(y,temp);
-                                    }
-                                }
-                            }
-                            // 取出HP最低的 skillTarget 个人放在 tempList
-                            for(int i = 0;i< skillTarget;i++){
-                                tempList.add(personsBeAttackList.get(i));
-                            }
-                            personsBeAttackList = tempList;
-                            break;
-                        case SKILL_TARGET_DISTANCE_NEAR:
-                            // 获得当前距离最近的攻击目标
-                            farDistance = personsBeAttackList.get(personsBeAttackList.size()-1).getDistance(); // 最远目标的距离
-                            nearDistance = personsBeAttackList.get(0).getDistance();//最近目标的距离
-                            distanceArrays = new int[farDistance - nearDistance +1];
-                             currentDistance = 0;
-                             totalNumber = 0;// 从最近距离开始，一列一列加起来的人数
-                            // 获得每个距离的人数 放在distanceArrays数组里面
-                            for(int i=0;i<personsBeAttackList.size();i++){
-                                currentDistance = personsBeAttackList.get(i).getDistance();
-                                distanceArrays[currentDistance-1] = distanceArrays[currentDistance-1]++;
-                            }
-
-
-                            for(int i = 0;i<distanceArrays.length;i++){
-                                totalNumber += distanceArrays[i];
-                                // 作用人数，少于最近累加的人数，则开始从最近累加的人里面挑出 effectNumber 个攻击目标
-                                if(effectNumber<=totalNumber){
-                                    attackResultIndex = RandomUtils.getRandomTarget(totalNumber,effectNumber);
-                                    for(int j = 0;j<attackResultIndex.length;j++){
-                                        tempList.add(personsBeAttackList.get(attackResultIndex[j]));
-                                        personsBeAttackList = tempList;
-                                    }
-                                    break;
-                                }
-                            }
-                            break;
-                        case SKILL_TARGET_DISTANCE_FAR:
-                            // 获得当前距离最远的攻击目标
-                            farDistance = personsBeAttackList.get(personsBeAttackList.size()-1).getDistance(); // 最远目标的距离
-                            nearDistance = personsBeAttackList.get(0).getDistance();//最近目标的距离
-                            distanceArrays = new int[farDistance - nearDistance +1];
-                            currentDistance = 0;
-                            totalNumber = 0;// 从最远距离开始，一列一列加起来的人数
-                            // 获得每个距离的人数 放在distanceArrays数组里面
-                            for(int i=0;i<personsBeAttackList.size();i++){
-                                currentDistance = personsBeAttackList.get(i).getDistance();
-                                distanceArrays[currentDistance-1] = distanceArrays[currentDistance-1]++;
-                            }
-
-                            for(int i = farDistance-1;i>=0;i--){
-                                totalNumber += distanceArrays[i];
-                                // 作用人数，少于最近累加的人数，则开始从最近累加的人里面挑出 effectNumber 个攻击目标
-                                if(effectNumber<=totalNumber){
-                                    attackResultIndex = RandomUtils.getRandomTarget(totalNumber,effectNumber);
-                                    for(int j = 0;j<attackResultIndex.length;j++){
-                                        tempList.add(personsBeAttackList.get(attackResultIndex[j]));
-                                        personsBeAttackList = tempList;
-                                    }
-                                    break;
-                                }
-                            }
-                            break;
-                        default:
-                            break;
-                    }
-                }
-            }
-        }
-
-
-        BattlePerson beAttackPlayer = getBeAttackedPlayer(t1);//挑选出被攻击的人员
-        if (beAttackPlayer == null) {
-            mIsBattleing = false;
-            BattleLog.log((actionCamp == TeamModel.CAMP_LEFT ? "敌方" : "我方") + " 已经没有可以战斗的人员。");
-        } else {
-            String actionPlayerName = actionPerson.getName();
-            String beAttackedPlayName = beAttackPlayer.getName();
-            BattleLog.log("=============" + actionPlayerName + " 对 " + beAttackedPlayName + "发起攻击" + "=============");
-            //随机判断对方进行格档还是闪避，
-            if (RandomUtils.isHappen(0.5f)) {
-                attackBlock(actionPerson, beAttackPlayer);
-            } else {
-                attackDodge(actionPerson, beAttackPlayer);
-            }
+            // 进行普通攻击
+            startNormalAttack(actionPerson);
         }
     }
 
-    public void attackNormal(BattlePerson actionPerson){
+    /**
+     * 开始释放技能
+     * @param actionPerson
+     */
+    public void startSpawnSkill(BattlePerson actionPerson) {
+        a
+    }
+
+    /**
+     * 开始进行普通攻击
+     * @param actionPerson
+     */
+    public void startNormalAttack(BattlePerson actionPerson){
         BattleLog.log(actionPerson.getName()+"准备进行普通攻击");
 
         int actionCamp = actionPerson.getCamp();    // 当前行动的阵营
@@ -368,8 +184,9 @@ public class BattleEngine implements Interface_Skill{
         skill = actionPerson.getSkillActivesLists().get(0);                          // 获得普通攻击技能
         effectNumber = skill.getEffectNumber() + actionPerson.getAttackNumberUp();   // 技能的影响人数
         effectRange = skill.getRange() + actionPerson.getAttackRangeUp();            // 技能的影响范围
-        ArrayList<BattlePerson> personsBeAttackList = new ArrayList<BattlePerson>(); // 被技能攻击的目标
-        TeamModel teamBeAttack = null;                                               // 被技能影响的阵营
+        ArrayList<BattlePerson> personsBeAttackList = new ArrayList<BattlePerson>();            // 被技能攻击的目标
+        TeamModel teamBeAttack = null;            // 被技能影响的阵营
+        BattlePerson personBeAttack = null;       // 被技能影响的人
         SimpleLog.logd(TAG,actionPerson.getName()+"的 "+ skill.getName()+" 的距离为:"+effectRange+",人数为:"+effectNumber);
 
         // 计算本次技能作用的阵营
@@ -417,18 +234,17 @@ public class BattleEngine implements Interface_Skill{
             }
             // 4.根据此技能的攻击目标选择方式，对 personsBeAttackList 进行筛选
             else{
-                int skillTarget = skill.getEffectTarget();
+                int skillTarget = skill.getEffectTarget();// 技能选择哪种类型的人物进行攻击
                 int[] attackResultIndex;
-                ArrayList<BattlePerson> tempList = new ArrayList<BattlePerson>();
-                ArrayList<BattlePerson> tempList2 = new ArrayList<BattlePerson>();
-                BattlePerson temp = null;   // 临时变量
+                ArrayList<BattlePerson> tempList = new ArrayList<BattlePerson>();   // 存放临时数据的列表1
+                ArrayList<BattlePerson> tempList2 = new ArrayList<BattlePerson>();  // 存放临时数据的列表2
+                BattlePerson temp = null;                                // 临时变量
 
                 int farDistance;// 最远目标的距离
                 int nearDistance;//最近目标的距离
                 int currentDistance;// 当前遍历到的距离
-                int[] distanceArrays ;
+                int[] distanceArrays ;// 存放每个距离人数的数组。 Ex:数组[3,4,5] 表示距离为1的有3个人，距离为2的有4个人，距离为3的有5个人。
                 int attackNumberRemain;// 还剩余多少个人需要攻击攻击
-
 
                 // 根据这个技能的特性，挑选出可以影响到的目标，结果存放在 personsBeAttackList
                 switch(skillTarget){
@@ -574,11 +390,76 @@ public class BattleEngine implements Interface_Skill{
             }
         }
 
-        // personsBeAttackList 是技能可以影响到的目标，
         ShowUtils.showArrayLists(TAG+" 普通攻击目标：",personsBeAttackList);
 
-        //// TODO: 2017/10/15 开始分别对 personsBeAttackList 进行攻击
-        a
+        if(personsBeAttackList == null){
+            SimpleLog.loge(TAG,"startNormalAttack() 获取不到攻击目标：personsBeAttackList == null");
+            return;
+        }
+
+        //开始分别对 personsBeAttackList 列表中的每一个人进行攻击
+        for(int i =0;i<personsBeAttackList.size();i++){
+            personBeAttack = personsBeAttackList.get(i);
+            normalAttack(actionPerson,personBeAttack,skill);
+        }
+    }
+
+    /**
+     * 普通攻击
+     * @param actionPerson    发动普通攻击的人
+     * @param beAttackPerson  被普通攻击的人
+     * @param skill           普通攻击这个技能
+     */
+    private void normalAttack(BattlePerson actionPerson,BattlePerson beAttackPerson,SkillBattle skill){
+
+        float accuracy = 0;             // 本次技能的命中率
+        int reduceHP = 0;               // 本次技能减少目标多少HP
+
+        if( SKILL_ACCURACY_RATE_MUST_SUCCESS == skill.getAccuracyRate()){
+            accuracy = 1f;
+        }else{
+            // 本次的命中值为：人物命中值 * 技能命中率
+            float skillAccuracy = actionPerson.getAccuracy() * skill.getAccuracyRate();
+            // 最终命中率为:我方命中率/(我方命中率+ 对方的躲闪值)
+            accuracy =  skillAccuracy/ (skillAccuracy + beAttackPerson.getDodge());
+        }
+
+        // 使用随机算法，判断是否命中
+        if (RandomUtils.isHappen(accuracy)) {
+            // 攻击命中
+            BattleLog.log(actionPerson.getName() + "的"+skill.getName()+"成功命中"+beAttackPerson.getName());
+            int damage = 0;
+            float penetrate = 0;
+            switch (skill.getDamageType()){
+                case SKILL_DAMGE_TYPE_PHYSICS:
+                    damage = (int)(skill.getDamageConstant() + (skill.getDamageFluctuate() * actionPerson.getPhysicDamage()));
+                    reduceHP = DamgeModel.getDamageResult(damage,actionPerson.getPhysicsPenetrate(),skill.getDamagePenetrate(),beAttackPerson.getArmor(),false);
+                    break;
+                case SKILL_DAMGE_TYPE_MAGIC:
+                    damage = (int)(skill.getDamageConstant() + (skill.getDamageFluctuate() * actionPerson.getMagicDamage()));
+                    reduceHP = DamgeModel.getDamageResult(damage,actionPerson.getMagicPenetrate(),skill.getDamagePenetrate(),beAttackPerson.getMagicResist(),false);
+                    break;
+                case SKILL_DAMGE_TYPE_REAL:
+                    damage = (int)(skill.getDamageConstant() + (skill.getDamageFluctuate() * actionPerson.getMagicDamage()));
+                    reduceHP = damage;
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            // 攻击被躲闪
+            BattleLog.log(actionPerson.getName() + "的"+skill.getName()+"被"+beAttackPerson.getName()+"躲闪");
+        }
+
+        if (reduceHP <= 0) reduceHP = 0;
+        int remainHp = beAttackPerson.getHP() - reduceHP;
+        if (remainHp <= 0) {
+            remainHp = 0;
+            BattleLog.log(beAttackPerson.getName() + "受到了" + reduceHP + "点伤害，死亡了");
+        } else {
+            BattleLog.log(beAttackPerson.getName() + "受到了" + reduceHP + "点伤害，剩下" + remainHp + "生命值");
+        }
+        beAttackPerson.setHP(remainHp);
     }
 
     private void attack(BattlePerson actionPlayer, TeamModel actionTeam, TeamModel beAttackedTeam) {
@@ -596,55 +477,11 @@ public class BattleEngine implements Interface_Skill{
             BattleLog.log("=============" + actionPlayerName + " 对 " + beAttackedPlayName + "发起攻击" + "=============");
             //随机判断对方进行格档还是闪避，
             if (RandomUtils.isHappen(0.5f)) {
-                attackBlock(actionPlayer, beAttackPlayer);
+
             } else {
                 attackDodge(actionPlayer, beAttackPlayer);
             }
         }
-    }
-
-    /**
-     * 攻击尝试格档的敌人
-     * 根据攻击者的命中率和敌人的格档率来计算，敌人可能可当成功也可能格档失败
-     *
-     * @param p1
-     * @param p2
-     */
-    public void attackBlock(BattlePerson p1, BattlePerson p2) {
-        //进行格档
-        float blockPhysic = 0.3f;       //成功格档，物理攻击只承受30%伤害
-        float blockMagic = 0.7f;        //成功格档，魔法攻击只承受70%伤害
-
-        float accuracy = block(p1.getAccuracy(), p2.getBlock());
-
-        int reduceHP = 0;
-        if (RandomUtils.isHappen(accuracy)) {
-            BattleLog.log(p2.getName() + "格档失败 !!! 他的格档率为" + (1f - accuracy) * 100 + "%");
-            // 敌人格档失败,格档的伤害减免系数变为1
-            blockPhysic = 1f;
-            blockMagic = 1f;
-        } else {
-            BattleLog.log(p2.getName() + "格档成功 !!!  的格档率为" + (1f - accuracy) * 100 + "%");
-        }
-
-        if (p1.getSkillStrings() == null) {
-            //技能列表为空，则进行普通攻击。
-            BattleLog.log(p1.getName() + "的物理伤害为" + p1.getPhysicDamage() + " 真实伤害为" + p1.getRealDamage() + " " + p2.getName() + "的护甲为" + p2.getArmor());
-            // 计算敌方需要减少多少生命值
-            reduceHP = (int) (attack(p1.getPhysicDamage(), p2.getArmor(), p1.getPhysicsPenetrate()) * blockPhysic) + p1.getRealDamage();
-        } else {
-            // TODO: 5/24/17 技能攻击的代码处理
-        }
-
-        if (reduceHP <= 0) reduceHP = 0;
-        int remainHp = p2.getHP() - reduceHP;
-        if (remainHp <= 0) {
-            remainHp = 0;
-            BattleLog.log(p2.getName() + "受到了" + reduceHP + "点伤害，死亡了");
-        } else {
-            BattleLog.log(p2.getName() + "受到了" + reduceHP + "点伤害，剩下" + remainHp + "生命值");
-        }
-        p2.setHP(remainHp);
     }
 
 

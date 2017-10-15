@@ -1,5 +1,7 @@
 package com.game.xianxue.ashesofhistory.utils;
 
+import com.game.xianxue.ashesofhistory.Log.SimpleLog;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -7,6 +9,7 @@ import java.util.Random;
  * Created by user on 5/24/17.
  */
 public class RandomUtils {
+    private static final String TAG = "RandomUtils";
 
     /**
      * 给一个发生某件事情的概率，通过随机数的规则判断，事情是否会发生，
@@ -39,6 +42,10 @@ public class RandomUtils {
      * @return
      */
     public static float getRandomNumberbetween(float left, float right) {
+        if(left == right) {
+            SimpleLog.loge(TAG,"getRandomNumberbetween() 不要传入两个相等的参数 ！！！" );
+            return left;
+        }
         int Ileft = (int) (left * 100f);
         int Iright = (int) (right * 100f);
         int range = Iright - Ileft;

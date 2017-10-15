@@ -25,17 +25,10 @@ public interface Interface_Skill {
     int SKILL_NATURE_PASSIVITY = 1;     // 技能性质为被动
 
     // 技能的命中率
-    float SKILL_ACCURACY_RATE_SUCCESS = 2.0f;  // 技能命中率为必中
-    float SKILL_ACCURACY_RATE_FOLLOW = 1.0f;   // 技能命中率为伴随人物的命中率
+    float SKILL_ACCURACY_RATE_MUST_SUCCESS = -1f;  // 技能命中率为必中
 
     // 技能的持续时间
-    int SKILL_LAST_TIME_UNLIMIT = 10;   // 无线持续时间，维持到战斗结束
-    int SKILL_LAST_TIME_0 = 0;          // 像普通攻击一样的一次性攻击技能
-    int SKILL_LAST_TIME_1 = 1;          // 技能命中后，会令敌人持续后续伤害1个回合
-    int SKILL_LAST_TIME_2 = 2;          // 技能命中后，会令敌人持续后续伤害2个回合
-    int SKILL_LAST_TIME_3 = 3;          // 技能命中后，会令敌人持续后续伤害3个回合
-    int SKILL_LAST_TIME_4 = 4;          // 技能命中后，会令敌人持续后续伤害4个回合
-    int SKILL_LAST_TIME_5 = 5;          // 技能命中后，会令敌人持续后续伤害5个回合
+    int SKILL_LAST_TIME_UNLIMIT = -1;   // 无线持续时间，维持到战斗结束
 
     // 技能的作用范围
     int SKILL_RANGE_AOE = -1;           // -1表示，技能范围是全场
@@ -56,18 +49,15 @@ public interface Interface_Skill {
     int SKILL_TARGET_DISTANCE_FAR = 4;     // 触发目标为攻击范围内最远的目标
 
     // =======================攻击技能 部分===========================
-    public int DAMGE_TYPE_PHYSICS = 0;         // 伤害为物理伤害
-    public int DAMGE_TYPE_MAGIC = 1;           // 伤害为魔法伤害
-    public int DAMGE_TYPE_REAL = 2;            // 伤害为真实伤害
-    public int DAMGE_TYPE_PHYSICS_PERCENT = 3; // 百分比物理伤害
-    public int DAMGE_TYPE_MAGIC_PERCENT = 4;   // 百分比魔法伤害
-    public int DAMGE_TYPE_REAL_PERCENT = 5;    // 百分比真实伤害
-
-    public int ATTACK_EFFECT_CRITE = 0;              // 攻击特效：暴击     造成暴击伤害
-    public int ATTACK_EFFECT_PHYSICS_PENETRATE = 1;  // 攻击特效：物理穿透 无视一定护甲
-    public int ATTACK_EFFECT_MAGIC_PENETRATE = 2;    // 攻击特效：魔法穿透 无视一定魔抗
-    public int ATTACK_EFFECT_RECOVER_HP = 3;         // 攻击特效：吸血     吸收一定HP
-
+    int SKILL_DAMGE_TYPE_PHYSICS = 0;         // 伤害为物理伤害
+    int SKILL_DAMGE_TYPE_MAGIC = 1;           // 伤害为魔法伤害
+    int SKILL_DAMGE_TYPE_REAL = 2;            // 伤害为真实伤害
+    int SKILL_DAMGE_TYPE_PHYSICS_PERCENT = 3; // 当前生命百分比物理伤害
+    int SKILL_DAMGE_TYPE_MAGIC_PERCENT = 4;   // 当前生百分比魔法伤害
+    int SKILL_DAMGE_TYPE_REAL_PERCENT = 5;    // 当前生百分比真实伤害
+    int SKILL_DAMGE_TYPE_PHYSICS_PERCENT_MAX = 6; // 最大生命百分比物理伤害
+    int SKILL_DAMGE_TYPE_MAGIC_PERCENT_MAX = 7;   // 最大生百分比魔法伤害
+    int SKILL_DAMGE_TYPE_REAL_PERCENT_MAX = 8;    // 最大生百分比真实伤害
 
     // =======================恢复技能 部分===========================
 

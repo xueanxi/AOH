@@ -8,7 +8,7 @@
         <introduce>进行用于测试的技能</introduce><!--技能描述-->
         <skill_nature>1</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>1</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <damage_type>2</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_type>2</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3当前物理% 4当前魔法% 5当前真实% 6最大物理% 7最大魔法% 8最大真实%-->
         <damage_constant>50</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>0.5</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
         <damage_penetrate>3</damage_penetrate><!--穿透率 浮点数-->
@@ -36,7 +36,7 @@
         <introduce>进行普通物理攻击</introduce><!--技能描述-->
         <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3当前物理% 4当前魔法% 5当前真实% 6最大物理% 7最大魔法% 8最大真实%-->
         <damage_constant>20</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>0.8</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
         <damage_penetrate>0</damage_penetrate><!--穿透率 浮点数-->
@@ -64,7 +64,7 @@
         <introduce>进行远程普通物理攻击</introduce><!--技能描述-->
         <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3当前物理% 4当前魔法% 5当前真实% 6最大物理% 7最大魔法% 8最大真实%-->
         <damage_constant>15</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>0.7</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
         <damage_penetrate>0</damage_penetrate><!--穿透率 浮点数-->
@@ -91,7 +91,7 @@
         <introduce>进行普通魔法攻击</introduce><!--技能描述-->
         <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <damage_type>1</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_type>1</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3当前物理% 4当前魔法% 5当前真实% 6最大物理% 7最大魔法% 8最大真实%-->
         <damage_constant>50</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
         <damage_penetrate>3</damage_penetrate><!--穿透率 浮点数-->
@@ -121,7 +121,7 @@
         <introduce>对敌人进行一次一击必杀的攻击，但是命中率较低，命中率与等级差有关</introduce><!--技能描述-->
         <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <damage_type>5</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_type>5</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3当前物理% 4当前魔法% 5当前真实% 6最大物理% 7最大魔法% 8最大真实%-->
         <damage_constant>0</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
         <damage_penetrate>1</damage_penetrate><!--穿透率 浮点数-->
@@ -148,7 +148,7 @@
         <introduce>对敌人第一排3个敌人造成物理伤害</introduce><!--技能描述-->
         <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3当前物理% 4当前魔法% 5当前真实% 6最大物理% 7最大魔法% 8最大真实%-->
         <damage_constant>30</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
         <damage_penetrate>0</damage_penetrate><!--穿透率 浮点数-->
@@ -175,7 +175,7 @@
         <introduce>对一名敌人造成一次大威力的物理攻击</introduce><!--技能描述-->
         <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3当前物理% 4当前魔法% 5当前真实% 6最大物理% 7最大魔法% 8最大真实%-->
         <damage_constant>50</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>1.2</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
         <damage_penetrate>0.1</damage_penetrate><!--穿透率 浮点数-->
@@ -205,7 +205,7 @@
         <introduce>对敌人进行一次破甲攻击，必中</introduce><!--技能描述-->
         <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3当前物理% 4当前魔法% 5当前真实% 6最大物理% 7最大魔法% 8最大真实%-->
         <damage_constant>100</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
         <damage_penetrate>3</damage_penetrate><!--穿透率 浮点数-->
@@ -232,7 +232,7 @@
         <introduce>对生命最低的敌人进行一次高命中率的物理攻击</introduce><!--技能描述-->
         <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3当前物理% 4当前魔法% 5当前真实% 6最大物理% 7最大魔法% 8最大真实%-->
         <damage_constant>50</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
         <damage_penetrate>0.3</damage_penetrate><!--穿透率 浮点数-->
@@ -259,7 +259,7 @@
         <introduce>对敌人最前排所有人进行射击</introduce><!--技能描述-->
         <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3当前物理% 4当前魔法% 5当前真实% 6最大物理% 7最大魔法% 8最大真实%-->
         <damage_constant>15</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>0.8</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
         <damage_penetrate>0.2</damage_penetrate><!--穿透率 浮点数-->
@@ -289,7 +289,7 @@
         <introduce>进行范围魔法攻击</introduce><!--技能描述-->
         <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <damage_type>1</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_type>1</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3当前物理% 4当前魔法% 5当前真实% 6最大物理% 7最大魔法% 8最大真实%-->
         <damage_constant>50</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>0.5</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
         <damage_penetrate>3</damage_penetrate><!--穿透率 浮点数-->
@@ -316,7 +316,7 @@
         <introduce>进行全场的魔法攻击</introduce><!--技能描述-->
         <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <damage_type>1</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实-->
+        <damage_type>1</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3当前物理% 4当前魔法% 5当前真实% 6最大物理% 7最大魔法% 8最大真实%-->
         <damage_constant>30</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>0.3</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
         <damage_penetrate>0</damage_penetrate><!--穿透率 浮点数-->
@@ -343,7 +343,7 @@
         <introduce>引导天雷，对生命最低的敌人进行必中的魔法攻击</introduce><!--技能描述-->
         <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <damage_type>1</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3百分比物理 4百分比魔法 5百分比真实 6当前生命百分比魔法 7当前生命百分比物理伤害-->
+        <damage_type>1</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3当前物理% 4当前魔法% 5当前真实% 6最大物理% 7最大魔法% 8最大真实%-->
         <damage_constant>50</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
         <damage_penetrate>0</damage_penetrate><!--穿透率 浮点数-->

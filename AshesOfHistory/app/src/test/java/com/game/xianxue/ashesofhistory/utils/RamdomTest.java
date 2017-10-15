@@ -15,6 +15,17 @@ public class RamdomTest {
     }
 
     @Test
+    public void testGetRandomNumberbetween() throws Exception {
+        float start = 0.4f;
+        float end = 0.6f;
+        float result = 0;
+        for(int i=0;i<100;i++){
+            result = RandomUtils.getRandomNumberbetween(start,end);
+            System.out.println("result = "+result);
+        }
+    }
+
+    @Test
     public void testIsHappen() throws Exception {
         int truetime = 0;
         int falsetime = 0;
