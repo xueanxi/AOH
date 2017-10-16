@@ -7,11 +7,11 @@ import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
  */
 
 public class SkillBean {
-    protected int skillID;              // 技能ID
-    protected SkillBase skillBase = null; // 技能的实体类
-    protected int unLockLevel;          // 解锁此技能时，人物的等级
-    protected int level;                // 人物解锁此技能时，此技能的初始等级
-    protected int grow;                 // 技能的成长，比如当grow等于3时,技能解锁之后，人物每升3级，技能等级提高一级
+    protected int skillID;                  // 技能ID
+    protected SkillBase skillBase = null;   // 技能的实体类
+    protected int unLockLevel;              // 解锁此技能时，人物的等级
+    protected int startLevel;               // 人物解锁此技能时，此技能的初始等级
+    protected int grow;                     // 技能的成长，比如当grow等于3时,技能解锁之后，人物每升3级，技能等级提高一级
 
     public int getSkillID() {
         return skillID;
@@ -37,12 +37,12 @@ public class SkillBean {
         this.unLockLevel = unLockLevel;
     }
 
-    public int getLevel() {
-        return level;
+    public int getStartLevel() {
+        return startLevel;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void setStartLevel(int startLevel) {
+        this.startLevel = startLevel;
     }
 
     public int getGrow() {
@@ -59,11 +59,9 @@ public class SkillBean {
      * @return
      */
     public int getCurrentSkillLevel(int personLevel){
-        int skillLevel = 1;
-        if(personLevel <= this.unLockLevel){
-            skillLevel =  this.level;
-        }else{
-            skillLevel = this.level + (personLevel - this.unLockLevel)/this.grow;
+        int skillLevel = this.startLevel;
+        if(personLevel > this.unLockLevel){
+            skillLevel = this.startLevel + (personLevel - this.unLockLevel)/this.grow;
         }
         return skillLevel;
     }
@@ -74,7 +72,7 @@ public class SkillBean {
                 "skillID=" + skillID +
                 ", skillBase=" + skillBase +
                 ", unLockLevel=" + unLockLevel +
-                ", level=" + level +
+                ", startLevel=" + startLevel +
                 ", grow=" + grow +
                 '}';
     }

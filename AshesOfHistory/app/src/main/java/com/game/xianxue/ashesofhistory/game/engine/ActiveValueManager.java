@@ -50,14 +50,14 @@ public class ActiveValueManager implements Runnable {
             // 每一个人增加行动值，并且把行动值到达最大的人物，添加到 personMaxActive 列表中
             StringBuilder sb = new StringBuilder();
             for (BattlePerson person : personLists) {
-                if (person.getHP() > 0) {
+                if (person.getHP_Current() > 0) {
                     person.increaseActiveValues();
                 }
                 if (person.getActiveValuePencent() >= 1.0f) {
                     personMaxActive.add(person);
                 }
 
-                sb.append(person.getName() + " HP:" + person.getHP() + " Active:" + person.getActiveValuePencent() + "\n");
+                sb.append(person.getName() + " HP:" + person.getHP_Current() + " Active:" + person.getActiveValuePencent() + "\n");
             }
 
             BattleLog.log(sb.toString());
@@ -89,7 +89,7 @@ public class ActiveValueManager implements Runnable {
 
                     // 一个人物进攻完了之后，需要检查其他蓄气满的人生命值是否为0，需要移除。
                     for (int i = 0; i < personMaxActive.size(); i++) {
-                        if (personMaxActive.get(i).getHP() <= 0) {
+                        if (personMaxActive.get(i).getHP_Current() <= 0) {
                             personMaxActive.remove(i);
                         }
                     }

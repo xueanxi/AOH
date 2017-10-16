@@ -1,5 +1,6 @@
 package com.game.xianxue.ashesofhistory.game.model.person;
 
+import com.game.xianxue.ashesofhistory.Log.BattleLog;
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.database.BuffDataManager;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBase;
@@ -58,7 +59,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
     /**
      * 面板属性
      */
-    public int HP;                 // 生命值
+    public int HP_MAX;             // 最大生命值
     public int experiencePoint;    // 经验值
     public int physicDamage;       // 物理伤害
     public int magicDamage;        // 魔法伤害
@@ -76,7 +77,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
     public int hpRestore;          // 生命恢复
     public int actionSpeed;        // 行动速度，行动速度越快,积累行动值的速度越快，当积累的行动值到达最大行动值就可以发动进攻
     public int actionValuesMax;    // 最大行动值，这个值越小，每次进攻需要的行动值越少，一般情况下默认为 DEFAULT_ACTIVE_VALUES_MAX,可以通过坐骑或者技能缩短
-    public int skillRate;          // 额外技能触发几率（默认情况下一次行动中 普通攻击概率为50% 技能发动概率为50%，Ex:当skillRate=0.1时,技能概率为0.5+0.1=0.6)
+    public float skillRate;        // 额外技能触发几率（默认情况下一次行动中 普通攻击概率为50% 技能发动概率为50%，Ex:当skillRate=0.1时,技能概率为0.5+0.1=0.6)
     public int attackRangeUp;      // 攻击范围增加(这个值只能从 技能和装备 获得提升)
     public int attackNumberUp;     // 攻击的人数增加(这个值只能从 技能和装备 获得提升)
 
@@ -168,8 +169,11 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
 
         for (int i = 0; i < this.skillAllLists.size(); i++) {
             skillBean = skillAllLists.get(i);
+
             // 如果人物等级小于技能的解锁等级，则此技能还不能使用
             if (this.level < skillBean.getUnLockLevel()) continue;
+
+            SimpleLog.logd(TAG,this.getName()+" Lv."+this.level + skillBean.getSkill().getName()+"的解锁等级为:"+skillBean.getUnLockLevel());
             // 把技能根据 主动技能和被动技能分类 初始化到变量里面
             if(skillBean.getSkill() == null) continue;
             if (SKILL_NATURE_ACTIVE == skillBean.getSkill().getSkillNature()) {
@@ -220,7 +224,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         // TODO： 处理基础属性 包括 被动技能中涉及基础属性的部分、武器装备中涉及基础属性的部分、阵型中涉及基础属性的部分
         addBasisBuff();
 
-        HP = calculateHp();                                     // 生命值
+        HP_MAX = calculateHp();                                 // 最大生命值
         experiencePoint = 0;                                    // 经验值
         physicDamage = calculatePhysicDamage();                 // 物理伤害
         magicDamage = calculateMagicDamage();                   // 魔法伤害
@@ -237,6 +241,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         actionSpeed = calculateSpeed();                         // 速度
         hpRestore = calculateHpRestore();                       // 发起进攻时，生命恢复
         actionValuesMax = calculateMaxActiveValues();           // 执行一次行动，需要的行动值（越少越好）
+        // TODO: 10/16/17 还需要处理 减少被暴击率的属性 reduceBeCriteRate
 
 
         // TODO: 8/29/17 处理 面板属性 的效果
@@ -270,7 +275,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
             float hpRestoreRate = 0;
             float actionValuesMaxRate = 0;
             float reduceBeCriteRateRate = 0;
-            float HPRate = 0;
+            float HPMAXRate = 0;
             float skillRateRate = 0;
             float attackNumberRate = 0;
             float attackRangeRate = 0;
@@ -348,9 +353,9 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
                                 reduceBeCriteRate += buff.getBuff_constant()[i];
                                 reduceBeCriteRateRate += buff.getBuff_fluctuate()[i];
                                 break;
-                            case BUFF_HP:
-                                HP += buff.getBuff_constant()[i];
-                                HPRate += buff.getBuff_fluctuate()[i];
+                            case BUFF_HP_MAX:
+                                HP_MAX += buff.getBuff_constant()[i];
+                                HPMAXRate += buff.getBuff_fluctuate()[i];
                                 break;
                             case BUFF_SKILL_RATE:
                                 skillRate += buff.getBuff_constant()[i];
@@ -374,7 +379,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
                 realDamage = (int) (realDamage * (1f + realDamageRate));
                 physicsPenetrate = (int) (physicsPenetrate * (1f + physicsPenetrateRate));
                 magicPenetrate = (int) (magicPenetrate * (1f + magicPenetrateRate));
-                accuracy = (int) (accuracyRate * (1f + accuracyRate));
+                accuracy = (int) (accuracy * (1f + accuracyRate));
                 criteRate = (int) (criteRate * (1f + criteRateRate));
                 criteDamage = (int) (criteDamage * (1f + criteDamageRate));
                 armor = (int) (armor * (1f + armorRate));
@@ -385,8 +390,8 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
                 hpRestore = (int) (hpRestore * (1f + hpRestoreRate));
                 actionValuesMax = (int) (actionValuesMax * (1f + actionValuesMaxRate));
                 reduceBeCriteRate = (int) (reduceBeCriteRate * (1f + reduceBeCriteRateRate));
-                HP = (int) (HP * (1f + HPRate));
-                skillRate = (int) (skillRate * (1f + skillRateRate));
+                HP_MAX = (int) (HP_MAX * (1f + HPMAXRate));
+                skillRate = skillRate * (1f + skillRateRate);
                 attackNumberUp = (int) (attackNumberUp * (1f + attackNumberRate));
                 attackRangeUp = (int) (attackRangeUp * (1f + attackRangeRate));
 
@@ -486,12 +491,12 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
      * @param level
      */
     public void setLevel(int level) {
-        if (level <= PERSON_LEVEL_MINI) {
+        if (level < PERSON_LEVEL_MINI) {
             this.level = PERSON_LEVEL_MINI;
-        } else if (level <= PERSON_LEVEL_MAX) {
-            this.level = level;
-        } else {
+        } else if (level > PERSON_LEVEL_MAX) {
             this.level = PERSON_LEVEL_MAX;
+        } else {
+            this.level = level;
         }
     }
 
@@ -524,19 +529,21 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
     }
 
     protected int calculatePhysicsPenetrate() {
-        return 0;
+        // TODO: 10/16/17 增加物理穿透率的计算
+        return (int) (intellect *0.2f + dexterity * 0.3f + intellect * 0.2f);
     }
 
     protected int calculateMagicPenetrate() {
+        // TODO: 10/16/17 增加魔法穿透率的计算
         return 0;
     }
 
     protected int calculateAccuracy() {
-        return strength + intellect * 2 + dexterity * 3 + spirit * 1 + physique + (int) (luck * 0.5);
+        return strength*1 + intellect * 2 + dexterity * 3 + spirit * 1 + physique * 1 + (int)(luck * 0.5f);
     }
 
     protected int calculateCriteRate() {
-        return dexterity * 1 + (int) (luck * 0.5f);
+        return dexterity * 1+ (int) (luck * 0.5f);
     }
 
     protected int calculateCriteDamege() {
@@ -544,7 +551,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
     }
 
     protected int calculateArmor() {
-        return strength + physique * 3;
+        return strength + physique * 2;
     }
 
     protected int calculateMagicResist() {
@@ -619,12 +626,12 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         this.spirit = spirit;
     }
 
-    public int getHP() {
-        return HP;
+    public int getHP_MAX() {
+        return HP_MAX;
     }
 
-    public void setHP(int HP) {
-        this.HP = HP;
+    public void setHP_MAX(int HP_MAX) {
+        this.HP_MAX = HP_MAX;
     }
 
     public int getExperiencePoint() {
@@ -909,11 +916,11 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         this.skillActivesLists = skillActivesLists;
     }
 
-    public int getSkillRate() {
+    public float getSkillRate() {
         return skillRate;
     }
 
-    public void setSkillRate(int skillRate) {
+    public void setSkillRate(float skillRate) {
         this.skillRate = skillRate;
     }
 
@@ -935,7 +942,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
 
     @Override
     public String toString() {
-        return "PlayerModel{" +
+        return "NormalPerson{" +
                 "psersonId=" + psersonId +
                 ", aptitude=" + aptitude +
                 ", name='" + name + '\'' +
@@ -955,8 +962,8 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
                 ", luck=" + luck +
                 ", skillStrings='" + skillStrings + '\'' +
                 ", skillArrays=" + skillArrays +
-                ", level=" + level +
-                ", HP=" + HP +
+                ", startLevel=" + level +
+                ", HP_MAX=" + HP_MAX +
                 ", experiencePoint=" + experiencePoint +
                 ", physicDamage=" + physicDamage +
                 ", magicDamage=" + magicDamage +
@@ -995,12 +1002,13 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
                 ", physique=" + physique +
                 ", spirit=" + spirit +
                 ", luck=" + luck +
+                ", fascination=" + fascination +
                 ", skillStrings='" + skillStrings + '\'' +
                 ", skillArrays=" + skillArrays +
-                ", level=" + level +
+                ", startLevel=" + level +
                 ", skillActive size =" + skillActiveSize +
                 ", buffPassive size =" + buffPassiveSize +
-                ", HP=" + HP +
+                ", HP_MAX=" + HP_MAX +
                 ", experiencePoint=" + experiencePoint +
                 ", physicDamage=" + physicDamage +
                 ", magicDamage=" + magicDamage +
@@ -1017,7 +1025,6 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
                 ", block=" + block +
                 ", actionSpeed=" + actionSpeed +
                 ", hpRestore=" + hpRestore +
-                ", fascination=" + fascination +
                 '}';
     }
 

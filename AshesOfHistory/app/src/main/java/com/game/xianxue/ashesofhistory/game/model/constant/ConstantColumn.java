@@ -35,7 +35,7 @@ public class ConstantColumn {
         //用户已经拥有的武将，对比上面的表格，会额外多一些属性
         public static final String tableName = "ownPerson";
 
-        public static final String level = "level";
+        public static final String level = "startLevel";
         public static final String weaponId = "weaponId";       // 武器id
         public static final String equipId = "equipId";         // 装备id
         public static final String treasureId = "treasureId";   // 宝物id

@@ -116,7 +116,7 @@ public class SkillBattle extends SkillBase implements Interface_Skill {
         this.damagePenetrate = (int)(base.damagePenetrate + (level -1)*base.levelUpPenetrate);
         this.effectRate = base.effectRate + (level -1)*base.levelUpEffectRate;
 
-        //SimpleLog.logd(TAG,"setLevel before:"+this.name+" number= "+effectNumber);
+        //SimpleLog.logd(TAG,"setStartLevel before:"+this.name+" number= "+effectNumber);
     }
 
     public int getRecoverTime() {
@@ -139,7 +139,7 @@ public class SkillBattle extends SkillBase implements Interface_Skill {
     @Override
     public String toString() {
         return "SkillBattle{" +
-                " level=" + level +
+                " startLevel=" + level +
                 ", recoverTime=" + recoverTime +
                 "} " + super.toString();
     }

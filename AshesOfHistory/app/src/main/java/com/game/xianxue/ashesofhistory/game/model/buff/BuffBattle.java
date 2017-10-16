@@ -71,7 +71,7 @@ public class BuffBattle extends BuffBase implements Interface_Buff {
     }
 
     /**
-     * 设置Buff级别的时候，需要根据 level、 level_up_constant、 level_up_fluctuate 升级当前 buff 的能力  buff_constant、buff_fluctuate
+     * 设置Buff级别的时候，需要根据 startLevel、 level_up_constant、 level_up_fluctuate 升级当前 buff 的能力  buff_constant、buff_fluctuate
      *
      * @param level
      */
@@ -112,7 +112,7 @@ public class BuffBattle extends BuffBase implements Interface_Buff {
     @Override
     public String toString() {
         return "BuffBattle{" +
-                "level=" + level +
+                "startLevel=" + level +
                 "} " + super.toString();
     }
 }

@@ -49,15 +49,15 @@ public interface Interface_Skill {
     int SKILL_TARGET_DISTANCE_FAR = 4;     // 触发目标为攻击范围内最远的目标
 
     // =======================攻击技能 部分===========================
-    int SKILL_DAMGE_TYPE_PHYSICS = 0;         // 伤害为物理伤害
-    int SKILL_DAMGE_TYPE_MAGIC = 1;           // 伤害为魔法伤害
-    int SKILL_DAMGE_TYPE_REAL = 2;            // 伤害为真实伤害
-    int SKILL_DAMGE_TYPE_PHYSICS_PERCENT = 3; // 当前生命百分比物理伤害
-    int SKILL_DAMGE_TYPE_MAGIC_PERCENT = 4;   // 当前生百分比魔法伤害
-    int SKILL_DAMGE_TYPE_REAL_PERCENT = 5;    // 当前生百分比真实伤害
-    int SKILL_DAMGE_TYPE_PHYSICS_PERCENT_MAX = 6; // 最大生命百分比物理伤害
-    int SKILL_DAMGE_TYPE_MAGIC_PERCENT_MAX = 7;   // 最大生百分比魔法伤害
-    int SKILL_DAMGE_TYPE_REAL_PERCENT_MAX = 8;    // 最大生百分比真实伤害
+    int SKILL_DAMAGE_TYPE_PHYSICS = 0;         // 伤害为物理伤害
+    int SKILL_DAMAGE_TYPE_MAGIC = 1;           // 伤害为魔法伤害
+    int SKILL_DAMAGE_TYPE_REAL = 2;            // 伤害为真实伤害
+    int SKILL_DAMAGE_TYPE_PHYSICS_PERCENT = 3; // 当前生命百分比物理伤害
+    int SKILL_DAMAGE_TYPE_MAGIC_PERCENT = 4;   // 当前生百分比魔法伤害
+    int SKILL_DAMAGE_TYPE_REAL_PERCENT = 5;    // 当前生百分比真实伤害
+    int SKILL_DAMAGE_TYPE_PHYSICS_PERCENT_MAX = 6; // 最大生命百分比物理伤害
+    int SKILL_DAMAGE_TYPE_MAGIC_PERCENT_MAX = 7;   // 最大生百分比魔法伤害
+    int SKILL_DAMAGE_TYPE_REAL_PERCENT_MAX = 8;    // 最大生百分比真实伤害
 
     // =======================恢复技能 部分===========================
 

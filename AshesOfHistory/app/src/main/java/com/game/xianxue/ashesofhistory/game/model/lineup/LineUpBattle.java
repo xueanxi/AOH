@@ -1,7 +1,5 @@
 package com.game.xianxue.ashesofhistory.game.model.lineup;
 
-import android.util.Log;
-
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 
@@ -147,7 +145,7 @@ public class LineUpBattle extends LineUpBase {
             return isAllDie;
         }
         for (BattlePerson person : membersList) {
-            if (person.getHP() > 0) {
+            if (person.getHP_Current() > 0) {
                 isAllDie = false;
                 break;
             }
@@ -195,7 +193,7 @@ public class LineUpBattle extends LineUpBase {
             for(int x=0;x<LINEUP_MAX_ROW;x++){
                 unit = LineupMatrixs[x][y];
                 if(unit ==null)continue;
-                int HP = membersList.get(unit.getPersonIndex()).getHP();
+                int HP = membersList.get(unit.getPersonIndex()).getHP_Current();
                 if(HP>0){
                     colHasPersonLift = true;
                     nearCol = x;
@@ -217,7 +215,7 @@ public class LineUpBattle extends LineUpBase {
                 unit = LineupMatrixs[x][y];
                 if(unit == null)continue;
                 personInRange = membersList.get(unit.getPersonIndex());
-                int HP = personInRange.getHP();
+                int HP = personInRange.getHP_Current();
                 if( HP > 0){
                     personInRange.setDistance(y+1); // 设置personInRange与攻击者之间的距离
                     result.add(personInRange);

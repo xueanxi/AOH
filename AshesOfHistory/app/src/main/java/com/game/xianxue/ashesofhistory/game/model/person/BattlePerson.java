@@ -19,6 +19,7 @@ public class BattlePerson extends NormalPerson {
     private boolean isLeader = false;       // 是否统帅
     private boolean isCounsellor = false;   // 是否军师
     private int distance;                   // 与攻击者的距离
+    public int HP_Current;                  // 当前生命值
 
     public BattlePerson() {}
 
@@ -103,12 +104,14 @@ public class BattlePerson extends NormalPerson {
         dexterity = getNewAttribute(dexterity_Raw, level);
         physique = getNewAttribute(physique_Raw, level);
         spirit = getNewAttribute(spirit_Raw, level);
+        luck = luck_Raw;
+        fascination = fascination_Raw;
 
         // TODO: 8/29/17 处理影响基础属性的效果比如增加力量的装备等等
 
         addBasisBuff();
 
-        HP = calculateHp();                                     // 生命值
+        HP_MAX = calculateHp();                                 // 最大生命值
         experiencePoint = 0;                                    // 经验值
         physicDamage = calculatePhysicDamage();                 // 物理伤害
         magicDamage = calculateMagicDamage();                   // 魔法伤害
@@ -128,6 +131,9 @@ public class BattlePerson extends NormalPerson {
         // TODO: 8/29/17 处理其他增幅效果
 
         addPanelBuff();
+
+
+        HP_Current = HP_MAX;                                    // 当前的生命值
     }
 
 
@@ -158,7 +164,7 @@ public class BattlePerson extends NormalPerson {
             float hpRestoreRate = 0;
             float actionValuesMaxRate = 0;
             float reduceBeCriteRateRate = 0;
-            float HPRate = 0;
+            float HPMaxRate = 0;
             float skillRateRate = 0;
             float attackNumberRate = 0;
             float attackRangeRate = 0;
@@ -236,9 +242,9 @@ public class BattlePerson extends NormalPerson {
                                 reduceBeCriteRate += buff.getBuff_constant()[i];
                                 reduceBeCriteRateRate += buff.getBuff_fluctuate()[i];
                                 break;
-                            case BUFF_HP:
-                                HP += buff.getBuff_constant()[i];
-                                HPRate += buff.getBuff_fluctuate()[i];
+                            case BUFF_HP_MAX:
+                                HP_MAX += buff.getBuff_constant()[i];
+                                HPMaxRate += buff.getBuff_fluctuate()[i];
                                 break;
                             case BUFF_SKILL_RATE:
                                 skillRate += buff.getBuff_constant()[i];
@@ -252,6 +258,7 @@ public class BattlePerson extends NormalPerson {
                                 attackRangeUp += buff.getBuff_constant()[i];
                                 attackRangeRate += buff.getBuff_fluctuate()[i];
                                 break;
+
                         }
                     }
                 }
@@ -262,7 +269,7 @@ public class BattlePerson extends NormalPerson {
                 realDamage = (int) (realDamage * (1f + realDamageRate));
                 physicsPenetrate = (int) (physicsPenetrate * (1f + physicsPenetrateRate));
                 magicPenetrate = (int) (magicPenetrate * (1f + magicPenetrateRate));
-                accuracy = (int) (accuracyRate * (1f + accuracyRate));
+                accuracy = (int) (accuracy * (1f + accuracyRate));
                 criteRate = (int) (criteRate * (1f + criteRateRate));
                 criteDamage = (int) (criteDamage * (1f + criteDamageRate));
                 armor = (int) (armor * (1f + armorRate));
@@ -273,7 +280,7 @@ public class BattlePerson extends NormalPerson {
                 hpRestore = (int) (hpRestore * (1f + hpRestoreRate));
                 actionValuesMax = (int) (actionValuesMax * (1f + actionValuesMaxRate));
                 reduceBeCriteRate = (int) (reduceBeCriteRate * (1f + reduceBeCriteRateRate));
-                HP = (int) (HP * (1f + HPRate));
+                HP_MAX = (int) (HP_MAX * (1f + HPMaxRate));
                 skillRate = (int) (skillRate * (1f + skillRateRate));
                 attackNumberUp = (int) (attackNumberUp * (1f + attackNumberRate));
                 attackRangeUp = (int) (attackRangeUp * (1f + attackRangeRate));
@@ -440,13 +447,24 @@ public class BattlePerson extends NormalPerson {
         isCounsellor = counsellor;
     }
 
+    public int getHP_Current() {
+        return HP_Current;
+    }
+
+    public void setHP_Current(int HP_Current) {
+        if(HP_Current >= HP_MAX){
+            HP_Current = this.HP_MAX;
+        }
+        this.HP_Current = HP_Current;
+    }
+
     @Override
     public String toString() {
-
-        return "BattlePerson{" +
+        return "NormalPerson{" +
                 "psersonId=" + psersonId +
                 ", aptitude=" + aptitude +
                 ", name='" + name + '\'' +
+                ", HP_current='" + HP_Current +
                 ", sexuality=" + sexuality +
                 ", strength_Raw=" + strength_Raw +
                 ", intellect_Raw=" + intellect_Raw +
@@ -455,6 +473,11 @@ public class BattlePerson extends NormalPerson {
                 ", spirit_Raw=" + spirit_Raw +
                 ", luck_Raw=" + luck_Raw +
                 ", fascination_Raw=" + fascination_Raw +
+                ", battleId=" + battleId +
+                ", activeValues=" + activeValues +
+                ", camp=" + camp +
+                ", isCounsellor=" + isCounsellor +
+                ", isLeader=" + isLeader +
                 ", strength=" + strength +
                 ", intellect=" + intellect +
                 ", dexterity=" + dexterity +
@@ -463,8 +486,8 @@ public class BattlePerson extends NormalPerson {
                 ", luck=" + luck +
                 ", skillStrings='" + skillStrings + '\'' +
                 ", skillArrays=" + skillArrays +
-                ", level=" + level +
-                ", HP=" + HP +
+                ", startLevel=" + level +
+                ", HP_MAX=" + HP_MAX +
                 ", experiencePoint=" + experiencePoint +
                 ", physicDamage=" + physicDamage +
                 ", magicDamage=" + magicDamage +
@@ -482,11 +505,6 @@ public class BattlePerson extends NormalPerson {
                 ", actionSpeed=" + actionSpeed +
                 ", hpRestore=" + hpRestore +
                 ", fascination=" + fascination +
-                ", battleId=" + battleId +
-                ", activeValues=" + activeValues +
-                ", camp=" + camp +
-                ", isCounsellor=" + isCounsellor +
-                ", isLeader=" + isLeader +
                 '}';
     }
 

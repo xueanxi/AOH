@@ -70,8 +70,8 @@ public class BattleTestJava {
         TeamModel t2 = new TeamModel(TeamModel.CAMP_RIGHT, playerList2);
 
         BattleEngine engine = BattleEngine.getInstance();
-        engine.setmTimeActiveIncrese(200);
-        engine.setmTimePersonAction(3000);
+        engine.setTimeActiveIncrese(200);
+        engine.setTimePersonAction(3000);
         engine.setBattleTeam(t1, t2);
         engine.startBattle();
 

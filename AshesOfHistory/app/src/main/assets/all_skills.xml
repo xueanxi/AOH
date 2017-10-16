@@ -118,12 +118,12 @@
     <item>
         <skill_id>100</skill_id><!--技能ID,唯一标识这个技能-->
         <name>拖刀计</name><!--技能名字-->
-        <introduce>对敌人进行一次一击必杀的攻击，但是命中率较低，命中率与等级差有关</introduce><!--技能描述-->
+        <introduce>对敌人进行一次一击必杀的攻击，但是命中率只有正常攻击的一半</introduce><!--技能描述-->
         <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <damage_type>5</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3当前物理% 4当前魔法% 5当前真实% 6最大物理% 7最大魔法% 8最大真实%-->
-        <damage_constant>0</damage_constant><!--技能伤害固定部分-->
-        <damage_fluctuate>1</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
+        <damage_type>8</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3当前物理% 4当前魔法% 5当前真实% 6最大物理% 7最大魔法% 8最大真实%-->
+        <damage_constant>1</damage_constant><!--技能伤害固定部分-->
+        <damage_fluctuate>0</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
         <damage_penetrate>1</damage_penetrate><!--穿透率 浮点数-->
         <accuracy_rate>0.5</accuracy_rate><!--技能命中率 = 人物命中率 * 技能命中率 Ex：如果accuracy_rate = -1 则表示必中-->
         <crite_rate>0</crite_rate><!--技能暴击率 技能触发暴击的概率 = 人物暴击率 * 技能暴击率-->

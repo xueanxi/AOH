@@ -35,7 +35,7 @@ public interface Interface_Buff {
     int BUFF_HPRESTORE = 21;       // 辅助效果：生命恢复。发起进攻时，生命恢复
     int BUFF_ACTIVEVALUE = 22;     // 辅助效果：行动值。执行一次行动，需要的行动值（越少越好）
     int BUFF_REDUCEBECRITERATE = 23;// 辅助效果：抗暴击
-    int BUFF_HP = 24;              // 辅助效果：生命值
+    int BUFF_HP_MAX = 24;          // 辅助效果：当前生命值
     int BUFF_SKILL_RATE = 25;      // 辅助效果:技能发动概率
     int BUFF_ATTACK_NUMBER= 26;    // 辅助效果:攻击目标数量
     int BUFF_ATTACK_RANGE = 27;    // 辅助效果:攻击范围
