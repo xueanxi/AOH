@@ -37,7 +37,7 @@
         <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
         <damage_type>0</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3当前物理% 4当前魔法% 5当前真实% 6最大物理% 7最大魔法% 8最大真实%-->
-        <damage_constant>20</damage_constant><!--技能伤害固定部分-->
+        <damage_constant>50</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>0.8</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
         <damage_penetrate>0</damage_penetrate><!--穿透率 浮点数-->
         <accuracy_rate>1</accuracy_rate><!--技能命中率 浮点数 0～1.0 1.0为本身人物的命中率 2.0为必中-->
@@ -49,10 +49,10 @@
         <effect_target>0</effect_target><!--技能作用目标 0随机目标 1血最少的 2血最多的 3最进的 4最远的-->
         <assist_effect>0</assist_effect><!-- 技能辅助效果 buff的id-->
         <effect_rate>0</effect_rate><!--技能附加效果触发几率 0～1.0-->
-        <level_up_constant>10</level_up_constant><!--技能升级 固定部分 效果提升 浮点数-->
+        <level_up_constant>30</level_up_constant><!--技能升级 固定部分 效果提升 浮点数-->
         <level_up_fluctuate>0.1</level_up_fluctuate><!--技能升级 浮动部分 效果提升 浮点数-->
         <level_up_range>0.3</level_up_range><!--技能升级 范围提升 浮点数 -->
-        <level_up_number>0.3</level_up_number><!--技能升级 攻击目标数量 浮点数-->
+        <level_up_number>0</level_up_number><!--技能升级 攻击目标数量 浮点数-->
         <level_up_effect_rate>0</level_up_effect_rate><!--技能升级 攻击效果触发概率 浮点数-->
         <level_up_penetrate>0</level_up_penetrate><!--技能升级 穿透率增加 浮点数-->
         <level_up_cd_time>0</level_up_cd_time><!--技能升级 cd时间减少-->
@@ -117,15 +117,15 @@
     <!--=====================100～199为力量型技能 Start =======================-->
     <item>
         <skill_id>100</skill_id><!--技能ID,唯一标识这个技能-->
-        <name>拖刀计</name><!--技能名字-->
-        <introduce>对敌人进行一次一击必杀的攻击，但是命中率只有正常攻击的一半</introduce><!--技能描述-->
+        <name>一刀两断</name><!--技能名字-->
+        <introduce>斩杀最大生命一半的真实伤害，但是命中率稍低</introduce><!--技能描述-->
         <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
         <damage_type>8</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3当前物理% 4当前魔法% 5当前真实% 6最大物理% 7最大魔法% 8最大真实%-->
-        <damage_constant>1</damage_constant><!--技能伤害固定部分-->
+        <damage_constant>0.5</damage_constant><!--技能伤害固定部分-->
         <damage_fluctuate>0</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
-        <damage_penetrate>1</damage_penetrate><!--穿透率 浮点数-->
-        <accuracy_rate>0.5</accuracy_rate><!--技能命中率 = 人物命中率 * 技能命中率 Ex：如果accuracy_rate = -1 则表示必中-->
+        <damage_penetrate>0</damage_penetrate><!--穿透率 浮点数-->
+        <accuracy_rate>0.6</accuracy_rate><!--技能命中率 = 人物命中率 * 技能命中率 Ex：如果accuracy_rate = -1 则表示必中-->
         <crite_rate>0</crite_rate><!--技能暴击率 技能触发暴击的概率 = 人物暴击率 * 技能暴击率-->
         <cd_time>1</cd_time><!--技能冷却时间0～+ -->
         <range>1</range><!--技能攻击范围，0～9 （-1表示范围是全场,0表示只能对自己释放） -->
@@ -154,7 +154,7 @@
         <damage_penetrate>0</damage_penetrate><!--穿透率 浮点数-->
         <accuracy_rate>1</accuracy_rate><!--技能命中率 = 人物命中率 * 技能命中率 Ex：如果accuracy_rate = -1 则表示必中-->
         <crite_rate>1</crite_rate><!--技能暴击率 技能触发暴击的概率 = 人物暴击率 * 技能暴击率-->
-        <cd_time>1</cd_time><!--技能冷却时间0～+ -->
+        <cd_time>3</cd_time><!--技能冷却时间0～+ -->
         <range>1</range><!--技能攻击范围，0～9 （-1表示范围是全场,0表示只能对自己释放） -->
         <effect_number>3</effect_number><!--技能攻击人数，0～10 （0的意思对全场AOE） -->
         <effect_camp>0</effect_camp><!--技能目标阵营 0对敌人 1对友方-->
@@ -190,6 +190,33 @@
         <effect_rate>0</effect_rate><!--技能附加效果触发几率 0～1.0-->
         <level_up_constant>20</level_up_constant><!--技能升级 固定部分 效果提升 浮点数-->
         <level_up_fluctuate>0.1</level_up_fluctuate><!--技能升级 浮动部分 效果提升 浮点数-->
+        <level_up_range>0</level_up_range><!--技能升级 范围提升 浮点数 -->
+        <level_up_number>0</level_up_number><!--技能升级 攻击目标数量 浮点数-->
+        <level_up_effect_rate>0</level_up_effect_rate><!--技能升级 攻击效果触发概率 浮点数-->
+        <level_up_cd_time>0</level_up_cd_time><!--技能升级 cd时间减少-->
+    </item>
+
+    <item>
+        <skill_id>103</skill_id><!--技能ID,唯一标识这个技能-->
+        <name>拖刀计</name><!--技能名字-->
+        <introduce>故意漏出破绽拖刀而走,待敌人追来，回马一刀秒杀敌人。（直接秒杀 但是命中率比较低 技能优先选择攻击范围内血最大的敌人）</introduce><!--技能描述-->
+        <skill_nature>0</skill_nature><!--技能性质：0主动 1：被动-->
+        <skill_type>0</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
+        <damage_type>8</damage_type><!--技能伤害类型 0物理 1魔法 2真实 3当前物理% 4当前魔法% 5当前真实% 6最大物理% 7最大魔法% 8最大真实%-->
+        <damage_constant>1</damage_constant><!--技能伤害固定部分-->
+        <damage_fluctuate>0</damage_fluctuate><!--技能伤害浮动部分 浮点数-->
+        <damage_penetrate>0</damage_penetrate><!--穿透率 浮点数-->
+        <accuracy_rate>0.3</accuracy_rate><!--技能命中率 = 人物命中率 * 技能命中率 Ex：如果accuracy_rate = -1 则表示必中-->
+        <crite_rate>0</crite_rate><!--技能暴击率 技能触发暴击的概率 = 人物暴击率 * 技能暴击率-->
+        <cd_time>3</cd_time><!--技能冷却时间0～+ -->
+        <range>1</range><!--技能攻击范围，0～9 （-1表示范围是全场,0表示只能对自己释放） -->
+        <effect_number>1</effect_number><!--技能攻击人数，0～10 （0的意思对全场AOE） -->
+        <effect_camp>0</effect_camp><!--技能目标阵营 0对敌人 1对友方-->
+        <effect_target>2</effect_target><!--技能作用目标 0随机目标 1血最少的 2血最多的 3最进的 4最远的-->
+        <assist_effect>0</assist_effect><!-- 技能辅助效果 buff的id-->
+        <effect_rate>0</effect_rate><!--技能附加效果触发几率 0～1.0-->
+        <level_up_constant>0</level_up_constant><!--技能升级 固定部分 效果提升 浮点数-->
+        <level_up_fluctuate>0</level_up_fluctuate><!--技能升级 浮动部分 效果提升 浮点数-->
         <level_up_range>0</level_up_range><!--技能升级 范围提升 浮点数 -->
         <level_up_number>0</level_up_number><!--技能升级 攻击目标数量 浮点数-->
         <level_up_effect_rate>0</level_up_effect_rate><!--技能升级 攻击效果触发概率 浮点数-->

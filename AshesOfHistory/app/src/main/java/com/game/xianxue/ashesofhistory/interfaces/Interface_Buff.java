@@ -39,20 +39,13 @@ public interface Interface_Buff {
     int BUFF_SKILL_RATE = 25;      // 辅助效果:技能发动概率
     int BUFF_ATTACK_NUMBER= 26;    // 辅助效果:攻击目标数量
     int BUFF_ATTACK_RANGE = 27;    // 辅助效果:攻击范围
-
-
     // ==================== Buff 的效果 end=======================
 
-
-
-    // Buff的类型
-    int BUFF_TYPE_NONE = 0;              // 无BUFF
-    int BUFF_TYPE_PROMOTE = 1;           // buff类型为提升属性
-    int BUFF_TYPE_REDUCE = 2;            // buff类型为降低属性
-    int BUFF_TYPE_RECOVER = 3;           // buff类型为恢复体力
-    int BUFF_TYPE_DAMAGE = 3;            // buff类型为持续伤害
-
-
     int BUFF_LEVEL_LIMIT_MAX = 5;       // buff最高等级限制
-    int BUFF_LEVEL_LIMIT_MINI = 1;       // buff最低等级限制
+    int BUFF_LEVEL_LIMIT_MINI = 1;      // buff最低等级限制
+
+    int BUFF_TIME_UNLIMITED = 0;        // buff的持续时间为无限
+
+    int BUFF_TYPE_LAST = 1;             // buff在有效时间内 每回合触发一次，比如每回合持续恢复生命值的buff
+    int BUFF_TYPE_ONCE = 0;             // buff只触发一次，比如增加状态的buff
 }

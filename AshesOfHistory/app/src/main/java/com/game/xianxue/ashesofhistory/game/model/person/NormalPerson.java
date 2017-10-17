@@ -1,6 +1,5 @@
 package com.game.xianxue.ashesofhistory.game.model.person;
 
-import com.game.xianxue.ashesofhistory.Log.BattleLog;
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.database.BuffDataManager;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBase;
@@ -66,10 +65,10 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
     public int realDamage;         // 真实伤害
     public int physicsPenetrate;   // 物理穿透
     public int magicPenetrate;     // 魔法穿透
-    public int accuracy;           // 命中率
-    public int criteRate;          // 暴击率
-    public int reduceBeCriteRate;  // 减少被暴击率
-    public int criteDamage;        // 暴击伤害
+    public int accuracy;           // 命中值
+    public int criteRate;          // 暴击值
+    public int reduceBeCriteRate;  // 减少被暴击的值
+    public float criteDamage;      // 暴击伤害,暴击倍数（发生暴击时，产生多少倍的伤害）
     public int armor;              // 护甲（物抗）
     public int magicResist;        // 魔抗
     public int dodge;              // 闪避（闪避成功承受1%的物理伤害 或者 承受30%的魔法伤害）
@@ -139,7 +138,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         this.luck_Raw = basePerson.getLuck_Raw();                   // 原始运气
         this.skillStrings = basePerson.skillStrings;
 
-        SimpleLog.logd(TAG,"NormalPerson(): skillStrings="+this.skillStrings);
+        SimpleLog.logd(TAG, "NormalPerson(): skillStrings=" + this.skillStrings);
 
         // 初始化技能
         setLevel(level);
@@ -154,7 +153,6 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
      * 1：从人物的技能字符串里面解析出技能，添加到 skillAllLists
      * 2：把被动技能挑选出来，添加到 buffPassive
      * 3：把主动技能挑选出来，添加到 skillActivesLists
-     *
      */
     protected void initSkill() {
         parseSkillList();
@@ -173,13 +171,13 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
             // 如果人物等级小于技能的解锁等级，则此技能还不能使用
             if (this.level < skillBean.getUnLockLevel()) continue;
 
-            SimpleLog.logd(TAG,this.getName()+" Lv."+this.level + skillBean.getSkill().getName()+"的解锁等级为:"+skillBean.getUnLockLevel());
+            SimpleLog.logd(TAG, this.getName() + " Lv." + this.level + skillBean.getSkill().getName() + "的解锁等级为:" + skillBean.getUnLockLevel());
             // 把技能根据 主动技能和被动技能分类 初始化到变量里面
-            if(skillBean.getSkill() == null) continue;
+            if (skillBean.getSkill() == null) continue;
             if (SKILL_NATURE_ACTIVE == skillBean.getSkill().getSkillNature()) {
                 // 处理主动技能
                 SkillBase skillBase = skillBean.getSkill();
-                if(skillBase == null) continue;
+                if (skillBase == null) continue;
                 SkillBattle skillBattle = new SkillBattle(skillBase, skillBean.getCurrentSkillLevel(this.level));
                 skillActivesLists.add(skillBattle);
             } else {
@@ -193,8 +191,8 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
             }
         }
 
-        ShowUtils.showArrayLists(TAG+"主动技能列表:",skillActivesLists);
-        ShowUtils.showArrayLists(TAG+"被动技能列表:",buffPassive);
+        ShowUtils.showArrayLists(TAG + "主动技能列表:", skillActivesLists);
+        ShowUtils.showArrayLists(TAG + "被动技能列表:", buffPassive);
     }
 
     /**
@@ -212,18 +210,22 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
      * 7.通过4和5和6条 计算最终的面板属性
      */
     public void updateAttribute() {
-        strength = getNewAttribute(strength_Raw, level);
-        intellect = getNewAttribute(intellect_Raw, level);
-        dexterity = getNewAttribute(dexterity_Raw, level);
-        physique = getNewAttribute(physique_Raw, level);
-        spirit = getNewAttribute(spirit_Raw, level);
-        luck = luck_Raw;
-        fascination = fascination_Raw;
+        updateBasicAttribute();
 
         // TODO: 8/29/17 处理影响 基础属性 的效果比如增加力量的装备等等
         // TODO： 处理基础属性 包括 被动技能中涉及基础属性的部分、武器装备中涉及基础属性的部分、阵型中涉及基础属性的部分
         addBasisBuff();
 
+        calcultePanelAttribute();
+
+        // TODO: 8/29/17 处理 面板属性 的效果
+        addPanelBuff();
+    }
+
+    /**
+     * 计算面板属性
+     */
+    protected void calcultePanelAttribute() {
         HP_MAX = calculateHp();                                 // 最大生命值
         experiencePoint = 0;                                    // 经验值
         physicDamage = calculatePhysicDamage();                 // 物理伤害
@@ -231,8 +233,9 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         realDamage = calculateRealDamage();                     // 真实伤害
         physicsPenetrate = calculatePhysicsPenetrate();         // 物理穿透
         magicPenetrate = calculateMagicPenetrate();             // 魔法穿透
-        accuracy = calculateAccuracy();                         // 命中率
-        criteRate = calculateCriteRate();                       // 暴击率
+        accuracy = calculateAccuracy();                         // 命中值
+        criteRate = calculateCriteRate();                       // 暴击值
+        reduceBeCriteRate = calculatereduceBeCriteRate();       // 减少被暴击的值
         criteDamage = calculateCriteDamege();                   // 暴击伤害
         armor = calculateArmor();                               // 护甲（物抗）
         magicResist = calculateMagicResist();                   // 魔抗
@@ -241,11 +244,19 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         actionSpeed = calculateSpeed();                         // 速度
         hpRestore = calculateHpRestore();                       // 发起进攻时，生命恢复
         actionValuesMax = calculateMaxActiveValues();           // 执行一次行动，需要的行动值（越少越好）
-        // TODO: 10/16/17 还需要处理 减少被暴击率的属性 reduceBeCriteRate
+    }
 
-
-        // TODO: 8/29/17 处理 面板属性 的效果
-        addPanelBuff();
+    /**
+     * 刷新基础属性
+     */
+    protected void updateBasicAttribute() {
+        strength = getNewAttribute(strength_Raw, level);
+        intellect = getNewAttribute(intellect_Raw, level);
+        dexterity = getNewAttribute(dexterity_Raw, level);
+        physique = getNewAttribute(physique_Raw, level);
+        spirit = getNewAttribute(spirit_Raw, level);
+        luck = luck_Raw;
+        fascination = fascination_Raw;
     }
 
     /**
@@ -255,9 +266,9 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
      * 1.buff固定部分直接加到属性里面就好
      * 2.buff的浮动部分是百分比，需要把所有加起来，再计算到属性里面
      */
-    private void addPanelBuff() {
+    protected void addPanelBuff() {
         if (buffPassive != null && buffPassive.size() > 0) {
-           // SimpleLog.logd(TAG,this.name+" before:numberUp = "+this.attackNumberUp);
+            // SimpleLog.logd(TAG,this.name+" before:numberUp = "+this.attackNumberUp);
             // 面板屬性在所有buff的影响下增幅的比例
             float physicDamageRate = 0;
             float magicDamageRate = 0;
@@ -282,6 +293,9 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
 
             // 遍历buff数组，把buff的加成加到属性里面
             for (BuffBattle buff : buffPassive) {
+
+                if(BUFF_TYPE_LAST == buff.getBuff_type()) continue;// 如果是战斗中持续触发的buff，则不进行处理
+
                 int buffNumber = buff.getBuff_effect().length;
                 for (int i = 0; i < buffNumber; i++) {
                     int buffEffect = buff.getBuff_effect()[i];
@@ -404,10 +418,9 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
      * 加持 基础 被动 buff效果
      * 比如增加 力量，智力，敏捷，精神，体质，魅力，运气 这七个
      */
-    private void addBasisBuff() {
-        SimpleLog.logd(TAG,this.name+" addBasisBuff()");
+    protected void addBasisBuff() {
+        SimpleLog.logd(TAG, this.name + " addBasisBuff()");
         if (buffPassive != null && buffPassive.size() > 0) {
-
             // 处理被动技能的浮动部分加成
             float strengthRate = 0;
             float intellectRate = 0;
@@ -417,10 +430,11 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
             float fascinationRate = 0;
             float luckRate = 0;
 
-            ShowUtils.showArrayLists(TAG+" show buffPassive:",buffPassive);
-
             // 先处理被动技能的固定加成部分
             for (BuffBattle buff : buffPassive) {
+
+                if(BUFF_TYPE_LAST == buff.getBuff_type()) continue;// 如果是战斗中持续触发的buff，则不进行处理
+
                 for (int i = 0; i < buff.getBuff_effect().length; i++) {
                     int buffEffect = buff.getBuff_effect()[i];
                     if (BuffBattle.isBisisBuff(buffEffect)) {
@@ -511,9 +525,12 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         return (int) ((float) Initial + (Initial * 0.5f + aptitude * 1f) * (float) level);
     }
 
-
     protected int calculateHp() {
         return strength * 3 + physique * 6 + spirit * 1;
+    }
+
+    protected int calculateHpRestore() {
+        return (int)(strength*0.15f + physique * 0.3f + spirit*0.1);
     }
 
     protected int calculatePhysicDamage() {
@@ -530,36 +547,41 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
 
     protected int calculatePhysicsPenetrate() {
         // TODO: 10/16/17 增加物理穿透率的计算
-        return (int) (intellect *0.2f + dexterity * 0.3f + intellect * 0.2f);
+        return (int) (strength * 0.2f + dexterity * 0.3f + intellect * 0.2f);
     }
 
     protected int calculateMagicPenetrate() {
         // TODO: 10/16/17 增加魔法穿透率的计算
-        return 0;
+        int result = (int) (intellect * 0.4f + dexterity * 0.1f + spirit * 0.2f);
+        return result;
     }
 
     protected int calculateAccuracy() {
-        return strength*1 + intellect * 2 + dexterity * 3 + spirit * 1 + physique * 1 + (int)(luck * 0.5f);
+        return strength * 1 + intellect * 3 + dexterity * 4 + physique * 1 + luck;
     }
 
     protected int calculateCriteRate() {
-        return dexterity * 1+ (int) (luck * 0.5f);
+        return strength + dexterity * 2 + intellect + luck * 2;
     }
 
-    protected int calculateCriteDamege() {
-        return (int) (200 + (physique + spirit) * 0.1);
+    protected int calculatereduceBeCriteRate() {
+        return strength * 3 + dexterity * 5 + intellect*2 +spirit+ luck * 5;
+    }
+
+    protected float calculateCriteDamege() {
+        return  2f;
     }
 
     protected int calculateArmor() {
-        return strength + physique * 2;
+        return (int) (strength * 1f + physique * 1);
     }
 
     protected int calculateMagicResist() {
-        return intellect * 2 + physique + spirit * 3;
+        return (int) (intellect * 0.5f + physique * 0.5f + spirit * 1f);
     }
 
     protected int calculateDodge() {
-        return dexterity * 2 + spirit + (int) (luck * 0.5f);
+        return dexterity * 2 + intellect * 2 + luck;
     }
 
     protected int calculateBlock() {
@@ -570,9 +592,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         return dexterity * 3 + physique + spirit;
     }
 
-    protected int calculateHpRestore() {
-        return strength + physique * 3 + spirit;
-    }
+
 
     protected int calculateMaxActiveValues() {
         return 1000;
@@ -706,7 +726,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         this.reduceBeCriteRate = reduceBeCriteRate;
     }
 
-    public int getCriteDamage() {
+    public float getCriteDamage() {
         return criteDamage;
     }
 
@@ -987,10 +1007,10 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
     public String display() {
         int buffPassiveSize = -1;
         int skillActiveSize = -1;
-        if(buffPassive != null){
+        if (buffPassive != null) {
             buffPassiveSize = buffPassive.size();
         }
-        if(skillActivesLists != null){
+        if (skillActivesLists != null) {
             skillActiveSize = skillActivesLists.size();
         }
 
@@ -1029,7 +1049,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
     }
 
     public void showSkill() {
-        ShowUtils.showArrayLists(TAG,buffPassive);
-        ShowUtils.showArrayLists(TAG,skillActivesLists);
+        ShowUtils.showArrayLists(TAG, buffPassive);
+        ShowUtils.showArrayLists(TAG, skillActivesLists);
     }
 }

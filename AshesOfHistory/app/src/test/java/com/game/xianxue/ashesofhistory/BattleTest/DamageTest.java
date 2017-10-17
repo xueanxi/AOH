@@ -1,5 +1,6 @@
 package com.game.xianxue.ashesofhistory.BattleTest;
 
+import com.game.xianxue.ashesofhistory.game.model.DamgeModel;
 import com.game.xianxue.ashesofhistory.utils.MathUtils;
 
 import org.junit.Test;
@@ -17,8 +18,11 @@ public class DamageTest {
         assertEquals(4, 2 + 2);
     }
 
+    /**
+     * 用拉格郎日插值法 计算抗性承受的伤害系数
+     */
     @Test
-    public void test01(){
+    public void testResist(){
         int damage = 500;
         int resist = 1000;
 
@@ -50,6 +54,24 @@ public class DamageTest {
         x0 = 500;
         double y0 = MathUtils.calculateLGLR(x, y, x0);
         System.out.print("result = "+y0);
+    }
+
+
+    /**
+     * 用分段直线，计算承受伤害
+     */
+    @Test
+    public void testResist2(){
+        float result = 0;
+       /* for(int i =-5;i<30;i++){
+            result = DamgeModel.getResistResult(i*50);
+            System.out.println("resist  = "+(i*50)+ " result:"+result);
+        }*/
+
+        float resist = 447;
+        float damage = 1088f;
+        result = damage* DamgeModel.getResistResult(resist);
+        System.out.println("resist  = "+resist+ " result:"+result);
     }
 
     private void displayTime(long time1,long time2){

@@ -303,11 +303,13 @@ public class BattleEngineTest {
         BasePerson play3 = PersonDataManager.getPersonFromDataBaseByPinyin("liubei");
         BasePerson play4 = PersonDataManager.getPersonFromDataBaseByPinyin("zhaoyun");
         BasePerson play5 = PersonDataManager.getPersonFromDataBaseByPinyin("zhugeliang");
+        BasePerson play16 = PersonDataManager.getPersonFromDataBaseByPinyin("lvbu");
         BattlePerson b1 = new BattlePerson(new NormalPerson(play1,15));
-        BattlePerson b2 = new BattlePerson(new NormalPerson(play2,5));
-        BattlePerson b3 = new BattlePerson(new NormalPerson(play3,5));
+        BattlePerson b2 = new BattlePerson(new NormalPerson(play2,15));
+        BattlePerson b3 = new BattlePerson(new NormalPerson(play3,15));
         BattlePerson b4 = new BattlePerson(new NormalPerson(play4,5));
         BattlePerson b5 = new BattlePerson(new NormalPerson(play5,5));
+        BattlePerson b16 = new BattlePerson(new NormalPerson(play16,15));
         b3.setLeader(true);
         b5.setCounsellor(true);
 
@@ -364,7 +366,8 @@ public class BattleEngineTest {
 
         for(int i =0;i<100;i++){
 
-            engine.startAttack(b1,true);
+            engine.startAttack(b1,false);
+
 
             b6.setHP_Current(b6.HP_MAX);
             b7.setHP_Current(b7.HP_MAX);

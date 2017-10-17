@@ -12,6 +12,7 @@ import com.game.xianxue.ashesofhistory.interfaces.Interface_Skill;
 
 public class SkillBattle extends SkillBase implements Interface_Skill {
     private static final String TAG = "SkillBattle";
+
     private SkillBase base;                             // 技能的初始数据
     private int level = SKILL_LIMIT_MINI_LEVEL;         // 技能的等级
     private int recoverTime;                            // 技能恢复冷却还需要多少时间
@@ -119,21 +120,30 @@ public class SkillBattle extends SkillBase implements Interface_Skill {
         //SimpleLog.logd(TAG,"setStartLevel before:"+this.name+" number= "+effectNumber);
     }
 
+    /**
+     * 判断技能是否已经冷却
+     * 如果已经冷却返回 ture ,同时把技能进入冷却时间
+     * 如果技能没有冷却完毕，返回 false,同时减少技能冷却时间一个回合
+     *
+     * @return
+     */
+    public boolean isSkillCoolDown() {
+        if(this.recoverTime <= 0){
+            return true;
+        }else{
+            if(recoverTime>0){
+                this.recoverTime--;
+            }
+            return false;
+        }
+    }
+
     public int getRecoverTime() {
         return recoverTime;
     }
 
     public void setRecoverTime(int recoverTime) {
         this.recoverTime = recoverTime;
-    }
-
-    /**
-     * 过去一回合之后，技能的cd时间减少1
-     */
-    public void passTime() {
-        if(this.recoverTime >0){
-            this.recoverTime--;
-        }
     }
 
     @Override

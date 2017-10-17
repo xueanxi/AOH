@@ -1,5 +1,6 @@
 package com.game.xianxue.ashesofhistory.game.model.buff;
 
+import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.interfaces.Interface_Buff;
 import com.game.xianxue.ashesofhistory.utils.TextUtils;
 
@@ -13,6 +14,7 @@ public class BuffBattle extends BuffBase implements Interface_Buff {
     private static final String TAG = "=BuffBattle";
 
     private int level = BUFF_LEVEL_LIMIT_MINI;      // buff的等级
+    private int remainTime = 0;                     // buff的剩余时间
 
     public BuffBattle(BuffBase base) {
         this.buffId = base.buffId;                  // buffid
@@ -107,6 +109,14 @@ public class BuffBattle extends BuffBase implements Interface_Buff {
         } else {
             return false;
         }
+    }
+
+    public int getRemainTime() {
+        return remainTime;
+    }
+
+    public void setRemainTime(int remainTime) {
+        this.remainTime = remainTime;
     }
 
     @Override

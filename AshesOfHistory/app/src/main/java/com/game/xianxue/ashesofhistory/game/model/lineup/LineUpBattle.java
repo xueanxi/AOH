@@ -44,6 +44,14 @@ public class LineUpBattle extends LineUpBase {
         }
 
         fillPerson();
+        addLineUpBuff();
+    }
+
+    /**
+     * 处理阵法的Buff效果
+     */
+    private void addLineUpBuff() {
+        // TODO: 2017/10/15  这里要处理阵法的效果，然后再进行攻击
     }
 
     /**

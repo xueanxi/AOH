@@ -4,8 +4,10 @@ import com.game.xianxue.ashesofhistory.Log.BattleLog;
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.game.model.DamgeModel;
 import com.game.xianxue.ashesofhistory.game.model.TeamModel;
+import com.game.xianxue.ashesofhistory.game.model.buff.BuffBattle;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBattle;
+import com.game.xianxue.ashesofhistory.interfaces.Interface_Buff;
 import com.game.xianxue.ashesofhistory.interfaces.Interface_Skill;
 import com.game.xianxue.ashesofhistory.utils.RandomUtils;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 /**
  * 战斗处理引擎 单例
  */
-public class BattleEngine implements Interface_Skill {
+public class BattleEngine implements Interface_Skill,Interface_Buff {
     private static final String TAG = "BattleEngine";
     private static final Object mSyncObject = new Object();
     private static BattleEngine mInstance;
@@ -152,8 +154,10 @@ public class BattleEngine implements Interface_Skill {
         // TODO: 2017/10/15 这里不应该直接进行释放技能或者普通攻击，应该在执行之前，判断一下，是否有什么负面状态，导致本次行动不能正常执行的。
 
 
-        // TODO: 2017/10/15  这里要处理阵法的效果，然后再进行攻击
+        handleBuff(actionPerson);
 
+        // 每回合的自动回血
+        restoreHp(actionPerson);
 
         if (actionPerson.getSkillActivesLists().size() == 1) {
             // 因为每个人的第一个主动技能都是普通攻击，如果技能列表里面只有一个普通攻击技能，则只能进行普通攻击
@@ -174,13 +178,50 @@ public class BattleEngine implements Interface_Skill {
     }
 
     /**
+     * 处理Buff效果
+     * @param actionPerson
+     */
+    private void handleBuff(BattlePerson actionPerson) {
+        // TODO: 10/17/17 处理持续buff效果
+        ArrayList<BuffBattle> buffPassives = actionPerson.getBuffPassive();
+        ArrayList<BuffBattle> buffActives = actionPerson.getBuffActive();
+        BuffBattle buff = null;
+
+        // 处理被动技能的Buff
+        if(buffPassives == null || buffPassives.size() ==0){
+            // 这种情况不处理
+        }else{
+            for(int i =0;i<buffPassives.size();i++){
+                buff = buffPassives.get(i);
+                if(buff == null) continue;
+                if(BUFF_TYPE_LAST != buff.getBuff_type())continue;
+
+            }
+        }
+    }
+
+    /**
+     * 战斗中每回合恢复HP
+     */
+    private void restoreHp(BattlePerson actionPerson) {
+        int HP_Loss = actionPerson.getHP_MAX() - actionPerson.getHP_Current();       // 当前受损了多少生命值
+        int HP_Current = actionPerson.getHP_Current() + actionPerson.getHpRestore(); // 恢复生命值
+        if(HP_Current > actionPerson.getHP_MAX()){
+            actionPerson.setHP_Current(actionPerson.getHP_MAX());
+            BattleLog.log(actionPerson.getName()+" 恢复了"+HP_Loss+"点生命值");
+        }else{
+            actionPerson.setHP_Current(HP_Current);
+            BattleLog.log(actionPerson.getName()+" 恢复了"+ actionPerson.getHpRestore() +"点生命值");
+        }
+    }
+
+    /**
      * 开始发动攻击
      *
      * @param actionPerson   执行这次行本的人，即释放技能的人
      * @param isNormalAttack 是否是进行普通攻击
      */
     public void startAttack(BattlePerson actionPerson, boolean isNormalAttack) {
-        BattleLog.log(actionPerson.getName() + "Lv."+actionPerson.getLevel()+" 准备进行技能攻击");
 
         int actionCamp = actionPerson.getCamp();    // 当前行动的阵营
         int effectCamp = TeamModel.CAMP_NEUTRAL;    // 技能作用的阵营
@@ -206,19 +247,27 @@ public class BattleEngine implements Interface_Skill {
                 SimpleLog.loge(TAG, "Error !!! " + actionPerson.getName() + "的技能列表只有一个普通攻击，放弃技能释放，转为进行普通攻击");
                 BattleLog.log(actionPerson.getName() + "的技能列表只有一个普通攻击，放弃技能释放，转为进行普通攻击");
                 skill = actionPerson.getSkillActivesLists().get(0);
-                isNormalAttack = true;
             } else {
                 // 从技能列表里面，随机挑选出一个技能(排除掉普通攻击)
                 tempLists = new ArrayList<SkillBattle>();
-                //StringBuilder stringBuilder = new StringBuilder();
+                StringBuilder stringBuilder = new StringBuilder();
                 for (int i = 1; i < skillLists.size(); i++) {
-                    tempLists.add(skillLists.get(i));
-                    //stringBuilder.append(skillLists.get(i).getName() +" Lv."+skillLists.get(i).getLevel()+" | ");
+                    stringBuilder.append(skillLists.get(i).getName() +" CD:"+skillLists.get(i).getRecoverTime()+"| ");
+                    if(skillLists.get(i).isSkillCoolDown()){
+                        tempLists.add(skillLists.get(i));
+                    }
                 }
 
                 //BattleLog.log(actionPerson.getName() +"技能列表："+stringBuilder.toString());
+
+                if(tempLists == null || tempLists.size() == 0){
+                    BattleLog.log(actionPerson.getName()+"想要释放技能，但是没有冷却完毕的技能，所以准备进行普通攻击。");
+                    tempLists.add(actionPerson.getSkillActivesLists().get(0));
+                }
+
                 int skillIndex = RandomUtils.getRandomTarget(tempLists.size(), 1)[0];
                 skill = tempLists.get(skillIndex);
+                skill.setRecoverTime(skill.getCdTime());
             }
         }
 
@@ -471,58 +520,84 @@ public class BattleEngine implements Interface_Skill {
         // 使用随机算法，判断是否命中
         if (RandomUtils.isHappen(accuracy)) {
             // 攻击命中
-            BattleLog.log(actionPerson.getName() + " " + skill.getName() + "(命中率" + accuracy + ") ---> " + beAttackPerson.getName() + " 结果：命中");
             int damage = 0;
             float penetrate = 0;
+
+            // 是否暴击
+            float criteValue = actionPerson.getCriteRate() * skill.getCriteRate();
+            float criteRate = criteValue / (criteValue + beAttackPerson.getReduceBeCriteRate());
+            boolean isCrite = RandomUtils.isHappen(criteRate);
+            String criteString = "";
+            String criteString2 = "";
+            if(isCrite){
+                criteString = "(暴击)";
+                criteString2 = "(暴击率"+criteRate+")--->结果：暴击";
+            }else{
+                criteString2 = "(暴击率"+criteRate+")--->结果：未暴击";
+            }
+            BattleLog.log(actionPerson.getName() + " " + skill.getName() + "(命中率" + accuracy + ") ---> " + beAttackPerson.getName() + " 结果：命中 "+criteString2);
+
             switch (skill.getDamageType()) {
                 case SKILL_DAMAGE_TYPE_PHYSICS:
                     // 技能伤害为物理伤害
                     damage = (int) (skill.getDamageConstant() + (skill.getDamageFluctuate() * actionPerson.getPhysicDamage()));
+                    if(isCrite) damage = (int)(damage * actionPerson.getCriteDamage());
                     reduceHP = DamgeModel.getDamageResult(damage, actionPerson.getPhysicsPenetrate(), skill.getDamagePenetrate(), beAttackPerson.getArmor(), false);
+                    BattleLog.log(skill.getName() + " 物理伤害为" + damage +criteString+ " "+beAttackPerson.getName()+" 护甲：" +beAttackPerson.getArmor() +"最终伤害:"+reduceHP);
                     break;
                 case SKILL_DAMAGE_TYPE_MAGIC:
                     // 技能伤害为魔法伤害
                     damage = (int) (skill.getDamageConstant() + (skill.getDamageFluctuate() * actionPerson.getMagicDamage()));
+                    if(isCrite) damage = (int)(damage * actionPerson.getCriteDamage());
                     reduceHP = DamgeModel.getDamageResult(damage, actionPerson.getMagicPenetrate(), skill.getDamagePenetrate(), beAttackPerson.getMagicResist(), false);
+                    BattleLog.log(skill.getName() + " 魔法伤害为" + damage +criteString+" "+beAttackPerson.getName()+" 魔抗：" +beAttackPerson.getArmor() +"最终伤害:"+reduceHP);
                     break;
                 case SKILL_DAMAGE_TYPE_REAL:
                     // 技能伤害为真实伤害
                     damage = (int) (skill.getDamageConstant() + (skill.getDamageFluctuate() * actionPerson.getRealDamage()));
+                    if(isCrite) damage = (int)(damage * actionPerson.getCriteDamage());
                     reduceHP = DamgeModel.getRealDamageResult(damage);
+                    BattleLog.log(skill.getName() + " 真实伤害为" + damage +criteString+" "+beAttackPerson.getName()+"最终伤害:"+reduceHP);
                     break;
                 case SKILL_DAMAGE_TYPE_PHYSICS_PERCENT:
                     // 技能伤害为当前生命百分比物理伤害
                     reduceHP = DamgeModel.getPercentDamageResult(SKILL_DAMAGE_TYPE_PHYSICS_PERCENT,
                             skill.getDamageConstant(), actionPerson.getPhysicsPenetrate(), skill.getDamagePenetrate()
                             , beAttackPerson.getHP_Current(),0, beAttackPerson.getArmor());
+                    BattleLog.log(skill.getName() + " 当前生命"+(int)(skill.getDamageConstant()*100)+"%物理伤害 "+beAttackPerson.getName()+"当前HP：" +beAttackPerson.getHP_Current() +" 护甲:"+beAttackPerson.getArmor()+" 最终伤害:"+reduceHP);
                     break;
                 case SKILL_DAMAGE_TYPE_MAGIC_PERCENT:
                     // 技能伤害为当前生命百分比魔法伤害
                     reduceHP = DamgeModel.getPercentDamageResult(SKILL_DAMAGE_TYPE_MAGIC_PERCENT,
                             skill.getDamageConstant(), actionPerson.getMagicPenetrate(), skill.getDamagePenetrate()
                             , beAttackPerson.getHP_Current(),0, beAttackPerson.getMagicResist());
+                    BattleLog.log(skill.getName() + " 当前生命"+(int)(skill.getDamageConstant()*100)+"%魔法伤害 "+beAttackPerson.getName()+"当前HP：" +beAttackPerson.getHP_Current()+" 魔抗:"+beAttackPerson.getMagicResist()+" 最终伤害:"+reduceHP);
                     break;
                 case SKILL_DAMAGE_TYPE_REAL_PERCENT:
                     // 技能伤害为当前生命百分比真实伤害
                     reduceHP = DamgeModel.getPercentDamageResult(SKILL_DAMAGE_TYPE_REAL_PERCENT,
                             skill.getDamageConstant(), 0, 0, beAttackPerson.getHP_Current(),0,0);
+                    BattleLog.log(skill.getName() + " 当前生命"+(int)(skill.getDamageConstant()*100)+"%真实伤害 "+beAttackPerson.getName()+"当前HP：" +beAttackPerson.getHP_Current()+" 最终伤害:"+reduceHP);
                     break;
                 case SKILL_DAMAGE_TYPE_PHYSICS_PERCENT_MAX:
                     // 技能伤害为最大生命百分比物理伤害
                     reduceHP = DamgeModel.getPercentDamageResult(SKILL_DAMAGE_TYPE_PHYSICS_PERCENT_MAX,
                             skill.getDamageConstant(), actionPerson.getPhysicsPenetrate(), skill.getDamagePenetrate()
                             , 0,beAttackPerson.getHP_MAX(), beAttackPerson.getArmor());
+                    BattleLog.log(skill.getName() + " 最大生命百分"+(int)(skill.getDamageConstant()*100)+"%物理伤害 "+beAttackPerson.getName()+"最大HP：" +beAttackPerson.getHP_MAX() +" 护甲:"+beAttackPerson.getArmor()+" 最终伤害:"+reduceHP);
                     break;
                 case SKILL_DAMAGE_TYPE_MAGIC_PERCENT_MAX:
                     // 技能伤害为最大生命百分比魔法伤害
                     reduceHP = DamgeModel.getPercentDamageResult(SKILL_DAMAGE_TYPE_MAGIC_PERCENT_MAX,
                             skill.getDamageConstant(), actionPerson.getMagicPenetrate(), skill.getDamagePenetrate()
                             , 0,beAttackPerson.getHP_MAX(), beAttackPerson.getMagicResist());
+                    BattleLog.log(skill.getName() + " 最大生命百分"+(int)(skill.getDamageConstant()*100)+"%魔法伤害 "+beAttackPerson.getName()+"最大HP：" +beAttackPerson.getHP_MAX() +" 魔抗:"+beAttackPerson.getMagicResist()+" 最终伤害:"+reduceHP);
                     break;
                 case SKILL_DAMAGE_TYPE_REAL_PERCENT_MAX:
                     // 技能伤害为最大生命百分比真实伤害
                     reduceHP = DamgeModel.getPercentDamageResult(SKILL_DAMAGE_TYPE_REAL_PERCENT_MAX,
                             skill.getDamageConstant(), 0, 0, 0,beAttackPerson.getHP_MAX(),0);
+                    BattleLog.log(skill.getName() + " 最大生命百分"+(int)(skill.getDamageConstant()*100)+"%真实伤害 "+beAttackPerson.getName()+"最大HP：" +beAttackPerson.getHP_MAX() +"最终伤害:"+reduceHP);
                     break;
                 default:
                     reduceHP = 0;
