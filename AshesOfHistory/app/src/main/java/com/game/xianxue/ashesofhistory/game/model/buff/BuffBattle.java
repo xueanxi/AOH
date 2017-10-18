@@ -11,10 +11,11 @@ import org.w3c.dom.Text;
  */
 
 public class BuffBattle extends BuffBase implements Interface_Buff {
-    private static final String TAG = "=BuffBattle";
+    private static final String TAG = "BuffBattle";
 
     private int level = BUFF_LEVEL_LIMIT_MINI;      // buff的等级
     private int remainTime = 0;                     // buff的剩余时间
+    private int duration = 0;                       // buff持续了多长时间,对于持续性buff来说，需要统计持续了多长时间
 
     public BuffBattle(BuffBase base) {
         this.buffId = base.buffId;                  // buffid
@@ -41,7 +42,7 @@ public class BuffBattle extends BuffBase implements Interface_Buff {
         this.level_up_fluctuate = TextUtils.getFloatArrayFromString(slevel_up_fluctuate);
     }
 
-    public BuffBattle(BuffBase base,int level) {
+    public BuffBattle(BuffBase base, int level) {
         this.buffId = base.buffId;                  // buffid
         this.name = base.name;                      // buff名字
         this.introduce = base.introduce;            // buff说明
@@ -73,7 +74,16 @@ public class BuffBattle extends BuffBase implements Interface_Buff {
     }
 
     /**
-     * 设置Buff级别的时候，需要根据 startLevel、 level_up_constant、 level_up_fluctuate 升级当前 buff 的能力  buff_constant、buff_fluctuate
+     * 设置Buff级别的时候
+     * <p>
+     * 需要根据 buff当前的等级，分别计算以下四个值
+     * 1.buff_constant ：根据level_up_constant来计算新的固定部分效果
+     * 2.buff_fluctuate：根据level_up_fluctuate来计算新的浮动部分效果
+     * 3.time          ：根据level_up_time来计算新的持续时间
+     * 4.range         ：根据level_up_range来计算新的距离
+     * <p>
+     * level_up_constant level_up_fluctuate
+     * 升级当前 buff 的能力  buff_constant、buff_fluctuate
      *
      * @param level
      */
@@ -84,17 +94,19 @@ public class BuffBattle extends BuffBase implements Interface_Buff {
             level = BUFF_LEVEL_LIMIT_MAX;
         }
 
-        if(buff_effect.length == buff_constant.length
+        if (buff_effect.length == buff_constant.length
                 && buff_effect.length == buff_fluctuate.length
                 && buff_effect.length == level_up_constant.length
-                && buff_effect.length == level_up_fluctuate.length){
+                && buff_effect.length == level_up_fluctuate.length) {
             this.level = level;
-            for(int i = 0;i<buff_effect.length;i++){
-                buff_constant[i] = (float) (buff_constant[i] + (float)(level - 1) * level_up_constant[i]);
+            for (int i = 0; i < buff_effect.length; i++) {
+                buff_constant[i] = (float) (buff_constant[i] + (float) (level - 1) * level_up_constant[i]);
                 buff_fluctuate[i] = (float) (buff_fluctuate[i] + (float) (level - 1) * level_up_fluctuate[i]);
             }
             time = (int) (time + time * (level - 1) * level_up_time);
             range = (int) (range + range * (level - 1) * level_up_range);
+        } else {
+            SimpleLog.loge(TAG, this.getName() + " buff setLevel():的时候出现错误。");
         }
     }
 
@@ -117,6 +129,39 @@ public class BuffBattle extends BuffBase implements Interface_Buff {
 
     public void setRemainTime(int remainTime) {
         this.remainTime = remainTime;
+    }
+
+    public int getDuration() {
+        return duration;
+    }
+
+    /**
+     * @param duration
+     */
+    public void setDuration(int duration) {
+        // 只有持续叠加型的buff才需要设置 持续时间
+        if (this.buff_type != BUFF_TYPE_LAST) return;
+        if (duration < 0) duration = 0;
+        this.duration = duration;
+
+        // 重置buff_constant buff_fluctuate 方便下面重新计算
+        this.buff_constant = TextUtils.getFloatArrayFromString(sbuff_constant);
+        this.buff_fluctuate = TextUtils.getFloatArrayFromString(sbuff_fluctuate);
+
+        if (buff_effect.length == buff_constant.length
+                && buff_effect.length == buff_fluctuate.length
+                && buff_effect.length == level_up_constant.length
+                && buff_effect.length == level_up_fluctuate.length) {
+
+            for (int i = 0; i < buff_effect.length; i++) {
+                buff_constant[i] = buff_constant[i] * (this.duration);
+                buff_fluctuate[i] = buff_fluctuate[i] * (this.duration);
+            }
+        } else {
+            SimpleLog.loge(TAG, this.getName() + " buff setDuration():的时候出现错误。");
+        }
+
+        SimpleLog.logd(TAG,this.getName()+ "持续时间为："+duration + "当前固定部分为:"+buff_constant[0]+" 浮动部分为:"+buff_fluctuate[0]);
     }
 
     @Override

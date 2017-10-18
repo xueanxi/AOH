@@ -46,6 +46,6 @@ public interface Interface_Buff {
 
     int BUFF_TIME_UNLIMITED = 0;        // buff的持续时间为无限
 
-    int BUFF_TYPE_LAST = 1;             // buff在有效时间内 每回合触发一次，比如每回合持续恢复生命值的buff
-    int BUFF_TYPE_ONCE = 0;             // buff只触发一次，比如增加状态的buff
+    int BUFF_TYPE_LAST = 1;             // 效果每回合都会触发，不断叠加
+    int BUFF_TYPE_ONCE = 0;             // 只对人物加持一次
 }

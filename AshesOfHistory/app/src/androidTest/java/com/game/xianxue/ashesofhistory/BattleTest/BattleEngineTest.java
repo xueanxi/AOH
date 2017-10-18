@@ -1,6 +1,7 @@
 package com.game.xianxue.ashesofhistory.BattleTest;
 
 import android.content.Context;
+import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
@@ -223,11 +224,13 @@ public class BattleEngineTest {
         BasePerson play3 = PersonDataManager.getPersonFromDataBaseByPinyin("liubei");
         BasePerson play4 = PersonDataManager.getPersonFromDataBaseByPinyin("zhaoyun");
         BasePerson play5 = PersonDataManager.getPersonFromDataBaseByPinyin("zhugeliang");
+        BasePerson play6 = PersonDataManager.getPersonFromDataBaseByPinyin("lvbu");
         BattlePerson b1 = new BattlePerson(new NormalPerson(play1,5));
         BattlePerson b2 = new BattlePerson(new NormalPerson(play2,5));
         BattlePerson b3 = new BattlePerson(new NormalPerson(play3,5));
         BattlePerson b4 = new BattlePerson(new NormalPerson(play4,5));
         BattlePerson b5 = new BattlePerson(new NormalPerson(play5,5));
+        BattlePerson b6 = new BattlePerson(new NormalPerson(play6,5));
         b3.setLeader(true);
         b5.setCounsellor(true);
 
@@ -237,39 +240,41 @@ public class BattleEngineTest {
         playerList1.add(b3);
         playerList1.add(b4);
         playerList1.add(b5);
+        playerList1.add(b6);
 
         // 第二队
-        BasePerson play6 = PersonDataManager.getPersonFromDataBaseByPinyin("caocao");
-        BasePerson play7 = PersonDataManager.getPersonFromDataBaseByPinyin("caoren");
+        BasePerson play7 = PersonDataManager.getPersonFromDataBaseByPinyin("caocao");
         BasePerson play8 = PersonDataManager.getPersonFromDataBaseByPinyin("dianwei");
-        BasePerson play9 = PersonDataManager.getPersonFromDataBaseByPinyin("zhangliao");
-        BasePerson play10 = PersonDataManager.getPersonFromDataBaseByPinyin("xvchu");
+        BasePerson play9 = PersonDataManager.getPersonFromDataBaseByPinyin("caoren");
+        BasePerson play10 = PersonDataManager.getPersonFromDataBaseByPinyin("zhangliao");
         BasePerson play11 = PersonDataManager.getPersonFromDataBaseByPinyin("gongjianbing");
-        BasePerson play12 = PersonDataManager.getPersonFromDataBaseByPinyin("bubing");
+        BasePerson play12 = PersonDataManager.getPersonFromDataBaseByPinyin("xvchu");
+        BasePerson play13 = PersonDataManager.getPersonFromDataBaseByPinyin("bubing");
 
-        BattlePerson b6 = new BattlePerson(new NormalPerson(play6,5));
         BattlePerson b7 = new BattlePerson(new NormalPerson(play7,5));
         BattlePerson b8 = new BattlePerson(new NormalPerson(play8,5));
         BattlePerson b9 = new BattlePerson(new NormalPerson(play9,5));
         BattlePerson b10 = new BattlePerson(new NormalPerson(play10,5));
         BattlePerson b11 = new BattlePerson(new NormalPerson(play11,5));
         BattlePerson b12 = new BattlePerson(new NormalPerson(play12,5));
-        b7.setLeader(true);
-        b6.setCounsellor(true);
+        BattlePerson b13 = new BattlePerson(new NormalPerson(play13,5));
+        b8.setLeader(true);
+        b7.setCounsellor(true);
 
         ArrayList<BattlePerson> playerList2 = new ArrayList<BattlePerson>();
-        playerList2.add(b6);
         playerList2.add(b7);
         playerList2.add(b8);
         playerList2.add(b9);
         playerList2.add(b10);
         playerList2.add(b11);
         playerList2.add(b12);
+        playerList2.add(b13);
 
         // 初始化阵型1
         LineUpBase lineUp1 = LineUpDataManager.getDataFromDataBaseById(0);//普通阵容
         LineUpBattle lb1 = new LineUpBattle(lineUp1,playerList1);
         lb1.displayMatrix();
+
         // 初始化阵型2
         LineUpBase lineUp2 = LineUpDataManager.getDataFromDataBaseById(1);//长蛇阵
         LineUpBattle lb2 = new LineUpBattle(lineUp2,playerList2);
@@ -281,104 +286,7 @@ public class BattleEngineTest {
 
         BattleEngine engine = BattleEngine.getInstance();
         engine.setBattleTeam(t1, t2);
-/*        for(int i = 0;i<10;i++){
-            engine.startNormalAttack(b1);
-        }*/
-        //engine.startNormalAttack(b5);
-        engine.startAttack(b1,false);
+        engine.startBattle();
+        SystemClock.sleep(999999);
     }
-
-
-    /**
-     * 测试普通攻击
-     */
-    @Test
-    public void TestSkillAttack() {
-        init();
-
-        // 初始化人物
-        // 第一队
-        BasePerson play1 = PersonDataManager.getPersonFromDataBaseByPinyin("guanyu");
-        BasePerson play2 = PersonDataManager.getPersonFromDataBaseByPinyin("zhangfei");
-        BasePerson play3 = PersonDataManager.getPersonFromDataBaseByPinyin("liubei");
-        BasePerson play4 = PersonDataManager.getPersonFromDataBaseByPinyin("zhaoyun");
-        BasePerson play5 = PersonDataManager.getPersonFromDataBaseByPinyin("zhugeliang");
-        BasePerson play16 = PersonDataManager.getPersonFromDataBaseByPinyin("lvbu");
-        BattlePerson b1 = new BattlePerson(new NormalPerson(play1,15));
-        BattlePerson b2 = new BattlePerson(new NormalPerson(play2,15));
-        BattlePerson b3 = new BattlePerson(new NormalPerson(play3,15));
-        BattlePerson b4 = new BattlePerson(new NormalPerson(play4,5));
-        BattlePerson b5 = new BattlePerson(new NormalPerson(play5,5));
-        BattlePerson b16 = new BattlePerson(new NormalPerson(play16,15));
-        b3.setLeader(true);
-        b5.setCounsellor(true);
-
-        ArrayList<BattlePerson> playerList1 = new ArrayList<BattlePerson>();
-        playerList1.add(b1);
-        playerList1.add(b2);
-        playerList1.add(b3);
-        playerList1.add(b4);
-        playerList1.add(b5);
-
-        // 第二队
-        BasePerson play6 = PersonDataManager.getPersonFromDataBaseByPinyin("caocao");
-        BasePerson play7 = PersonDataManager.getPersonFromDataBaseByPinyin("caoren");
-        BasePerson play8 = PersonDataManager.getPersonFromDataBaseByPinyin("dianwei");
-        BasePerson play9 = PersonDataManager.getPersonFromDataBaseByPinyin("zhangliao");
-        BasePerson play10 = PersonDataManager.getPersonFromDataBaseByPinyin("xvchu");
-        BasePerson play11 = PersonDataManager.getPersonFromDataBaseByPinyin("gongjianbing");
-        BasePerson play12 = PersonDataManager.getPersonFromDataBaseByPinyin("bubing");
-
-        BattlePerson b6 = new BattlePerson(new NormalPerson(play6,15));
-        BattlePerson b7 = new BattlePerson(new NormalPerson(play7,15));
-        BattlePerson b8 = new BattlePerson(new NormalPerson(play8,15));
-        BattlePerson b9 = new BattlePerson(new NormalPerson(play9,15));
-        BattlePerson b10 = new BattlePerson(new NormalPerson(play10,15));
-        BattlePerson b11 = new BattlePerson(new NormalPerson(play11,15));
-        BattlePerson b12 = new BattlePerson(new NormalPerson(play12,15));
-        b7.setLeader(true);
-        b6.setCounsellor(true);
-
-        ArrayList<BattlePerson> playerList2 = new ArrayList<BattlePerson>();
-        playerList2.add(b6);
-        playerList2.add(b7);
-        playerList2.add(b8);
-        playerList2.add(b9);
-        playerList2.add(b10);
-        playerList2.add(b11);
-        playerList2.add(b12);
-
-        // 初始化阵型1
-        LineUpBase lineUp1 = LineUpDataManager.getDataFromDataBaseById(0);//普通阵容
-        LineUpBattle lb1 = new LineUpBattle(lineUp1,playerList1);
-        lb1.displayMatrix();
-        // 初始化阵型2
-        LineUpBase lineUp2 = LineUpDataManager.getDataFromDataBaseById(1);//长蛇阵
-        LineUpBattle lb2 = new LineUpBattle(lineUp2,playerList2);
-        lb2.displayMatrix();
-
-        // 初始化阵营
-        TeamModel t1 = new TeamModel(TeamModel.CAMP_LEFT, lb1);
-        TeamModel t2 = new TeamModel(TeamModel.CAMP_RIGHT, lb2);
-
-        BattleEngine engine = BattleEngine.getInstance();
-        engine.setBattleTeam(t1, t2);
-
-        for(int i =0;i<100;i++){
-
-            engine.startAttack(b1,false);
-
-
-            b6.setHP_Current(b6.HP_MAX);
-            b7.setHP_Current(b7.HP_MAX);
-            b8.setHP_Current(b8.HP_MAX);
-            b9.setHP_Current(b9.HP_MAX);
-            b10.setHP_Current(b10.HP_MAX);
-            b11.setHP_Current(b11.HP_MAX);
-            b12.setHP_Current(b12.HP_MAX);
-            BattleLog.log("");
-        }
-    }
-
-
 }

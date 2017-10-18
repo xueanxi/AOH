@@ -26,12 +26,13 @@
         <lineup_id>0</lineup_id><!--技能ID,唯一标识这个技能-->
         <name>普通阵型</name><!--阵型-->
         <introduce>普通阵型</introduce><!--阵型描述-->
-        <max_person>5</max_person><!--最大人数-->
+        <max_person>6</max_person><!--最大人数-->
         <unit>0,0,2</unit>
         <unit>j1,1,1</unit>
         <unit>k2,2,1</unit>
         <unit>3,3,1</unit>
         <unit>4,4,0,1</unit>
+        <unit>0,4,0,1</unit>
     </item>
 
     <item>

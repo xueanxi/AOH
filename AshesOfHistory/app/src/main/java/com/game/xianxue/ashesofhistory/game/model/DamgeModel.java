@@ -35,7 +35,6 @@ public class DamgeModel implements Interface_Skill {
         BattleLog.log("伤害：" + damage + "护甲:" + resist + " 人物穿透：" + penetrateConstant + " 技能穿透:" + penetratePercent + " ");
 
         result = (int) (damage * getResistResult(resistAfterPenetrate));
-        BattleLog.log("结果： 最终伤害为" + result);
 
         if (isFloat) {
             float floatRate = RandomUtils.getRandomNumberbetween(0.9f, 1.1f);

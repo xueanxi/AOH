@@ -1,5 +1,6 @@
 package com.game.xianxue.ashesofhistory.game.model.lineup;
 
+import com.game.xianxue.ashesofhistory.Log.BattleLog;
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 
@@ -61,7 +62,7 @@ public class LineUpBattle extends LineUpBase {
         SimpleLog.logd(TAG,"fillPerson()");
         // 盘但阵容是否容纳的下队伍的人数
         if (this.maxPerson < membersList.size()) {
-            SimpleLog.loge(TAG, "Error !!! fillPerson faile . 阵型无法容纳那么多人");
+            SimpleLog.loge(TAG, "Error !!! fillPerson faile . 阵型无法容纳那么多人"+"maxPerson = "+this.maxPerson +" membersList ="+membersList.size());
             counsellor = null;
             leader = null;
             isLineupWork = false;
@@ -158,7 +159,7 @@ public class LineUpBattle extends LineUpBase {
                 break;
             }
         }
-        SimpleLog.loge(TAG, "isAllDie = " + isAllDie);
+        SimpleLog.logd(TAG, "isAllDie = " + isAllDie);
         return isAllDie;
     }
 
@@ -204,7 +205,7 @@ public class LineUpBattle extends LineUpBase {
                 int HP = membersList.get(unit.getPersonIndex()).getHP_Current();
                 if(HP>0){
                     colHasPersonLift = true;
-                    nearCol = x;
+                    nearCol = y;
                     break;
                 }
             }
@@ -237,7 +238,7 @@ public class LineUpBattle extends LineUpBase {
      * 展示 矩阵
      */
     public void displayMatrix(){
-        SimpleLog.logd(TAG,"======"+this.name+"的阵型 start ======");
+        BattleLog.log("======"+this.name+"的阵型 start ======");
         UnitBattle unit = null;
         for(int x=0;x<LINEUP_MAX_ROW;x++) {
             StringBuilder sb = new StringBuilder();
@@ -256,8 +257,8 @@ public class LineUpBattle extends LineUpBase {
                     sb.append("空    ");
                 }
             }
-            SimpleLog.logd(TAG,sb.toString());
+            BattleLog.log(sb.toString());
         }
-        SimpleLog.logd(TAG,"======"+this.name+"的阵型 end ======");
+        BattleLog.log("======"+this.name+"的阵型 end ======");
     }
 }
