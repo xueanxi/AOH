@@ -28,25 +28,26 @@
         <introduce>普通阵型</introduce><!--阵型描述-->
         <max_person>6</max_person><!--最大人数-->
         <unit>0,0,2</unit>
-        <unit>j1,1,1</unit>
-        <unit>k2,2,1</unit>
-        <unit>3,3,1</unit>
-        <unit>4,4,0,1</unit>
-        <unit>0,4,0,1</unit>
+        <unit>1,0,0,1</unit>
+        <unit>0,1,1</unit>
+        <unit>1,1,0,1</unit>
+        <unit>c0,2,1</unit>
+        <unit>l1,2,1</unit>
     </item>
 
     <item>
         <lineup_id>1</lineup_id><!--技能ID,唯一标识这个技能-->
         <name>长蛇阵</name><!--阵型-->
         <introduce>长蛇阵</introduce><!--阵型描述-->
-        <max_person>7</max_person><!--最大人数-->
+        <max_person>8</max_person><!--最大人数-->
         <unit>0,0,2</unit>
+        <unit>3,0,2</unit>
         <unit>0,1,2</unit>
-        <unit>1,1,1</unit>
-        <unit>k2,2,1</unit>
-        <unit>j3,1,1</unit>
-        <unit>4,0,0</unit>
-        <unit>5,0,0</unit>
+        <unit>3,1,1</unit>
+        <unit>0,2,1</unit>
+        <unit>3,2,1</unit>
+        <unit>l1,3,0</unit>
+        <unit>c2,3,0</unit>
     </item>
 
     <item>
@@ -58,8 +59,8 @@
         <unit>0,1,2</unit>
         <unit>0,2,2</unit>
         <unit>1,0,1</unit>
-        <unit>k1,1,1</unit>
-        <unit>j1,2,1</unit>
+        <unit>l1,1,1</unit>
+        <unit>c1,2,1</unit>
         <unit>2,0,0</unit>
         <unit>2,1,0</unit>
         <unit>2,2,0,1,2</unit>

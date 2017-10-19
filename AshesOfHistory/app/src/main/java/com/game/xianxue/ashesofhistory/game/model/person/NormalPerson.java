@@ -134,7 +134,8 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         this.spirit_Raw = basePerson.getSpirit_Raw();               // 原始精神
         this.fascination_Raw = basePerson.getFascination_Raw();     // 原始魅力
         this.luck_Raw = basePerson.getLuck_Raw();                   // 原始运气
-        this.skillStrings = basePerson.skillStrings;
+        this.skillStrings = basePerson.skillStrings;                // 天赋技能列表
+        this.leadSkillId = basePerson.getLeadSkillId();             // 领导技能
 
         // 初始化技能
         setLevel(1);
@@ -168,6 +169,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         this.fascination_Raw = basePerson.getFascination_Raw();     // 原始魅力
         this.luck_Raw = basePerson.getLuck_Raw();                   // 原始运气
         this.skillStrings = basePerson.skillStrings;
+        this.leadSkillId = basePerson.getLeadSkillId();             // 领导技能
 
         SimpleLog.logd(TAG, "NormalPerson(): skillStrings=" + this.skillStrings);
 
@@ -557,11 +559,11 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
     }
 
     protected int calculatePhysicDamage() {
-        return (int) (strength * 0.8f + dexterity * 0.3f);
+        return (int) (strength * 1f + dexterity * 0.5f);
     }
 
     protected int calculateMagicDamage() {
-        return (int) (intellect * 1f + spirit * 0.5f);
+        return (int) (intellect * 1.1f + spirit * 0.6f);
     }
 
     protected int calculateRealDamage() {
@@ -596,7 +598,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
     }
 
     protected int calculateArmor() {
-        return (int) (strength * 1f + physique * 1);
+        return (int) (strength * 0.8f + physique * 1);
     }
 
     protected int calculateMagicResist() {
@@ -604,11 +606,12 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
     }
 
     protected int calculateDodge() {
-        return dexterity * 2 + intellect * 2 + luck;
+        return (int)(dexterity * 1.5f + intellect * 1.5f + luck);
     }
 
 
     protected int calculateSpeed() {
+        // TODO: 10/19/17 速度行动值，不太合理，需要调整
         return dexterity * 2 + physique + spirit;
     }
 

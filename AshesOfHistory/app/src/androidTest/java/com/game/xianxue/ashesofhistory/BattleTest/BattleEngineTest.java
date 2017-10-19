@@ -45,42 +45,6 @@ public class BattleEngineTest {
     }
 
     @Test
-    public void TestStartBattle() {
-        init();
-        BasePerson play1 = PersonDataManager.getPersonFromDataBaseByPinyin("guanyu");
-        BasePerson play2 = PersonDataManager.getPersonFromDataBaseByPinyin("lvbu");
-        BasePerson play3 = PersonDataManager.getPersonFromDataBaseByPinyin("zhugeliang");
-        BasePerson play4 = PersonDataManager.getPersonFromDataBaseByPinyin("zhangfei");
-
-        NormalPerson n1 = new NormalPerson(play1);
-        NormalPerson n2 = new NormalPerson(play2);
-        NormalPerson n3 = new NormalPerson(play3);
-        NormalPerson n4 = new NormalPerson(play4);
-
-        BattlePerson b1 = new BattlePerson(n1, TeamModel.CAMP_LEFT);
-        BattlePerson b2 = new BattlePerson(n2, TeamModel.CAMP_LEFT);
-        BattlePerson b3 = new BattlePerson(n3, TeamModel.CAMP_RIGHT);
-        BattlePerson b4 = new BattlePerson(n4, TeamModel.CAMP_RIGHT);
-
-        ArrayList<BattlePerson> playerList1 = new ArrayList<BattlePerson>();
-        playerList1.add(b1);
-        playerList1.add(b2);
-
-        ArrayList<BattlePerson> playerList2 = new ArrayList<BattlePerson>();
-        playerList2.add(b3);
-        playerList2.add(b4);
-
-        TeamModel t1 = new TeamModel(TeamModel.CAMP_LEFT, playerList1);
-        TeamModel t2 = new TeamModel(TeamModel.CAMP_RIGHT, playerList2);
-
-        BattleEngine engine = BattleEngine.getInstance();
-        engine.setTimeActiveIncrese(1000);
-        engine.setTimePersonAction(500);
-        engine.setBattleTeam(t1, t2);
-        engine.startBattle();
-    }
-
-    @Test
     public void TestLineUp() {
         init();
 
@@ -225,12 +189,12 @@ public class BattleEngineTest {
         BasePerson play4 = PersonDataManager.getPersonFromDataBaseByPinyin("zhaoyun");
         BasePerson play5 = PersonDataManager.getPersonFromDataBaseByPinyin("zhugeliang");
         BasePerson play6 = PersonDataManager.getPersonFromDataBaseByPinyin("lvbu");
-        BattlePerson b1 = new BattlePerson(new NormalPerson(play1,5));
-        BattlePerson b2 = new BattlePerson(new NormalPerson(play2,5));
-        BattlePerson b3 = new BattlePerson(new NormalPerson(play3,5));
-        BattlePerson b4 = new BattlePerson(new NormalPerson(play4,5));
-        BattlePerson b5 = new BattlePerson(new NormalPerson(play5,5));
-        BattlePerson b6 = new BattlePerson(new NormalPerson(play6,5));
+        BattlePerson b1 = new BattlePerson(new NormalPerson(play1,15));
+        BattlePerson b2 = new BattlePerson(new NormalPerson(play2,15));
+        BattlePerson b3 = new BattlePerson(new NormalPerson(play3,15));
+        BattlePerson b4 = new BattlePerson(new NormalPerson(play4,15));
+        BattlePerson b5 = new BattlePerson(new NormalPerson(play5,15));
+        BattlePerson b6 = new BattlePerson(new NormalPerson(play6,15));
         b3.setLeader(true);
         b5.setCounsellor(true);
 
@@ -250,25 +214,28 @@ public class BattleEngineTest {
         BasePerson play11 = PersonDataManager.getPersonFromDataBaseByPinyin("dianwei");
         BasePerson play12 = PersonDataManager.getPersonFromDataBaseByPinyin("xvchu");
         BasePerson play13 = PersonDataManager.getPersonFromDataBaseByPinyin("bubing");
+        BasePerson play14 = PersonDataManager.getPersonFromDataBaseByPinyin("gongjianbing");
 
-        BattlePerson b7 = new BattlePerson(new NormalPerson(play7,5));
-        BattlePerson b8 = new BattlePerson(new NormalPerson(play8,5));
-        BattlePerson b9 = new BattlePerson(new NormalPerson(play9,5));
-        BattlePerson b10 = new BattlePerson(new NormalPerson(play10,5));
-        BattlePerson b11 = new BattlePerson(new NormalPerson(play11,5));
-        BattlePerson b12 = new BattlePerson(new NormalPerson(play12,5));
-        BattlePerson b13 = new BattlePerson(new NormalPerson(play13,5));
-        b8.setLeader(true);
-        b7.setCounsellor(true);
+        BattlePerson b7 = new BattlePerson(new NormalPerson(play7,15));
+        BattlePerson b8 = new BattlePerson(new NormalPerson(play8,15));
+        BattlePerson b9 = new BattlePerson(new NormalPerson(play9,15));
+        BattlePerson b10 = new BattlePerson(new NormalPerson(play10,15));
+        BattlePerson b11 = new BattlePerson(new NormalPerson(play11,15));
+        BattlePerson b12 = new BattlePerson(new NormalPerson(play12,15));
+        BattlePerson b13 = new BattlePerson(new NormalPerson(play13,15));
+        BattlePerson b14 = new BattlePerson(new NormalPerson(play14,15));
+        b7.setLeader(true);
+        b8.setCounsellor(true);
 
         ArrayList<BattlePerson> playerList2 = new ArrayList<BattlePerson>();
-        playerList2.add(b7);
+        playerList2.add(b12);
         playerList2.add(b8);
         playerList2.add(b9);
         playerList2.add(b10);
-        playerList2.add(b11);
-        playerList2.add(b12);
+        playerList2.add(b14);
+        playerList2.add(b7);
         playerList2.add(b13);
+        playerList2.add(b11);
 
         // 初始化阵型1
         LineUpBase lineUp1 = LineUpDataManager.getDataFromDataBaseById(0);//普通阵容
@@ -286,6 +253,8 @@ public class BattleEngineTest {
 
         BattleEngine engine = BattleEngine.getInstance();
         engine.setBattleTeam(t1, t2);
+        engine.setTimeActiveIncrese(50);
+        engine.setTimePersonAction(50);
         engine.startBattle();
         SystemClock.sleep(999999);
     }

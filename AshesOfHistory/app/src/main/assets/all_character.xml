@@ -13,7 +13,7 @@
         <spirit_raw>14</spirit_raw>
         <luck_raw>12</luck_raw>
         <fascination_raw>18</fascination_raw>
-        <skill_lists_raw>1,1,1,3:500,1,3,2:101,2,5,2:200,3,9,3:103,5,11,5</skill_lists_raw><!-- 技能id,技能等级,领悟等级,人物每隔多少级技能自动升一次该技能等级  ‘：’为分隔符，即允许有多个技能-->
+        <skill_lists_raw>1,1,1,3:500,1,3,2:101,2,5,2</skill_lists_raw><!-- 技能id,技能等级,领悟等级,人物每隔多少级技能自动升一次该技能等级  ‘：’为分隔符，即允许有多个技能-->
         <lead_buff_id>0</lead_buff_id><!--统帅光环 0:表示没有, 其他数字：表示buff的索引-->
     </item>
 <!--    1,3,1,3:500,3,3,2:101,3,5,2:100,1,7,2:200,4,9,3-->
@@ -149,7 +149,7 @@
         <spirit_raw>18</spirit_raw>
         <luck_raw>18</luck_raw>
         <fascination_raw>16</fascination_raw>
-        <skill_lists_raw>3,1,2,3:507,3,1,2:300,2,5,2</skill_lists_raw>
+        <skill_lists_raw>3,1,2,3:507,1,1,2:300,2,5,2</skill_lists_raw>
         <lead_buff_id>0</lead_buff_id><!--统帅光环 0:表示没有, 其他数字：表示buff的索引-->
     </item>
 
@@ -235,7 +235,7 @@
         <spirit_raw>16</spirit_raw>
         <luck_raw>13</luck_raw>
         <fascination_raw>15</fascination_raw>
-        <skill_lists_raw>3,1,1,3:500,1,3,2:301,2,5,2</skill_lists_raw>
+        <skill_lists_raw>3,1,1,3:511,1,3,2:301,2,5,2</skill_lists_raw>
         <lead_buff_id>0</lead_buff_id><!--统帅光环 0:表示没有, 其他数字：表示buff的索引-->
     </item>
 

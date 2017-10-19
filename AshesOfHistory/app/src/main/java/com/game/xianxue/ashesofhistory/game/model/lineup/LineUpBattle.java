@@ -8,7 +8,6 @@ import com.game.xianxue.ashesofhistory.game.model.buff.BuffBattle;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.interfaces.Interface_Buff;
 import com.game.xianxue.ashesofhistory.interfaces.Interface_LineUp;
-import com.game.xianxue.ashesofhistory.interfaces.Interface_Person;
 
 import java.util.ArrayList;
 
@@ -60,11 +59,13 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff,Interface
      */
     private void addLeaderBuff() {
         if (membersList == null || leader == null || BUFF_LEADER_BUFF_NULL == leader.getLeadSkillId()) {
+            BattleLog.log("注意1 这个队伍没有统帅技能，最好选择有统帅技能的人当统帅");
             SimpleLog.loge(TAG, "注意1 这个队伍没有统帅技能，最好选择有统帅技能的人当统帅");
             return;
         }
         BuffBase baseBuff = BuffDataManager.getBuffFromDataBaseById(leader.getLeadSkillId());
         if (baseBuff == null) {
+            BattleLog.log("注意2 这个队伍没有统帅技能，最好选择有统帅技能的人当统帅");
             SimpleLog.loge(TAG, "注意2 这个队伍没有统帅技能，最好选择有统帅技能的人当统帅");
             return;
         }
@@ -249,6 +250,7 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff,Interface
         }
         ArrayList<BattlePerson> result = null;
         UnitBattle unit = null;
+
         // nearCol 为距离敌人最近的一列的索引，
         // 比如 第0列，还有人存活着，那么nearCol =0
         // 比如 第0列，所有人都挂了，第1列还有人存活，此时nearCol等于1，而不是0
@@ -257,15 +259,15 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff,Interface
         if (membersList == null) return null;
 
         // 计算出 nearCol
-        for (int x = 0; x < LINEUP_MAX_COL; x++) {
+        for (int y = 0; y < LINEUP_MAX_COL; y++) {
             boolean isOver = false;
-            for (int y = 0; y < LINEUP_MAX_ROW; y++) {
+            for (int x = 0; x < LINEUP_MAX_ROW; x++) {
                 unit = LineupMatrixs[x][y];
                 if (unit == null) continue;
                 int HP = membersList.get(unit.getPersonIndex()).getHP_Current();
                 if (HP > 0) {
                     isOver = true;
-                    nearCol = x;
+                    nearCol = y;
                     break;
                 }
             }
@@ -279,14 +281,13 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff,Interface
             farCol = LINEUP_MAX_ROW -1;
         }
         BattlePerson personInRange = null;
-        for (int x = nearCol; x <= farCol; x++) {
-            for (int y = 0; y < LINEUP_MAX_ROW; y++) {
+        for (int y = nearCol; y <= farCol; y++) {
+            for (int x = 0; x < LINEUP_MAX_ROW; x++) {
                 unit = LineupMatrixs[x][y];
-                if (unit == null) continue;
+                if (unit == null || unit.getPersonIndex()==-1) continue;
                 personInRange = membersList.get(unit.getPersonIndex());
-                int HP = personInRange.getHP_Current();
-                if (HP > 0) {
-                    personInRange.setDistance(x + 1); // 设置personInRange与攻击者之间的距离
+                if (personInRange.getHP_Current() > 0) {
+                    personInRange.setDistance(y - nearCol + 1); // 设置personInRange与攻击者之间的距离
                     result.add(personInRange);
                 }
             }

@@ -40,14 +40,15 @@ public class UnitBase {
         }
 
         // 先判断是否是主帅和军师的单元格
-        if(unitString.startsWith("k")){
+        if(unitString.startsWith("l")){
             isLeader = true;
             unitString = unitString.substring(1,unitString.length());
-        }else if(unitString.startsWith("j")){
+        }else if(unitString.startsWith("c")){
             isCounsellor = true;
             unitString = unitString.substring(1,unitString.length());
         }
 
+        // 二维数组存储数据 x = 0时，表示第一行数据 y=0 时表示第一列数据
         this.x = Integer.valueOf((unitString.split(",")[0]));
         this.y = Integer.valueOf((unitString.split(",")[1]));
 

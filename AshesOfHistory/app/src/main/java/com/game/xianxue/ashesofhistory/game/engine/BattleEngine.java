@@ -155,6 +155,10 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
 
         // 处理Buff效果,这个每个回合都应该处理一次
         handleBuff(actionPerson);
+        String aBuff = actionPerson.showActiveBuff();
+        String pBuff = actionPerson.showPassiveBuff();
+        BattleLog.log("主动Buff:"+aBuff);
+        BattleLog.log("被动Buff:"+pBuff);
 
         // 刷新属性
         actionPerson.updateBattleAttribute();

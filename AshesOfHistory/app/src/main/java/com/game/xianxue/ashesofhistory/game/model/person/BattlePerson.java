@@ -54,6 +54,7 @@ public class BattlePerson extends NormalPerson {
         this.fascination_Raw = person.getFascination_Raw();     // 原始魅力
         this.luck_Raw = person.getLuck_Raw();                   // 原始运气
         this.skillStrings = person.getSkillStrings();           // 原始技能字符串
+        this.leadSkillId = person.getLeadSkillId();             // 领导技能
 
         // 初始化技能
         setLevel(person.level);
@@ -89,6 +90,7 @@ public class BattlePerson extends NormalPerson {
         this.fascination_Raw = person.getFascination_Raw();     // 原始魅力
         this.luck_Raw = person.getLuck_Raw();                   // 原始运气
         this.skillStrings = person.getSkillStrings();           // 获得原始技能列表
+        this.leadSkillId = person.getLeadSkillId();             // 领导技能
 
         // 初始化技能
         setLevel(person.level);
@@ -376,6 +378,21 @@ public class BattlePerson extends NormalPerson {
             BuffBattle buff;
             for (int i = 0; i < activeBuffList.size(); i++) {
                 buff = activeBuffList.get(i);
+                result.append(buff.getName() + " Lv." + buff.getLevel() + " dur:" + buff.getDuration()
+                        + "constant:" + buff.getBuff_constant()[0] + "fluctuate:" + buff.getBuff_fluctuate()[0] + "\n");
+            }
+        }
+        return result.toString();
+    }
+
+    public String showPassiveBuff() {
+        StringBuilder result = new StringBuilder();
+        if (passiveBuffList == null || passiveBuffList.size() == 0) {
+            result.append("没有主动加持的Buff");
+        } else {
+            BuffBattle buff;
+            for (int i = 0; i < passiveBuffList.size(); i++) {
+                buff = passiveBuffList.get(i);
                 result.append(buff.getName() + " Lv." + buff.getLevel() + " dur:" + buff.getDuration()
                         + "constant:" + buff.getBuff_constant()[0] + "fluctuate:" + buff.getBuff_fluctuate()[0] + "\n");
             }
