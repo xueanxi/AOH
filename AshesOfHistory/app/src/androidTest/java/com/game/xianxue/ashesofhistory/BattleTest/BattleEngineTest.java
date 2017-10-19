@@ -244,10 +244,10 @@ public class BattleEngineTest {
 
         // 第二队
         BasePerson play7 = PersonDataManager.getPersonFromDataBaseByPinyin("caocao");
-        BasePerson play8 = PersonDataManager.getPersonFromDataBaseByPinyin("dianwei");
+        BasePerson play8 = PersonDataManager.getPersonFromDataBaseByPinyin("guojia");
         BasePerson play9 = PersonDataManager.getPersonFromDataBaseByPinyin("caoren");
         BasePerson play10 = PersonDataManager.getPersonFromDataBaseByPinyin("zhangliao");
-        BasePerson play11 = PersonDataManager.getPersonFromDataBaseByPinyin("gongjianbing");
+        BasePerson play11 = PersonDataManager.getPersonFromDataBaseByPinyin("dianwei");
         BasePerson play12 = PersonDataManager.getPersonFromDataBaseByPinyin("xvchu");
         BasePerson play13 = PersonDataManager.getPersonFromDataBaseByPinyin("bubing");
 

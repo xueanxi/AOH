@@ -78,6 +78,8 @@ public class XmlUtils {
                         person.setFascination_Raw(Integer.valueOf(pullParser.nextText()));
                     } else if (BasePersonColumn.skill_lists_Raw.equals(tag)) {
                         person.setSkillStrings(pullParser.nextText());
+                    } else if (BasePersonColumn.lead_buff_id.equals(tag)) {
+                        person.setLeadSkillId(Integer.valueOf(pullParser.nextText()));
                     }
                     break;
                 case XmlPullParser.END_TAG:
@@ -298,6 +300,8 @@ public class XmlUtils {
                     break;
                 case XmlPullParser.END_TAG:
                     if ("item".equals(pullParser.getName())) {
+
+                        // TODO: 10/19/17 这里优化一下，不要用json字符串 效率低
                         lineup.setLineupJson(UnitBase.toJsonString(units));
                         dataLists.add(lineup);
                         units = null;

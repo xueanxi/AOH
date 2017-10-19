@@ -48,4 +48,6 @@ public interface Interface_Buff {
 
     int BUFF_TYPE_LAST = 1;             // 效果每回合都会触发，不断叠加
     int BUFF_TYPE_ONCE = 0;             // 只对人物加持一次
+
+    int BUFF_LEADER_BUFF_NULL = 0;      // 没有统帅技能的人的 id为 0
 }

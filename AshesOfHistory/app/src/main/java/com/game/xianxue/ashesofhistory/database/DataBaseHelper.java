@@ -221,6 +221,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + BasePersonColumn.spirit_Raw + " INTEGER,"
                 + BasePersonColumn.luck_Raw + " INTEGER,"
                 + BasePersonColumn.fascination_Raw + " INTEGER,"
+                + BasePersonColumn.lead_buff_id + " INTEGER,"
                 + BasePersonColumn.skill_lists_Raw + " TEXT)");
         insertBasePersonData(db);
 

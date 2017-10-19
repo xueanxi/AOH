@@ -156,6 +156,9 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
         // 处理Buff效果,这个每个回合都应该处理一次
         handleBuff(actionPerson);
 
+        // 刷新属性
+        actionPerson.updateBattleAttribute();
+
         // 每回合的自动回血的数量，那些持续回血的效果，还有持续掉血的效果，都在这里统一处理
         restoreHp(actionPerson);
 
@@ -264,7 +267,8 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
      * @param isNormalAttack 是否是进行普通攻击
      */
     public void startAttack(BattlePerson actionPerson, boolean isNormalAttack) {
-        BattleLog.log(actionPerson.getName() + "物理伤害:"+actionPerson.getPhysicDamage() + " 魔法伤害："+actionPerson.getMagicDamage() + "真实伤害："+actionPerson.getRealDamage());
+        BattleLog.log(actionPerson.getName() + "发动攻击");
+        BattleLog.log(actionPerson.display());
 
         int actionCamp = actionPerson.getCamp();    // 当前行动的阵营
         int effectCamp = TeamModel.CAMP_NEUTRAL;    // 技能作用的阵营
@@ -662,6 +666,7 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
             if (remainHp <= 0) {
                 remainHp = 0;
                 BattleLog.log(beAttackPerson.getName() + "受到了" + reduceHP + "点伤害，死亡了");
+                beAttackPerson.personDie();
             } else {
                 BattleLog.log(beAttackPerson.getName() + "受到了" + reduceHP + "点伤害，剩下" + remainHp + "生命值");
             }

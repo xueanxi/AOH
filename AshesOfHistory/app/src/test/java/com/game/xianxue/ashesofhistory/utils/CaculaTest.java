@@ -14,7 +14,7 @@ public class CaculaTest {
 
     @Test
     public void testInt(){
-        int a = 8/3;
+        int a = (int)Math.ceil((double) 3/(double) 3);
         System.out.println("a = "+a);
     }
 }

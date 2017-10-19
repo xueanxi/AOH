@@ -17,6 +17,7 @@ import java.util.ArrayList;
  * 人物普通情况下的模型
  * 包含等级 经验 技能 面板属性 装备等
  */
+
 public class NormalPerson extends BasePerson implements Interface_Buff, Interface_Person, Interface_Skill {
     private static final String TAG = "NormalPerson";
 
@@ -70,8 +71,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
     public float criteDamage;      // 暴击伤害,暴击倍数（发生暴击时，产生多少倍的伤害）
     public int armor;              // 护甲（物抗）
     public int magicResist;        // 魔抗
-    public int dodge;              // 闪避（闪避成功承受1%的物理伤害 或者 承受30%的魔法伤害）
-    public int block;              // 格档几率（格档成功只承受30%物理伤害 或者 承受70%魔法伤害）
+    public int dodge;              // 闪避
     public int hpRestore;          // 生命恢复
     public int actionSpeed;        // 行动速度，行动速度越快,积累行动值的速度越快，当积累的行动值到达最大行动值就可以发动进攻
     public int actionValuesMax;    // 最大行动值，这个值越小，每次进攻需要的行动值越少，一般情况下默认为 DEFAULT_ACTIVE_VALUES_MAX,可以通过坐骑或者技能缩短
@@ -250,7 +250,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         calculateBasicPencent();//把基础属性百分比加成 计算到属性里面
 
         // 通过基础属性，计算面板属性
-        HP_MAX = calculateHp();                                 // 最大生命值
+        HP_MAX = calculateHpMax();                              // 最大生命值
         physicDamage = calculatePhysicDamage();                 // 物理伤害
         magicDamage = calculateMagicDamage();                   // 魔法伤害
         realDamage = calculateRealDamage();                     // 真实伤害
@@ -270,7 +270,6 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         // TODO: 8/29/17 处理 面板属性 的效果
         // 以下处理面板属性的加成
         calculatePanelAttributeFromPassiveBuffList();
-
 
         calculatePanelPencent();//把面板百分比加成 计算到人物属性里面
     }
@@ -294,6 +293,9 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         spiritRate = 0;           // 精神加成百分比
         fascinationRate = 0;      // 魅力加成百分比
         luckRate = 0;             // 幸运加成百分比
+
+        attackNumberUp = 0;       // 攻击人物提升，这个属性初始为0
+        attackRangeUp = 0;        // 攻击范围提升，这个属性初始为0
 
         physicDamageRate = 0;     // 物理伤害加成百分比
         magicDamageRate = 0;      // 魔法伤害加成百分比
@@ -546,8 +548,8 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         return (int) ((float) Initial + (Initial * 0.5f + aptitude * 1f) * (float) level);
     }
 
-    protected int calculateHp() {
-        return strength * 3 + physique * 6 + spirit * 1;
+    protected int calculateHpMax() {
+        return strength * 4 + physique * 8 + spirit * 2;
     }
 
     protected int calculateHpRestore() {
@@ -773,14 +775,6 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
 
     public void setDodge(int dodge) {
         this.dodge = dodge;
-    }
-
-    public int getBlock() {
-        return block;
-    }
-
-    public void setBlock(int block) {
-        this.block = block;
     }
 
     public int getActionSpeed() {
@@ -1218,7 +1212,6 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
                 ", armor=" + armor +
                 ", magicResist=" + magicResist +
                 ", dodge=" + dodge +
-                ", block=" + block +
                 ", actionSpeed=" + actionSpeed +
                 ", hpRestore=" + hpRestore +
                 ", fascination=" + fascination +
@@ -1235,8 +1228,9 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
             skillActiveSize = activeSkillsList.size();
         }
 
-        return "Player{" +
-                ", name='" + name + '\'' +
+        return "person{" +
+                " name='" + name + '\'' +
+                ", level=" + level +
                 ", strength=" + strength +
                 ", intellect=" + intellect +
                 ", dexterity=" + dexterity +
@@ -1244,13 +1238,10 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
                 ", spirit=" + spirit +
                 ", luck=" + luck +
                 ", fascination=" + fascination +
-                ", skillStrings='" + skillStrings + '\'' +
-                ", skillArrays=" + skillArrays +
-                ", startLevel=" + level +
-                ", skillActive size =" + skillActiveSize +
-                ", passiveBuffList size =" + buffPassiveSize +
+
+                //", skillActive size =" + skillActiveSize +
+                //", passiveBuffList size =" + buffPassiveSize +
                 ", HP_MAX=" + HP_MAX +
-                ", experiencePoint=" + experiencePoint +
                 ", physicDamage=" + physicDamage +
                 ", magicDamage=" + magicDamage +
                 ", realDamage=" + realDamage +
@@ -1258,14 +1249,10 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
                 ", magicPenetrate=" + magicPenetrate +
                 ", accuracy=" + accuracy +
                 ", criteRate=" + criteRate +
-                ", reduceBeCriteRate=" + reduceBeCriteRate +
-                ", criteDamage=" + criteDamage +
                 ", armor=" + armor +
                 ", magicResist=" + magicResist +
                 ", dodge=" + dodge +
-                ", block=" + block +
                 ", actionSpeed=" + actionSpeed +
-                ", hpRestore=" + hpRestore +
                 '}';
     }
 

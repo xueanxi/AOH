@@ -26,6 +26,7 @@ public class ConstantColumn {
         public static final String luck_Raw = "luck_raw";                     // 原始的气运
         public static final String fascination_Raw = "fascination_raw";       // 原始的魅力
         public static final String skill_lists_Raw = "skill_lists_raw";       // 天赋技能字符串(隨着等級提高能学习到的)
+        public static final String lead_buff_id = "lead_buff_id";             // 统帅光环 0:表示没有, 其他数字：表示buff的索引
     }
 
     /**

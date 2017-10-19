@@ -19,18 +19,18 @@ public class LineUpTest {
 
     @Test
     public void testInitMatrix(){
-        String[][] matrix = new String[5][6];
-        int x = 0;
-        for(int i = 0;i<5;i++){
-            for(int j =0;j<6;j++){
-                if(i%2 ==0)continue;
+        int x = 2;
+        int y = 3;
+        String[][] matrix = new String[x][y];
+        for(int i = 0;i<x;i++){
+            for(int j =0;j<y;j++){
+                if(j%2 ==0)continue;
                 matrix[i][j] = "a";
-                x++;
             }
         }
 
-        for(int i = 0;i<5;i++){
-            for(int j =0;j<6;j++){
+        for(int i = 0;i<x;i++){
+            for(int j =0;j<y;j++){
                 System.out.print(matrix[i][j]+" ");
             }
             System.out.println();

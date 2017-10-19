@@ -8,6 +8,7 @@ public class LineUpBase {
 
     int LINEUP_MAX_ROW = 9;     // 阵型最大行数
     int LINEUP_MAX_COL = 9;     // 阵型最大列数
+
     int LINEUP_MINI_ROW = 1;     // 阵型最小行数
     int LINEUP_MINI_COL = 1;     // 阵型最小列数
 

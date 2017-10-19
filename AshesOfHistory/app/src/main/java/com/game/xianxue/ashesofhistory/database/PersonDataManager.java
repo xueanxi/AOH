@@ -36,9 +36,10 @@ public class PersonDataManager {
                 + BasePersonColumn.spirit_Raw + " ,"
                 + BasePersonColumn.luck_Raw + " ,"
                 + BasePersonColumn.fascination_Raw + " ,"
+                + BasePersonColumn.lead_buff_id + " ,"
                 + BasePersonColumn.skill_lists_Raw + " )"
                 + " VALUES ("
-                + " '%d','%s','%s','%d','%f','%d','%d','%d','%d','%d','%d','%d','%s'"
+                + " '%d','%s','%s','%d','%f','%d','%d','%d','%d','%d','%d','%d','%d','%s'"
                 + " )";
         return String.format(format,
                 person.getPsersonId(),
@@ -53,6 +54,7 @@ public class PersonDataManager {
                 person.getSpirit_Raw(),
                 person.getLuck_Raw(),
                 person.getFascination_Raw(),
+                person.getLeadSkillId(),
                 person.getSkillStrings());
     }
 
@@ -140,6 +142,7 @@ public class PersonDataManager {
                 person.setLuck_Raw(c.getInt(c.getColumnIndex(BasePersonColumn.luck_Raw)));
                 person.setFascination_Raw(c.getInt(c.getColumnIndex(BasePersonColumn.fascination_Raw)));
                 person.setSkillStrings(c.getString(c.getColumnIndex(BasePersonColumn.skill_lists_Raw)));
+                person.setLeadSkillId(c.getInt(c.getColumnIndex(BasePersonColumn.lead_buff_id)));
                 lists.add(person);
             }
         }
@@ -171,6 +174,7 @@ public class PersonDataManager {
             person.setLuck_Raw(c.getInt(c.getColumnIndex(BasePersonColumn.luck_Raw)));
             person.setFascination_Raw(c.getInt(c.getColumnIndex(BasePersonColumn.fascination_Raw)));
             person.setSkillStrings(c.getString(c.getColumnIndex(BasePersonColumn.skill_lists_Raw)));
+            person.setLeadSkillId(c.getInt(c.getColumnIndex(BasePersonColumn.lead_buff_id)));
         }
         return person;
     }

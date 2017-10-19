@@ -476,8 +476,8 @@
 
     <item>
         <skill_id>509</skill_id><!--技能ID,唯一标识这个技能-->
-        <name>乱世枭雄</name><!--技能名字-->
-        <introduce>被动：智力提升</introduce><!--技能描述-->
+        <name>枭雄</name><!--技能名字-->
+        <introduce>被动:力量提升 智力提升 魅力提升 幸运提升</introduce><!--技能描述-->
         <skill_nature>1</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>2</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
         <assist_effect>509</assist_effect><!-- 技能辅助效果 buff的id-->
@@ -489,7 +489,16 @@
         <introduce>被动：智力提升</introduce><!--技能描述-->
         <skill_nature>1</skill_nature><!--技能性质：0主动 1：被动-->
         <skill_type>2</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
-        <assist_effect>509</assist_effect><!-- 技能辅助效果 buff的id-->
+        <assist_effect>510</assist_effect><!-- 技能辅助效果 buff的id-->
+    </item>
+
+    <item>
+        <skill_id>511</skill_id><!--技能ID,唯一标识这个技能-->
+        <name>天妒</name><!--技能名字-->
+        <introduce>被动：智力大幅提升 精神提升 体力大幅下降 技能释放概率增加</introduce><!--技能描述-->
+        <skill_nature>1</skill_nature><!--技能性质：0主动 1：被动-->
+        <skill_type>2</skill_type><!--技能类型：0攻击 1恢复 2辅助-->
+        <assist_effect>511</assist_effect><!-- 技能辅助效果 buff的id-->
     </item>
     <!--=====================500～为被动技能 End =======================-->
 </all_skill>

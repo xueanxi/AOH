@@ -1,7 +1,9 @@
 package com.game.xianxue.ashesofhistory.game.model.person;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
+import com.game.xianxue.ashesofhistory.game.model.buff.BuffBase;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBattle;
+import com.game.xianxue.ashesofhistory.interfaces.Interface_LineUp;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class BattlePerson extends NormalPerson {
     private boolean isCounsellor = false;   // 是否军师
     private int distance;                   // 与攻击者的距离
     public int HP_Current;                  // 当前生命值
+    private Interface_LineUp lineUp;        // 阵型的接口
 
     ArrayList<BuffBattle> activeBuffList = null; // 主动加持的buff(指战斗中，使用技能加持的)
 
@@ -122,7 +125,7 @@ public class BattlePerson extends NormalPerson {
         calculateBasicPencent();//把基础属性百分比加成 计算到属性里面
 
         // 通过基础属性，计算面板属性
-        HP_MAX = calculateHp();                                 // 最大生命值
+        HP_MAX = calculateHpMax();                                 // 最大生命值
         physicDamage = calculatePhysicDamage();                 // 物理伤害
         magicDamage = calculateMagicDamage();                   // 魔法伤害
         realDamage = calculateRealDamage();                     // 真实伤害
@@ -307,6 +310,31 @@ public class BattlePerson extends NormalPerson {
             activeBuffList = new ArrayList<BuffBattle>();
         }
 
+        // 如果有相同的buff，则先移除掉旧的
+        for (int i = 0; i < activeBuffList.size(); i++) {
+            if (activeBuffList.get(i).getBuffId() == buff.getBuffId()) {
+                activeBuffList.remove(i);
+                break;
+            }
+        }
+        // 增加buff
+        activeBuffList.add(buff);
+
+        // 刷新属性
+        updateBattleAttribute();
+    }
+
+    /**
+     * 移除buff 参数为一个buff
+     *
+     * @param buff
+     */
+    public void removeBuffInBattle(BuffBase buff) {
+        if (activeBuffList == null) {
+            activeBuffList = new ArrayList<BuffBattle>();
+        }
+
+        // 如果有相同的buff，则先移除掉旧的
         for (int i = 0; i < activeBuffList.size(); i++) {
             if (activeBuffList.get(i).getBuffId() == buff.getBuffId()) {
                 activeBuffList.remove(i);
@@ -314,8 +342,30 @@ public class BattlePerson extends NormalPerson {
             }
         }
 
-        activeBuffList.add(buff);
-        updateAttribute();
+        // 刷新属性
+        updateBattleAttribute();
+    }
+
+    /**
+     * 移除buff 参数为Buff id
+     *
+     * @param buffID
+     */
+    public void removeBuffInBattle(int buffID) {
+        if (activeBuffList == null) {
+            activeBuffList = new ArrayList<BuffBattle>();
+        }
+
+        // 如果有相同的buff，则移除掉的
+        for (int i = 0; i < activeBuffList.size(); i++) {
+            if (activeBuffList.get(i).getBuffId() == buffID) {
+                activeBuffList.remove(i);
+                break;
+            }
+        }
+
+        // 刷新属性
+        updateBattleAttribute();
     }
 
     public String showActiveBuff() {
@@ -476,11 +526,28 @@ public class BattlePerson extends NormalPerson {
                 ", armor=" + armor +
                 ", magicResist=" + magicResist +
                 ", dodge=" + dodge +
-                ", block=" + block +
                 ", actionSpeed=" + actionSpeed +
                 ", hpRestore=" + hpRestore +
                 ", fascination=" + fascination +
                 '}';
+    }
+
+    public Interface_LineUp getLineUp() {
+        return lineUp;
+    }
+
+    public void setLineUp(Interface_LineUp lineUp) {
+        this.lineUp = lineUp;
+    }
+
+    /**
+     * 人物的HP降低为0的时候调用
+     */
+    public void personDie(){
+        if(lineUp == null) return;
+        if(isLeader()){
+            lineUp.leaderDie();
+        }
     }
 
     @Override

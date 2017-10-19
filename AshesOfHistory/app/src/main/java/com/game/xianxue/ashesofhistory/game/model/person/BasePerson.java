@@ -10,7 +10,7 @@ import java.util.ArrayList;
  * 人物的原始模型 只有一些最基础的资料
  * Created by anxi.xue on 8/29/17.
  */
-
+// TODO: 10/19/17 应该新增加几个数据库表存放 士兵类 怪物类 这些数量无限的，跟武将区分开来
 public class BasePerson implements Serializable {
     private static final String TAG = "BasePerson";
 
@@ -36,6 +36,8 @@ public class BasePerson implements Serializable {
     protected int luck_Raw;             //初始运气
     protected int fascination_Raw;      //初始魅力
 
+
+    protected int leadSkillId;          // 领导技能ID
     /**
      * 天赋技能的字符串. 一个技能的列表字符串，存储了人物在各个等级能够解锁的技能。
      */
@@ -146,6 +148,14 @@ public class BasePerson implements Serializable {
         this.skillStrings = skillStrings;
     }
 
+    public int getLeadSkillId() {
+        return leadSkillId;
+    }
+
+    public void setLeadSkillId(int leadSkillId) {
+        this.leadSkillId = leadSkillId;
+    }
+
     /**
      * 在xml文件中，人物的技能是一个字符串，需要解析出来
      * 字符串是这样的“4,3,7,2:500,3,5,2”
@@ -209,6 +219,7 @@ public class BasePerson implements Serializable {
                 ", spirit_Raw=" + spirit_Raw +
                 ", luck_Raw=" + luck_Raw +
                 ", fascination_Raw=" + fascination_Raw +
+                ", leadSkillId=" + leadSkillId +
                 ", skillStrings='" + skillStrings + '\'' +
                 '}';
     }

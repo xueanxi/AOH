@@ -5,6 +5,7 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
+import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.database.PersonDataManager;
 import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
 import com.game.xianxue.ashesofhistory.game.model.person.NormalPerson;
@@ -48,15 +49,18 @@ public class PersonTest {
         n2.showSkill();
     }
     /**
-     * 测试XML解析所有节能
+     * 测试BasePerson数据
      */
     @Test
-    public void Test1() {
+    public void TestBasePerson() {
         init();
-        try {
-            XmlUtils.getAllCharacter(mContext);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        BasePerson b1 = PersonDataManager.getPersonFromDataBaseByPinyin("liubei");
+        BasePerson b2 = PersonDataManager.getPersonFromDataBaseByPinyin("caocao");
+        BasePerson b3 = PersonDataManager.getPersonFromDataBaseByPinyin("guanyu");
+
+        SimpleLog.logd(TAG,b1.toString());
+        SimpleLog.logd(TAG,b2.toString());
+        SimpleLog.logd(TAG,b3.toString());
+
     }
 }
