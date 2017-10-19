@@ -69,6 +69,8 @@ public class ConstantColumn {
         public static final String damageFluctuate = "damage_fluctuate"; // 技能波动伤害
         public static final String damagePenetrate = "damage_penetrate"; // 伤害穿透率
         public static final String assisteffect = "assist_effect";  //辅助效果
+        public static final String attackTime = "attack_time";                  //技能攻击次数
+        public static final String attackTimeDamageUp = "attack_time_damage_up"; //多次攻击的技能 每一击之后下一击 伤害提升
         public static final String levelUpConstant = "level_up_constant";       //技能固定伤害部分升级提升
         public static final String levelUpFluctuate = "level_up_fluctuate";     //技能浮动伤害部分升级提升
         public static final String levelUpRange = "level_up_range";             //技能作用范围升级提升
@@ -76,6 +78,7 @@ public class ConstantColumn {
         public static final String levelUpEffectRate = "level_up_effect_rate";  //技能辅助效果触发几率升级提升
         public static final String levelUpPenetrate = "level_up_penetrate";     //技能穿透升级提升
         public static final String levelUpCDTime = "level_up_cd_time";          //技能冷却升级提升
+        public static final String levelUpAttackTime = "level_up_attack_time";          //技能冷却升级提升
     }
 
     /**

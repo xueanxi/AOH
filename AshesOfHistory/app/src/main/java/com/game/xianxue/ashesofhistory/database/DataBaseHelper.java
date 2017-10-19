@@ -6,12 +6,14 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.game.xianxue.ashesofhistory.App;
+import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.constant.Constant;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBase;
 import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpBase;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
 import com.game.xianxue.ashesofhistory.game.model.constant.ConstantColumn.*;
 import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
+import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 import com.game.xianxue.ashesofhistory.utils.XmlUtils;
 
 import java.util.ArrayList;
@@ -164,6 +166,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + SkillColumn.damagePenetrate + " REAL,"
                 + SkillColumn.assisteffect + " INTEGER,"
                 + SkillColumn.effectTarget + " INTEGER,"
+                + SkillColumn.attackTime + " INTEGER,"
+                + SkillColumn.attackTimeDamageUp + " REAL,"
+                + SkillColumn.levelUpAttackTime + " REAL,"
                 + SkillColumn.levelUpConstant + " REAL,"
                 + SkillColumn.levelUpFluctuate + " REAL,"
                 + SkillColumn.levelUpRange + " REAL,"
@@ -185,14 +190,21 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.beginTransaction();
         try {
             lists = XmlUtils.getAllSkill(mContext);
+            ShowUtils.showArrayLists(TAG,lists);
             if (lists == null) return;
         } catch (Exception e) {
             Log.d(TAG, "anxi Fail !!! Exception e:" + e);
             e.printStackTrace();
         }
 
-        for (SkillBase skill : lists) {
-            db.execSQL(SkillDataManager.getInsertString(skill));
+        SkillBase skill = null;
+        for(int i=0;i<lists.size();i++){
+            skill = lists.get(i);
+            if(skill == null){
+                SimpleLog.loge(TAG,"insertSkillData() skill == null");
+            }else{
+                db.execSQL(SkillDataManager.getInsertString(skill));
+            }
         }
         db.setTransactionSuccessful();
         db.endTransaction();

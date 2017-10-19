@@ -160,7 +160,7 @@ public class XmlUtils {
                     } else if (SkillColumn.levelUpFluctuate.equals(tag)) {
                         skill.setLevelUpFluctuate(Float.valueOf(pullParser.nextText()));
                     } else if (SkillColumn.levelUpConstant.equals(tag)) {
-                        skill.setLevelUpConstant(Integer.valueOf(pullParser.nextText()));
+                        skill.setLevelUpConstant(Float.valueOf(pullParser.nextText()));
                     } else if (SkillColumn.levelUpEffectRate.equals(tag)) {
                         skill.setLevelUpEffectRate(Float.valueOf(pullParser.nextText()));
                     } else if (SkillColumn.levelUpNumber.equals(tag)) {
@@ -170,6 +170,12 @@ public class XmlUtils {
                     } else if (SkillColumn.levelUpRange.equals(tag)) {
                         skill.setLevelUpRange(Float.valueOf(pullParser.nextText()));
                     }else if (SkillColumn.levelUpCDTime.equals(tag)) {
+                        skill.setLevelUpCDTime(Float.valueOf(pullParser.nextText()));
+                    }else if (SkillColumn.levelUpAttackTime.equals(tag)) {
+                        skill.setLevelUpCDTime(Float.valueOf(pullParser.nextText()));
+                    }else if (SkillColumn.attackTime.equals(tag)) {
+                        skill.setLevelUpCDTime(Integer.valueOf(pullParser.nextText()));
+                    }else if (SkillColumn.attackTimeDamageUp.equals(tag)) {
                         skill.setLevelUpCDTime(Float.valueOf(pullParser.nextText()));
                     }
                     break;

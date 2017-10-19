@@ -285,6 +285,9 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff,Interface
             for (int x = 0; x < LINEUP_MAX_ROW; x++) {
                 unit = LineupMatrixs[x][y];
                 if (unit == null || unit.getPersonIndex()==-1) continue;
+
+                // TODO: 2017/10/19 这里有bug  java.lang.IndexOutOfBoundsException: Index: 3, Size:
+                s
                 personInRange = membersList.get(unit.getPersonIndex());
                 if (personInRange.getHP_Current() > 0) {
                     personInRange.setDistance(y - nearCol + 1); // 设置personInRange与攻击者之间的距离

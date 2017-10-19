@@ -45,6 +45,9 @@ public class SkillDataManager {
                 + SkillColumn.damageFluctuate + " ,"
                 + SkillColumn.damagePenetrate + " ,"
                 + SkillColumn.assisteffect + " ,"
+                + SkillColumn.attackTime + " ,"
+                + SkillColumn.attackTimeDamageUp + " ,"
+                + SkillColumn.levelUpAttackTime + " ,"
                 + SkillColumn.levelUpConstant + " ,"
                 + SkillColumn.levelUpFluctuate + " ,"
                 + SkillColumn.levelUpRange + " ,"
@@ -53,7 +56,7 @@ public class SkillDataManager {
                 + SkillColumn.levelUpCDTime + " ,"
                 + SkillColumn.levelUpPenetrate + " )"
                 + " VALUES ("
-                + " '%d','%s','%s','%d','%d','%f','%f','%f','%d','%d','%d','%d','%d','%d','%f','%f','%f','%d','%f','%f','%f','%f','%f','%f','%f'"
+                + " '%d','%s','%s','%d','%d','%f','%f','%f','%d','%d','%d','%d','%d','%d','%f','%f','%f','%d','%d','%f','%f','%f','%f','%f','%f','%f','%f','%f'"
                 + " )";
         String result = String.format(format,
                 skill.getSkillId(),
@@ -74,6 +77,9 @@ public class SkillDataManager {
                 skill.getDamageFluctuate(),
                 skill.getDamagePenetrate(),
                 skill.getAssistEffect(),
+                skill.getAttackTime(),
+                skill.getAttackTimeDamageUp(),
+                skill.getLevelUpAttackTime(),
                 skill.getLevelUpConstant(),
                 skill.getLevelUpFluctuate(),
                 skill.getLevelUpRange(),

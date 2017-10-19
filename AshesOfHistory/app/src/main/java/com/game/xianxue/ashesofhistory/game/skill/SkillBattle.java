@@ -1,8 +1,5 @@
 package com.game.xianxue.ashesofhistory.game.skill;
 
-import com.game.xianxue.ashesofhistory.Log.SimpleLog;
-import com.game.xianxue.ashesofhistory.game.model.TeamModel;
-import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.interfaces.Interface_Skill;
 
 /**
@@ -42,6 +39,8 @@ public class SkillBattle extends SkillBase implements Interface_Skill {
         this.damageConstant = base.damageConstant;      // 技能伤害 固定部分(一个技能的伤害为 技能固定部分+武将能力*浮动部分)
         this.damageFluctuate = base.damageFluctuate;    // 技能伤害 浮动部分(一个技能的伤害为 技能固定部分+武将能力*浮动部分)
         this.assistEffect = base.assistEffect;          // 技能的额外效果，指向buff的id
+        this.attackTime =  base.attackTime;             // 技能攻击次数
+        this.attackTimeDamageUp = base.attackTimeDamageUp;//多次攻击的技能 每一击之后下一击 伤害提升
         // 技能升级相关
         this.levelUpConstant = base.levelUpConstant;    //技能固定伤害部分升级提升
         this.levelUpFluctuate = base.levelUpFluctuate;  //技能浮动伤害部分升级提升
@@ -50,6 +49,7 @@ public class SkillBattle extends SkillBase implements Interface_Skill {
         this.levelUpEffectRate = base.levelUpEffectRate;//技能辅助效果触发几率升级提升
         this.levelUpPenetrate = base.levelUpPenetrate;  //技能穿透升级提升
         this.levelUpCDTime = base.levelUpCDTime;        //技能冷却时间升级提升
+        this.levelUpAttackTime = base.levelUpAttackTime;// 技能攻击次数升级提升
 
         setLevel(1);
     }
@@ -80,6 +80,9 @@ public class SkillBattle extends SkillBase implements Interface_Skill {
         this.damageConstant = base.damageConstant;      // 技能伤害 固定部分(一个技能的伤害为 技能固定部分+武将能力*浮动部分)
         this.damageFluctuate = base.damageFluctuate;    // 技能伤害 浮动部分(一个技能的伤害为 技能固定部分+武将能力*浮动部分)
         this.assistEffect = base.assistEffect;          // 技能的额外效果，指向buff的id
+        this.attackTime =  base.attackTime;             // 技能攻击次数
+        this.attackTimeDamageUp = base.attackTimeDamageUp;//多次攻击的技能 每一击之后下一击 伤害提升
+
         // 技能升级相关
         this.levelUpConstant = base.levelUpConstant;    //技能固定伤害部分升级提升
         this.levelUpFluctuate = base.levelUpFluctuate;  //技能浮动伤害部分升级提升
@@ -88,6 +91,7 @@ public class SkillBattle extends SkillBase implements Interface_Skill {
         this.levelUpEffectRate = base.levelUpEffectRate;//技能辅助效果触发几率升级提升
         this.levelUpPenetrate = base.levelUpPenetrate;  //技能穿透升级提升
         this.levelUpCDTime = base.levelUpCDTime;        //技能冷却时间升级提升
+        this.levelUpAttackTime = base.levelUpAttackTime;// 技能攻击次数升级提升
 
         setLevel(level);
     }

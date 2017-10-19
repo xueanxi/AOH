@@ -24,6 +24,10 @@ public class SkillBase{
     protected float damagePenetrate;                   // 伤害穿透率
     protected int assistEffect;                        // 技能的额外效果，指向buff的id
 
+    protected int attackTime = 1;                      // 技能攻击次数
+    protected float attackTimeDamageUp = 0;            // 多次攻击的技能 每一击之后下一击 伤害提升
+
+
     // 技能升级相关
     protected float levelUpConstant;                   // 技能固定伤害部分升级提升
     protected float levelUpFluctuate;                  // 技能浮动伤害部分升级提升
@@ -32,6 +36,7 @@ public class SkillBase{
     protected float levelUpEffectRate;                 // 技能辅助效果触发几率升级提升
     protected float levelUpPenetrate;                  // 技能穿透升级提升
     protected float levelUpCDTime;                     // 技能冷却时间升级提升
+    protected float levelUpAttackTime;                 // 技能攻击次数升级提升
 
     public SkillBase(){}
 
@@ -233,6 +238,30 @@ public class SkillBase{
 
     public void setLevelUpCDTime(float levelUpCDTime) {
         this.levelUpCDTime = levelUpCDTime;
+    }
+
+    public int getAttackTime() {
+        return attackTime;
+    }
+
+    public void setAttackTime(int attackTime) {
+        this.attackTime = attackTime;
+    }
+
+    public float getAttackTimeDamageUp() {
+        return attackTimeDamageUp;
+    }
+
+    public void setAttackTimeDamageUp(float attackTimeDamageUp) {
+        this.attackTimeDamageUp = attackTimeDamageUp;
+    }
+
+    public float getLevelUpAttackTime() {
+        return levelUpAttackTime;
+    }
+
+    public void setLevelUpAttackTime(float levelUpAttackTime) {
+        this.levelUpAttackTime = levelUpAttackTime;
     }
 
     @Override
