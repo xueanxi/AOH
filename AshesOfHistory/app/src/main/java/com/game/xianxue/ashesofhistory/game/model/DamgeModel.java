@@ -32,8 +32,6 @@ public class DamgeModel implements Interface_Skill {
         resistAfterPenetrate = (int) ((resist - penetrateConstant) * (1f - penetratePercent));
         if (resistAfterPenetrate < 0) resistAfterPenetrate = 0;
 
-        BattleLog.log("伤害：" + damage + "护甲:" + resist + " 人物穿透：" + penetrateConstant + " 技能穿透:" + penetratePercent + " ");
-
         result = (int) (damage * getResistResult(resistAfterPenetrate));
 
         if (isFloat) {

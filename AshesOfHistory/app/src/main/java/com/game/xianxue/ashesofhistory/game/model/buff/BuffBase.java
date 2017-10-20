@@ -10,7 +10,6 @@ public class BuffBase {
     protected String introduce;                 // buff说明
     protected int buff_nature;                  // buff的性质   (分为主动buff和被动buff)
     protected int buff_type;                    // buff类型     (技能类型：0：只触发一次 1：时间内每回合触发一次)
-    // TODO: 10/17/17 buff 的持续时间可以随着等级提高
     protected int time;                         // buff持续时间
     protected int range;                        // buff的影响范围
     protected float level_up_range;             // 每升一级 作用范围 的提升

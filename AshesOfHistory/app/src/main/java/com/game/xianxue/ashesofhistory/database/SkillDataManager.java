@@ -159,6 +159,9 @@ public class SkillDataManager {
                 skill.setLevelUpRange(c.getFloat(c.getColumnIndex(SkillColumn.levelUpRange)));
                 skill.setLevelUpPenetrate(c.getFloat(c.getColumnIndex(SkillColumn.levelUpPenetrate)));
                 skill.setLevelUpCDTime(c.getFloat(c.getColumnIndex(SkillColumn.levelUpCDTime)));
+                skill.setAttackTime(c.getInt(c.getColumnIndex(SkillColumn.attackTime)));
+                skill.setAttackTimeDamageUp(c.getFloat(c.getColumnIndex(SkillColumn.attackTimeDamageUp)));
+                skill.setLevelUpAttackTime(c.getFloat(c.getColumnIndex(SkillColumn.levelUpAttackTime)));
                 lists.add(skill);
             }
         }
@@ -204,6 +207,9 @@ public class SkillDataManager {
         skill.setLevelUpRange(c.getFloat(c.getColumnIndex(SkillColumn.levelUpRange)));
         skill.setLevelUpPenetrate(c.getFloat(c.getColumnIndex(SkillColumn.levelUpPenetrate)));
         skill.setLevelUpCDTime(c.getFloat(c.getColumnIndex(SkillColumn.levelUpCDTime)));
+        skill.setAttackTime(c.getInt(c.getColumnIndex(SkillColumn.attackTime)));
+        skill.setAttackTimeDamageUp(c.getFloat(c.getColumnIndex(SkillColumn.attackTimeDamageUp)));
+        skill.setLevelUpAttackTime(c.getFloat(c.getColumnIndex(SkillColumn.levelUpAttackTime)));
         return skill;
     }
 }

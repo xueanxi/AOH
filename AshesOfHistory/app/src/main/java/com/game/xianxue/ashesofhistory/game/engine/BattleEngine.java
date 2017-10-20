@@ -2,12 +2,16 @@ package com.game.xianxue.ashesofhistory.game.engine;
 
 import com.game.xianxue.ashesofhistory.Log.BattleLog;
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
+import com.game.xianxue.ashesofhistory.database.BuffDataManager;
 import com.game.xianxue.ashesofhistory.game.model.DamgeModel;
 import com.game.xianxue.ashesofhistory.game.model.TeamModel;
+import com.game.xianxue.ashesofhistory.game.model.buff.BuffBase;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBattle;
+import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpBase;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBattle;
 import com.game.xianxue.ashesofhistory.interfaces.Interface_Buff;
+import com.game.xianxue.ashesofhistory.interfaces.Interface_LineUp;
 import com.game.xianxue.ashesofhistory.interfaces.Interface_Skill;
 import com.game.xianxue.ashesofhistory.utils.RandomUtils;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
@@ -165,6 +169,19 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
 
         // 每回合的自动回血的数量，那些持续回血的效果，还有持续掉血的效果，都在这里统一处理
         restoreHp(actionPerson);
+        if (actionPerson.getHP_Current() <= 0) {
+            BattleLog.log(actionPerson.getName() + "死亡了。");
+            return;
+        }
+
+
+        // 打印技能列表
+        ArrayList<SkillBattle> skillLists = actionPerson.getActiveSkillsList();
+        StringBuilder skillStrings = new StringBuilder();
+        for (int i = 1; i < skillLists.size(); i++) {
+            skillStrings.append(skillLists.get(i).getName() + " 恢复时间:" + skillLists.get(i).getRecoverTime() + " CD:" + skillLists.get(i).getCdTime() + "| ");
+        }
+        BattleLog.log(actionPerson.getName() + "技能列表：" + skillStrings.toString());
 
         if (actionPerson.getActiveSkillsList().size() == 1) {
             // 因为每个人的第一个主动技能都是普通攻击，如果技能列表里面只有一个普通攻击技能，则只能进行普通攻击
@@ -301,18 +318,16 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
             } else {
                 // 从技能列表里面，随机挑选出一个技能(排除掉普通攻击)
                 tempLists = new ArrayList<SkillBattle>();
-                StringBuilder skillStrings = new StringBuilder();
+
                 for (int i = 1; i < skillLists.size(); i++) {
-                    skillStrings.append(skillLists.get(i).getName() + " 恢复时间:" + skillLists.get(i).getRecoverTime() + " CD:" + skillLists.get(i).getCdTime() + "| ");
                     if (skillLists.get(i).isSkillCoolDown()) {
                         tempLists.add(skillLists.get(i));
                     }
                 }
 
-                BattleLog.log(actionPerson.getName() + "技能列表：" + skillStrings.toString());
-
                 if (tempLists == null || tempLists.size() == 0) {
                     BattleLog.log(actionPerson.getName() + "想要释放技能，但是没有冷却完毕的技能，所以准备进行普通攻击。");
+                    tempLists.clear();
                     tempLists.add(actionPerson.getActiveSkillsList().get(0));
                 }
 
@@ -321,17 +336,24 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
             }
         }
 
-        // 每回合恢复一点技能CD
+        // 选择释放的技能需要更新CD时间
+        skill.setRecoverTime(skill.getCdTime());
+
+        // 其他技能恢复一点CD
         skillLists = actionPerson.getActiveSkillsList();
-        SkillBattle skill2 = null;
+        SkillBattle skillOther = null;
         for (int i = 0; i < actionPerson.getActiveSkillsList().size(); i++) {
-            skill2 = skillLists.get(i);
-            if (skill2 == null) continue;
-            if (skill2.getRecoverTime() > 0) {
-                skillLists.get(i).setRecoverTime(skill2.getRecoverTime() - 1);
+            skillOther = skillLists.get(i);
+            if (skillOther == null) continue;
+            if (skillOther.getSkillId() == skill.getSkillId()) continue;
+            if (skillOther.getRecoverTime() > 0) {
+                skillLists.get(i).setRecoverTime(skillOther.getRecoverTime() - 1);
             }
         }
+        skillOther = null;
 
+
+        // 获得将要释放的技能的属性
         int effectNumber = skill.getEffectNumber() + actionPerson.getAttackNumberUp();   // 技能的影响人数
         int effectRange = skill.getRange() + actionPerson.getAttackRangeUp();            // 技能的影响范围
         ArrayList<BattlePerson> personsBeAttackList = new ArrayList<BattlePerson>();            // 被技能攻击的目标
@@ -342,7 +364,6 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
         ArrayList<BattlePerson> tempList = new ArrayList<BattlePerson>();   // 存放临时数据的列表1
         ArrayList<BattlePerson> tempList2 = new ArrayList<BattlePerson>();  // 存放临时数据的列表2
         BattlePerson temp = null;                                // 临时变量
-
 
         // 计算本次技能作用的阵营
         if (SKILL_CAMP_ENEMY == skill.getEffectCamp()) {
@@ -369,51 +390,28 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
         }
 
         // 挑选出承受此次技能的人
-        boolean isNeedSelectTarget = false;
-        if (effectRange == SKILL_RANGE_AOE) {
-            // 技能是全场范围
-            tempList = teamBeAttack.getMembersList();
-            personsBeAttackList = new ArrayList<BattlePerson>();
-            for(int i =0;i<tempList.size();i++){
-                if(tempList.get(i).getHP_Current() >0){
-                    personsBeAttackList.add(tempList.get(i));
-                }
-            }
-            tempList.clear();
-            if (SKILL_EFFECT_NUMBER_ALL == effectNumber) {
-                // 全场AOE 情况下 personsBeAttackList 就是最终的结果
-                isNeedSelectTarget = false;
-            }else{
-                isNeedSelectTarget = true;
-            }
-        } else if (effectRange == SKILL_RANGE_SELF) {
+        if (effectRange == SKILL_RANGE_SELF) {
             // 技能只能对自己释放
+            personsBeAttackList.clear();
             personsBeAttackList.add(actionPerson);
-            isNeedSelectTarget = false;
         } else {
-            // 技能范围是具体的数字，此时需要结合此技能的攻击人数进行双重判断
-            // 1.挑选出攻击范围内的人
+            // 技能范围
+            if (SKILL_RANGE_AOE == effectRange) {
+                effectRange = LineUpBase.LINEUP_MAX_COL;
+            }
+
+            // 技能范围内的人
             personsBeAttackList = teamBeAttack.getLineup().getPersonsByDistance(effectRange);
-            // 2.查看这个技能是否是全场AOE，如果是则跳过第三步
+
+            // 技能影响的人数
             if (SKILL_EFFECT_NUMBER_ALL == effectNumber) {
-                // 全场AOE 情况下 personsBeAttackList 就是最终的结果
-                isNeedSelectTarget = false;
+                effectNumber = personsBeAttackList.size();
+            } else if (effectNumber > personsBeAttackList.size()) {
+                effectNumber = personsBeAttackList.size();
             }
-            // 3.如果 effectNumber 大于范围内的人数，则 personsBeAttackList 都是影响目标，不需要进一步筛选
-            else if (effectNumber >= personsBeAttackList.size()) {
-                // 同全场AOE，personsBeAttackList 就是最终的结果
-                isNeedSelectTarget = false;
-            }
-            // 4.根据此技能的攻击目标选择方式，对 personsBeAttackList 进行筛选
-            else {
-                isNeedSelectTarget = true;
-            }
-        }
 
-        // 技能选择哪种类型的人物进行攻击
-        if(isNeedSelectTarget){
+            // 用到的一些变量
             int skillTarget = skill.getEffectTarget();// 技能选择哪种类型的人物进行攻击
-
             int farDistance;// 最远目标的距离
             int nearDistance;//最近目标的距离
             int currentDistance;// 当前遍历到的距离
@@ -562,9 +560,10 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
                     SimpleLog.logd(TAG, "错误！！！ 技能选择攻击目标出错");
                     break;
             }
+
         }
 
-        ShowUtils.showArrayLists(TAG + " 攻击目标：", personsBeAttackList);
+        //ShowUtils.showArrayLists(TAG + " 攻击目标：", personsBeAttackList);
 
         if (personsBeAttackList == null) {
             SimpleLog.loge(TAG, "startNormalAttack() 获取不到攻击目标：personsBeAttackList == null");
@@ -592,6 +591,7 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
 
         // 技能攻击次数
         // TODO: 2017/10/19 这里还要处理每次攻击的加强
+        SimpleLog.logd(TAG, actionPerson.getName() + "的 " + skill.getName() + " 的攻击次数为：" + skill.getAttackTime());
         for (int i = 0; i < skill.getAttackTime(); i++) {
             // 获得此次技能的命中率
             if (SKILL_ACCURACY_RATE_MUST_SUCCESS == skill.getAccuracyRate()) {
@@ -608,7 +608,12 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
             if (RandomUtils.isHappen(accuracy)) {
                 // 攻击命中
                 int damage = 0;
-                float penetrate = 0;
+
+                // 数否触发攻击特效
+                boolean isTriggerEffect = false;
+                if (RandomUtils.isHappen(skill.getEffectRate())) {
+                    isTriggerEffect = true;
+                }
 
                 // 是否暴击
                 float criteValue = actionPerson.getCriteRate() * skill.getCriteRate();
@@ -618,16 +623,19 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
                 String criteString2 = "";
                 if (isCrite) {
                     criteString = "(暴击)";
-                    criteString2 = "(暴击率" + criteRate + ")--->结果：暴击";
+                    criteString2 = "(暴击率:" + criteRate + " 暴击了)";
                 } else {
-                    criteString2 = "(暴击率" + criteRate + ")--->结果：未暴击";
+                    criteString2 = "(暴击率:" + criteRate + " 未暴击)";
                 }
-                BattleLog.log(actionPerson.getName() + " " + skill.getName() + "(命中率" + accuracy + ") ---> " + beAttackPerson.getName() + " 结果：命中 " + criteString2);
+                BattleLog.log(actionPerson.getName() + " " + skill.getName() + " ---> " + beAttackPerson.getName() + "(命中率" + accuracy + " 命中了)" + criteString2);
 
                 switch (skill.getDamageType()) {
                     case SKILL_DAMAGE_TYPE_PHYSICS:
                         // 技能伤害为物理伤害
                         damage = (int) (skill.getDamageConstant() + (skill.getDamageFluctuate() * actionPerson.getPhysicDamage()));
+                        // 处理多次攻击类型技能的攻击力变化
+                        damage = damage + (int) (damage * i * skill.getAttackTimeDamageUp());
+                        // 处理暴击伤害
                         if (isCrite) damage = (int) (damage * actionPerson.getCriteDamage());
                         reduceHP = DamgeModel.getDamageResult(damage, actionPerson.getPhysicsPenetrate(), skill.getDamagePenetrate(), beAttackPerson.getArmor(), false);
                         BattleLog.log(skill.getName() + " 物理伤害为" + damage + criteString + " " + beAttackPerson.getName() + " 护甲：" + beAttackPerson.getArmor() + "最终伤害:" + reduceHP);
@@ -635,13 +643,19 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
                     case SKILL_DAMAGE_TYPE_MAGIC:
                         // 技能伤害为魔法伤害
                         damage = (int) (skill.getDamageConstant() + (skill.getDamageFluctuate() * actionPerson.getMagicDamage()));
+                        // 处理多次攻击类型技能的攻击力变化
+                        damage = damage + (int) (damage * i * skill.getAttackTimeDamageUp());
+                        // 处理暴击伤害
                         if (isCrite) damage = (int) (damage * actionPerson.getCriteDamage());
                         reduceHP = DamgeModel.getDamageResult(damage, actionPerson.getMagicPenetrate(), skill.getDamagePenetrate(), beAttackPerson.getMagicResist(), false);
-                        BattleLog.log(skill.getName() + " 魔法伤害为" + damage + criteString + " " + beAttackPerson.getName() + " 魔抗：" + beAttackPerson.getArmor() + "最终伤害:" + reduceHP);
+                        BattleLog.log(skill.getName() + " 魔法伤害为" + damage + criteString + " " + beAttackPerson.getName() + " 魔抗：" + beAttackPerson.getMagicResist() + "最终伤害:" + reduceHP);
                         break;
                     case SKILL_DAMAGE_TYPE_REAL:
                         // 技能伤害为真实伤害
                         damage = (int) (skill.getDamageConstant() + (skill.getDamageFluctuate() * actionPerson.getRealDamage()));
+                        // 处理多次攻击类型技能的攻击力变化
+                        damage = damage + (int) (damage * i * skill.getAttackTimeDamageUp());
+                        // 处理暴击伤害
                         if (isCrite) damage = (int) (damage * actionPerson.getCriteDamage());
                         reduceHP = DamgeModel.getRealDamageResult(damage);
                         BattleLog.log(skill.getName() + " 真实伤害为" + damage + criteString + " " + beAttackPerson.getName() + "最终伤害:" + reduceHP);
@@ -691,6 +705,11 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
                         break;
                 }
 
+                // 触发攻击特效
+                if (isTriggerEffect) {
+                    triggerSkillEffect(skill, actionPerson, beAttackPerson);
+                }
+
                 if (reduceHP <= 0) reduceHP = 0;
                 int remainHp = beAttackPerson.getHP_Current() - reduceHP;
                 if (remainHp <= 0) {
@@ -702,12 +721,35 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
                 }
                 beAttackPerson.setHP_Current(remainHp);
 
+                // 如果被攻击者已经死亡，后续的连续攻击就要停止了。
+                if (remainHp <= 0) {
+                    break;
+                }
             } else {
                 // 攻击被躲闪
                 BattleLog.log(actionPerson.getName() + " " + skill.getName() + "(命中率" + accuracy + ") ---> " + beAttackPerson.getName() + " 结果：躲闪");
             }
         }
         BattleLog.log("=================");
+    }
+
+    /**
+     * 触发技能特效 为beAttackPerson 附加 buff
+     *
+     * @param skill
+     * @param actionPerson
+     * @param beAttackPerson
+     */
+    private void triggerSkillEffect(SkillBattle skill, BattlePerson actionPerson, BattlePerson beAttackPerson) {
+        BuffBase buffbase = BuffDataManager.getBuffFromDataBaseById(skill.getAssistEffect());
+        if(buffbase == null) return;
+        BuffBattle buff = new BuffBattle(buffbase,skill.getLevel());
+        if(buff == null) return;
+        int[] effectType = buff.getBuff_effect();
+        for(int i =0;i<effectType.length;i++){
+            a
+        }
+
     }
 
     public int getTimePersonAction() {

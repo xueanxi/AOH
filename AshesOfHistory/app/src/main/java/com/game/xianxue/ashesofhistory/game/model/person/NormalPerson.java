@@ -285,7 +285,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
         dexterity = getNewAttribute(dexterity_Raw, level);
         physique = getNewAttribute(physique_Raw, level);
         spirit = getNewAttribute(spirit_Raw, level);
-        luck = luck_Raw;
+        luck = luck_Raw * level;
         fascination = fascination_Raw;
 
         strengthRate = 0;         // 力量加成百分比
@@ -547,7 +547,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
      * @return
      */
     protected int getNewAttribute(int Initial, int level) {
-        return (int) ((float) Initial + (Initial * 0.5f + aptitude * 1f) * (float) level);
+        return (int) ((float) Initial + (float)(Initial * 0.5f + aptitude * 1f) * (float) level);
     }
 
     protected int calculateHpMax() {
@@ -571,18 +571,16 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
     }
 
     protected int calculatePhysicsPenetrate() {
-        // TODO: 10/16/17 增加物理穿透率的计算
         return (int) (strength * 0.2f + dexterity * 0.3f + intellect * 0.2f);
     }
 
     protected int calculateMagicPenetrate() {
-        // TODO: 10/16/17 增加魔法穿透率的计算
         int result = (int) (intellect * 0.4f + dexterity * 0.1f + spirit * 0.2f);
         return result;
     }
 
     protected int calculateAccuracy() {
-        return strength * 1 + intellect * 3 + dexterity * 4 + physique * 1 + luck;
+        return strength * 1 + intellect * 3 + dexterity * 4 + physique * 1 + luck*2;
     }
 
     protected int calculateCriteRate() {
@@ -617,7 +615,7 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
 
 
     protected int calculateMaxActiveValues() {
-        return 1000;
+        return DEFAULT_ACTIVE_VALUES_MAX;
     }
 
     public float getAptitude() {

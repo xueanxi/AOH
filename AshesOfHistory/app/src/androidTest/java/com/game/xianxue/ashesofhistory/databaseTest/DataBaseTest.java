@@ -3,6 +3,7 @@ package com.game.xianxue.ashesofhistory.databaseTest;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.database.PersonDataManager;
@@ -14,6 +15,7 @@ import com.game.xianxue.ashesofhistory.game.model.TeamModel;
 import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.game.model.person.NormalPerson;
+import com.game.xianxue.ashesofhistory.game.skill.SkillBattle;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 import com.game.xianxue.ashesofhistory.utils.XmlUtils;
 
@@ -132,9 +134,11 @@ public class DataBaseTest {
     @Test
     public void TestgetSkillByIdFormDataBase() {
         init();
-        SkillDataManager.getSkillFromDataBaseById(0);
-        SkillDataManager.getSkillFromDataBaseById(3);
-        SkillDataManager.getSkillFromDataBaseById(1);
+        SkillBase base = SkillDataManager.getSkillFromDataBaseById(197);
+        Log.d(TAG,"base = "+base);
+
+        SkillBattle battle = new SkillBattle(base,3);
+        Log.d(TAG,"battle = "+battle);
     }
 
 
@@ -186,7 +190,7 @@ public class DataBaseTest {
     }
 
     /**
-     * 测试通过id 获取一个阵型
+     * 测试通过id 获取一个buff
      */
     @Test
     public void TestgetBuffdata() throws Exception {

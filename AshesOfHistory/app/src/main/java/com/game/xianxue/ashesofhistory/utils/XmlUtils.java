@@ -172,11 +172,11 @@ public class XmlUtils {
                     }else if (SkillColumn.levelUpCDTime.equals(tag)) {
                         skill.setLevelUpCDTime(Float.valueOf(pullParser.nextText()));
                     }else if (SkillColumn.levelUpAttackTime.equals(tag)) {
-                        skill.setLevelUpCDTime(Float.valueOf(pullParser.nextText()));
+                        skill.setLevelUpAttackTime(Float.valueOf(pullParser.nextText()));
                     }else if (SkillColumn.attackTime.equals(tag)) {
-                        skill.setLevelUpCDTime(Integer.valueOf(pullParser.nextText()));
+                        skill.setAttackTime(Integer.valueOf(pullParser.nextText()));
                     }else if (SkillColumn.attackTimeDamageUp.equals(tag)) {
-                        skill.setLevelUpCDTime(Float.valueOf(pullParser.nextText()));
+                        skill.setAttackTimeDamageUp(Float.valueOf(pullParser.nextText()));
                     }
                     break;
                 case XmlPullParser.END_TAG:

@@ -31,7 +31,7 @@ public interface Interface_Skill {
     int SKILL_LAST_TIME_UNLIMIT = -1;   // 无线持续时间，维持到战斗结束
 
     // 技能的作用范围
-    int SKILL_RANGE_AOE = -1;           // -1表示，技能范围是全场
+    int SKILL_RANGE_AOE = -1;              // -1表示，技能范围是全场
     int SKILL_RANGE_SELF = 0;              // 0表示只能对自己释放
 
     // 技能的作用人数

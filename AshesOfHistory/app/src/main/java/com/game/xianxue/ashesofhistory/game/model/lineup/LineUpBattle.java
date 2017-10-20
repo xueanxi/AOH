@@ -14,7 +14,7 @@ import java.util.ArrayList;
 /**
  * 战斗阵型，对基础阵型类LineUpBase进行扩展
  */
-public class LineUpBattle extends LineUpBase implements Interface_Buff,Interface_LineUp {
+public class LineUpBattle extends LineUpBase implements Interface_Buff, Interface_LineUp {
     final static String TAG = "LineUpBattle";
 
     int battlePersonNumber;                 // 这个阵型中的人数
@@ -71,19 +71,19 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff,Interface
         }
 
         // 根据人物等级，获得领导技能的等级 [人物1～3 技能1级] [人物4～6 技能2级] ... [人物 13～15 技能5级]
-        int buffLevel = (int)Math.ceil((double) leader.getLevel()/(double) 3);
-        if(buffLevel < BUFF_LEVEL_LIMIT_MINI){
+        int buffLevel = (int) Math.ceil((double) leader.getLevel() / (double) 3);
+        if (buffLevel < BUFF_LEVEL_LIMIT_MINI) {
             buffLevel = BUFF_LEVEL_LIMIT_MINI;
-        }else if(buffLevel > BUFF_LEVEL_LIMIT_MAX){
+        } else if (buffLevel > BUFF_LEVEL_LIMIT_MAX) {
             buffLevel = BUFF_LEVEL_LIMIT_MAX;
         }
-        BuffBattle buffLeader = new BuffBattle(baseBuff,buffLevel);
+        BuffBattle buffLeader = new BuffBattle(baseBuff, buffLevel);
 
-        for(int i = 0;i<membersList.size();i++){
+        for (int i = 0; i < membersList.size(); i++) {
             membersList.get(i).addBuffInBattle(buffLeader);
         }
 
-        BattleLog.log(leader.getName()+"成为统帅,队伍全部人获得Buff"+baseBuff.getName());
+        BattleLog.log(leader.getName() + "成为统帅,队伍全部人获得Buff" + baseBuff.getName());
     }
 
     /**
@@ -98,11 +98,11 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff,Interface
         int leaderBuffId = leader.getLeadSkillId();
         BattlePerson member = null;
         ArrayList<BuffBattle> buffList = null;
-        for(int i = 0;i<membersList.size();i++){
+        for (int i = 0; i < membersList.size(); i++) {
             member = membersList.get(i);
             member.removeBuffInBattle(leaderBuffId);
         }
-        BattleLog.log("由于统帅"+leader.getName()+"阵亡,队伍的统帅Buff被移除");
+        BattleLog.log("由于统帅" + leader.getName() + "阵亡,队伍的统帅Buff被移除");
     }
 
     /**
@@ -251,7 +251,7 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff,Interface
         ArrayList<BattlePerson> result = null;
         UnitBattle unit = null;
 
-        // nearCol 为距离敌人最近的一列的索引，
+        // nearCol 为距离敌人最近的一列还有活人的索引，
         // 比如 第0列，还有人存活着，那么nearCol =0
         // 比如 第0列，所有人都挂了，第1列还有人存活，此时nearCol等于1，而不是0
         // 比如 第0列和第1列所有人都挂了，第2列还有人存活，此时nearCol等于2，而不是1或者0
@@ -259,8 +259,8 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff,Interface
         if (membersList == null) return null;
 
         // 计算出 nearCol
+        boolean isOver = false;
         for (int y = 0; y < LINEUP_MAX_COL; y++) {
-            boolean isOver = false;
             for (int x = 0; x < LINEUP_MAX_ROW; x++) {
                 unit = LineupMatrixs[x][y];
                 if (unit == null) continue;
@@ -278,16 +278,22 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff,Interface
         result = new ArrayList<BattlePerson>();
         int farCol = nearCol + distance - 1;
         if (farCol > (LINEUP_MAX_ROW - 1)) {
-            farCol = LINEUP_MAX_ROW -1;
+            farCol = LINEUP_MAX_ROW - 1;
         }
         BattlePerson personInRange = null;
         for (int y = nearCol; y <= farCol; y++) {
             for (int x = 0; x < LINEUP_MAX_ROW; x++) {
                 unit = LineupMatrixs[x][y];
-                if (unit == null || unit.getPersonIndex()==-1) continue;
+                if (unit == null) {
+                    SimpleLog.loge(TAG, "getPersonsByDistance(): unit == null");
+                    continue;
+                }
 
-                // TODO: 2017/10/19 这里有bug  java.lang.IndexOutOfBoundsException: Index: 3, Size:
-                s
+                if (unit.getPersonIndex() == -1) {
+                    SimpleLog.loge(TAG, "getPersonsByDistance(): unit.getPersonIndex()==-1");
+                    continue;
+                }
+
                 personInRange = membersList.get(unit.getPersonIndex());
                 if (personInRange.getHP_Current() > 0) {
                     personInRange.setDistance(y - nearCol + 1); // 设置personInRange与攻击者之间的距离
@@ -300,13 +306,14 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff,Interface
 
     /**
      * 返回队伍的统帅是否还活着
+     *
      * @return
      */
-    public boolean isLeadDie(){
-        if(leader == null) return true;
-        if(leader.getHP_Current() == 0) {
+    public boolean isLeadDie() {
+        if (leader == null) return true;
+        if (leader.getHP_Current() == 0) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }

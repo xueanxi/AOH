@@ -280,11 +280,13 @@ public class SkillBase{
                 ", effectNumber=" + effectNumber +
                 ", effectCamp=" + effectCamp +
                 ", effectTarget=" + effectTarget +
-                ", damagePenetrate=" + damagePenetrate +
                 ", damageType=" + damageType +
                 ", damageConstant=" + damageConstant +
                 ", damageFluctuate=" + damageFluctuate +
-                ", assistEffect='" + assistEffect + '\'' +
+                ", damagePenetrate=" + damagePenetrate +
+                ", assistEffect=" + assistEffect +
+                ", attackTime=" + attackTime +
+                ", attackTimeDamageUp=" + attackTimeDamageUp +
                 ", levelUpConstant=" + levelUpConstant +
                 ", levelUpFluctuate=" + levelUpFluctuate +
                 ", levelUpRange=" + levelUpRange +
@@ -292,6 +294,7 @@ public class SkillBase{
                 ", levelUpEffectRate=" + levelUpEffectRate +
                 ", levelUpPenetrate=" + levelUpPenetrate +
                 ", levelUpCDTime=" + levelUpCDTime +
+                ", levelUpAttackTime=" + levelUpAttackTime +
                 '}';
     }
 }
