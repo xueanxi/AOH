@@ -3,6 +3,7 @@ package com.game.xianxue.ashesofhistory.game.model;
 
 import com.game.xianxue.ashesofhistory.Log.BattleLog;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
+import com.game.xianxue.ashesofhistory.game.skill.SkillBattle;
 import com.game.xianxue.ashesofhistory.utils.RandomUtils;
 
 import java.io.Serializable;
@@ -71,6 +72,7 @@ public class DamgeModel implements Interface_Skill {
         int resistAfterPenetrate = 0;      // 计算穿甲之后的抗性
 
         switch (type) {
+
             case SKILL_DAMAGE_TYPE_PHYSICS_PERCENT:
                 // 技能伤害为当前生命百分比物理伤害
                 damage = (int) (HP_Current * damagePercent);
@@ -161,6 +163,80 @@ public class DamgeModel implements Interface_Skill {
         } else if (resist > x_max) {
             result = y_max;
         }
+        return result;
+    }
+
+
+
+
+    /**
+     * 计算当前生命百分比伤害
+     *
+     * @param type              技能伤害类型
+     * @param damagePercent     技能伤害百分比
+     * @param penetrateConstant 进攻者的固定穿甲
+     * @param HP_Current        被攻击者剩余的HP
+     * @param HP_MAX            被攻击者的生命上限
+     * @param resist            被攻击者的抗性
+     * @return
+     */
+    public static int getDamageInSkill(SkillBattle skill,BattlePerson person) {
+
+        int damage = 0;
+        int result = 0;
+
+        int damageType = skill.getDamageType();
+
+        switch (damageType) {
+            case SKILL_DAMAGE_TYPE_PHYSICS:
+
+                break;
+            case SKILL_DAMAGE_TYPE_MAGIC:
+                break;
+            case SKILL_DAMAGE_TYPE_REAL:
+                break;
+            case SKILL_DAMAGE_TYPE_PHYSICS_PERCENT:
+                // 技能伤害为当前生命百分比物理伤害
+                damage = (int) (skill.getDamageConstant() + (skill.getDamageFluctuate() * person.getPhysicDamage()));
+                break;
+            case SKILL_DAMAGE_TYPE_MAGIC_PERCENT:
+                // 技能伤害为当前生命百分比魔法伤害
+                damage = (int) (HP_Current * damagePercent);
+                // 计算穿甲之后的抗性
+                resistAfterPenetrate = (int) ((resist - penetrateConstant) * (1f - penetratePercent));
+                if (resistAfterPenetrate < 0) resistAfterPenetrate = 0;
+                result = (int) (damage * getResistResult(resistAfterPenetrate));
+                break;
+            case SKILL_DAMAGE_TYPE_REAL_PERCENT:
+                // 技能伤害为当前生命百分比真实伤害
+                result = (int) (HP_Current * damagePercent);
+                break;
+
+            case SKILL_DAMAGE_TYPE_PHYSICS_PERCENT_MAX:
+                // 技能伤害为最大生命百分比物理伤害
+                damage = (int) (HP_MAX * damagePercent);
+
+                // 计算穿甲之后的抗性
+                resistAfterPenetrate = (int) ((resist - penetrateConstant) * (1f - penetratePercent));
+                if (resistAfterPenetrate < 0) resistAfterPenetrate = 0;
+                result = (int) (damage * getResistResult(resistAfterPenetrate));
+                break;
+            case SKILL_DAMAGE_TYPE_MAGIC_PERCENT_MAX:
+                // 技能伤害为最大生命百分比魔法伤害
+
+                damage = (int) (HP_MAX * damagePercent);
+
+                // 计算穿甲之后的抗性
+                resistAfterPenetrate = (int) ((resist - penetrateConstant) * (1f - penetratePercent));
+                if (resistAfterPenetrate < 0) resistAfterPenetrate = 0;
+                result = (int) (damage * getResistResult(resistAfterPenetrate));
+                break;
+            case SKILL_DAMAGE_TYPE_REAL_PERCENT_MAX:
+                // 技能伤害为当前生命百分比真实伤害
+                result = (int) (HP_MAX * damagePercent);
+                break;
+        }
+
         return result;
     }
 }

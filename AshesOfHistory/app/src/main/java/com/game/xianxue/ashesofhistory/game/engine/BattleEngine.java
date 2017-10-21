@@ -611,10 +611,10 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
 
                 // 数否触发攻击特效
                 boolean isTriggerEffect = false;
+
                 if (RandomUtils.isHappen(skill.getEffectRate())) {
                     isTriggerEffect = true;
                 }
-
                 // 是否暴击
                 float criteValue = actionPerson.getCriteRate() * skill.getCriteRate();
                 float criteRate = criteValue / (criteValue + beAttackPerson.getReduceBeCriteRate());
@@ -734,7 +734,7 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
     }
 
     /**
-     * 触发技能特效 为beAttackPerson 附加 buff
+     * 触发技能特效 为 beAttackPerson 附加 buff
      *
      * @param skill
      * @param actionPerson
@@ -742,14 +742,71 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
      */
     private void triggerSkillEffect(SkillBattle skill, BattlePerson actionPerson, BattlePerson beAttackPerson) {
         BuffBase buffbase = BuffDataManager.getBuffFromDataBaseById(skill.getAssistEffect());
-        if(buffbase == null) return;
-        BuffBattle buff = new BuffBattle(buffbase,skill.getLevel());
-        if(buff == null) return;
-        int[] effectType = buff.getBuff_effect();
-        for(int i =0;i<effectType.length;i++){
-            a
-        }
+        if (buffbase == null) return;
+        BuffBattle buff = new BuffBattle(buffbase, skill.getLevel());
+        if (buff == null) return;
+        int effectType = skill.getAssistEffect();
+        switch (effectType) {
+            case BUFF_STRENGTH:         // 辅助效果：力量
+                break;
+            case BUFF_INTELLECT:        // 辅助效果：智力
+                break;
+            case BUFF_DEXTERITY:        // 辅助效果：敏捷
+                break;
+            case BUFF_PHYSIQUE:         // 辅助效果：体制
+                break;
+            case BUFF_SPIRIT:           // 辅助效果：精神
+                break;
+            case BUFF_FASCINATION:      // 辅助效果：魅力
+                break;
+            case BUFF_LUCK:             // 辅助效果：幸运
+                break;
+            case BUFF_PHYSICDAMAGE:     // 辅助效果：物理伤害
+                break;
+            case BUFF_MAGICDAMAGE:      // 辅助效果：魔法伤害
+                break;
+            case BUFF_REALDAMAGE:      // 辅助效果：真实伤害
+                break;
+            case BUFF_PHYSICSPENETRATE:// 辅助效果：物理穿透
+                break;
+            case BUFF_MAGICPENETRATE:  // 辅助效果：魔法穿透
+                break;
+            case BUFF_ACCURACY:        // 辅助效果：命中率
+                break;
+            case BUFF_CRITERATE:       // 辅助效果：暴击率
+                break;
+            case BUFF_CRITEDAMAGE:     // 辅助效果：暴击伤害
+                break;
+            case BUFF_ARMOR:           // 辅助效果：护甲（物抗）
+                break;
+            case BUFF_MAGICRESIST:     // 辅助效果：魔抗
+                break;
+            case BUFF_DODGE:           // 辅助效果：闪避值（闪避成功承受10%的物理伤害 或者 承受30%的魔法伤害）
+                break;
+            case BUFF_BLOCK:           // 辅助效果：格档值（格档成功只承受30%物理伤害 或者 承受70%魔法伤害）
+                break;
+            case BUFF_ACTIONSPEED:     // 辅助效果：速度
+                break;
+            case BUFF_HPRESTORE:       // 辅助效果：生命恢复。发起进攻时，生命恢复
 
+                float[] buff_HpRestore = {1f};
+                buff.setBuff_constant(buff_HpRestore);
+                break;
+            case BUFF_ACTIVEVALUE:     // 辅助效果：行动值。执行一次行动，需要的行动值（越少越好）
+                break;
+            case BUFF_REDUCEBECRITERATE:// 辅助效果：抗暴击
+                break;
+            case BUFF_HP_MAX:          // 辅助效果：当前生命值
+                break;
+            case BUFF_SKILL_RATE:      // 辅助效果:技能发动概率
+                break;
+            case BUFF_ATTACK_NUMBER:    // 辅助效果:攻击目标数量
+                break;
+            case BUFF_ATTACK_RANGE:    // 辅助效果:攻击范围
+                break;
+            default:
+                break;
+        }
     }
 
     public int getTimePersonAction() {
