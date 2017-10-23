@@ -734,6 +734,8 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
     }
 
     /**
+     *         // TODO: 10/23/17 这个方法还没有测试
+     beAttackPerson.addBuffInBattle(buff);
      * 触发技能特效 为 beAttackPerson 附加 buff
      *
      * @param skill
@@ -788,9 +790,10 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
             case BUFF_ACTIONSPEED:     // 辅助效果：速度
                 break;
             case BUFF_HPRESTORE:       // 辅助效果：生命恢复。发起进攻时，生命恢复
-
-                float[] buff_HpRestore = {1f};
+                float[] buff_HpRestore = {DamgeModel.getDamgeInBuff(skill,actionPerson,beAttackPerson)};
+                float[] buff_HpRestore2 = {0f};
                 buff.setBuff_constant(buff_HpRestore);
+                buff.setBuff_fluctuate(buff_HpRestore2);
                 break;
             case BUFF_ACTIVEVALUE:     // 辅助效果：行动值。执行一次行动，需要的行动值（越少越好）
                 break;
@@ -807,6 +810,8 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
             default:
                 break;
         }
+
+
     }
 
     public int getTimePersonAction() {

@@ -1,20 +1,18 @@
 package com.game.xianxue.ashesofhistory.game.model;
 
 
-import com.game.xianxue.ashesofhistory.Log.BattleLog;
+import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBattle;
-import com.game.xianxue.ashesofhistory.utils.RandomUtils;
-
-import java.io.Serializable;
-
 import com.game.xianxue.ashesofhistory.interfaces.Interface_Skill;
+import com.game.xianxue.ashesofhistory.utils.RandomUtils;
 
 
 /**
  * 伤害模型
  */
 public class DamgeModel implements Interface_Skill {
+    private static final String TAG = "DamgeModel";
 
     /**
      * 通过传入的参数，计算后，返回造成的伤害结果
@@ -166,77 +164,80 @@ public class DamgeModel implements Interface_Skill {
         return result;
     }
 
-
-
-
-    /**
-     * 计算当前生命百分比伤害
-     *
-     * @param type              技能伤害类型
-     * @param damagePercent     技能伤害百分比
-     * @param penetrateConstant 进攻者的固定穿甲
-     * @param HP_Current        被攻击者剩余的HP
-     * @param HP_MAX            被攻击者的生命上限
-     * @param resist            被攻击者的抗性
-     * @return
-     */
-    public static int getDamageInSkill(SkillBattle skill,BattlePerson person) {
-
+    public static int getDamgeInBuff(SkillBattle skill,BattlePerson actionPerson,BattlePerson beAttackPerson){
         int damage = 0;
-        int result = 0;
-
         int damageType = skill.getDamageType();
 
         switch (damageType) {
             case SKILL_DAMAGE_TYPE_PHYSICS:
-
-                break;
             case SKILL_DAMAGE_TYPE_MAGIC:
-                break;
             case SKILL_DAMAGE_TYPE_REAL:
+                damage = getNormalDamageInBuff(skill,actionPerson);
                 break;
             case SKILL_DAMAGE_TYPE_PHYSICS_PERCENT:
-                // 技能伤害为当前生命百分比物理伤害
-                damage = (int) (skill.getDamageConstant() + (skill.getDamageFluctuate() * person.getPhysicDamage()));
-                break;
             case SKILL_DAMAGE_TYPE_MAGIC_PERCENT:
-                // 技能伤害为当前生命百分比魔法伤害
-                damage = (int) (HP_Current * damagePercent);
-                // 计算穿甲之后的抗性
-                resistAfterPenetrate = (int) ((resist - penetrateConstant) * (1f - penetratePercent));
-                if (resistAfterPenetrate < 0) resistAfterPenetrate = 0;
-                result = (int) (damage * getResistResult(resistAfterPenetrate));
-                break;
             case SKILL_DAMAGE_TYPE_REAL_PERCENT:
-                // 技能伤害为当前生命百分比真实伤害
-                result = (int) (HP_Current * damagePercent);
-                break;
-
             case SKILL_DAMAGE_TYPE_PHYSICS_PERCENT_MAX:
-                // 技能伤害为最大生命百分比物理伤害
-                damage = (int) (HP_MAX * damagePercent);
-
-                // 计算穿甲之后的抗性
-                resistAfterPenetrate = (int) ((resist - penetrateConstant) * (1f - penetratePercent));
-                if (resistAfterPenetrate < 0) resistAfterPenetrate = 0;
-                result = (int) (damage * getResistResult(resistAfterPenetrate));
-                break;
             case SKILL_DAMAGE_TYPE_MAGIC_PERCENT_MAX:
-                // 技能伤害为最大生命百分比魔法伤害
-
-                damage = (int) (HP_MAX * damagePercent);
-
-                // 计算穿甲之后的抗性
-                resistAfterPenetrate = (int) ((resist - penetrateConstant) * (1f - penetratePercent));
-                if (resistAfterPenetrate < 0) resistAfterPenetrate = 0;
-                result = (int) (damage * getResistResult(resistAfterPenetrate));
-                break;
             case SKILL_DAMAGE_TYPE_REAL_PERCENT_MAX:
-                // 技能伤害为当前生命百分比真实伤害
-                result = (int) (HP_MAX * damagePercent);
+                damage = getPercentDamageInBuff(skill,beAttackPerson);
+                break;
+            default:
+                SimpleLog.loge(TAG,"Error ！！！ getDamgeInBuff(): 进入了default分支 ");
                 break;
         }
 
-        return result;
+        return damage;
+    }
+
+    /**
+     * 获得非百分比伤害技能的 最终伤害，这类型的技能伤害和释放技能的人的攻击力相关。
+     * 注意：buff的伤害是无视被攻击者的抗性的
+     */
+    public static int getNormalDamageInBuff(SkillBattle skill,BattlePerson person) {
+        int damage = 0;
+        int damageType = skill.getDamageType();
+
+        switch (damageType) {
+            case SKILL_DAMAGE_TYPE_PHYSICS:
+                damage = (int) (skill.getDamageConstant() + person.getPhysicDamage() * skill.getDamageFluctuate());
+                break;
+            case SKILL_DAMAGE_TYPE_MAGIC:
+                damage = (int) (skill.getDamageConstant() + person.getMagicDamage() * skill.getDamageFluctuate());
+                break;
+            case SKILL_DAMAGE_TYPE_REAL:
+                damage = (int) (skill.getDamageConstant() + person.getRealDamage() * skill.getDamageFluctuate());
+                break;
+            default:
+                SimpleLog.loge(TAG,"Error ！！！ getNormalDamageInBuff(): 进入了default分支 ");
+                break;
+        }
+
+        return damage;
+    }
+
+    /**
+     * 获得 百分比伤害 技能的 最终伤害，这类型的技能伤害和承受此技能的人生命相关。
+     * 注意：buff的伤害是无视被攻击者的抗性的
+     */
+    public static int getPercentDamageInBuff(SkillBattle skill,BattlePerson beAttackPerson) {
+        int damage = 0;
+        int damageType = skill.getDamageType();
+        switch (damageType) {
+            case SKILL_DAMAGE_TYPE_PHYSICS_PERCENT:
+            case SKILL_DAMAGE_TYPE_MAGIC_PERCENT:
+            case SKILL_DAMAGE_TYPE_REAL_PERCENT:
+                damage = (int) (skill.getDamageConstant() * beAttackPerson.getHP_Current());
+                break;
+            case SKILL_DAMAGE_TYPE_PHYSICS_PERCENT_MAX:
+            case SKILL_DAMAGE_TYPE_MAGIC_PERCENT_MAX:
+            case SKILL_DAMAGE_TYPE_REAL_PERCENT_MAX:
+                damage = (int) (skill.getDamageConstant() * beAttackPerson.getHP_MAX());
+                break;
+            default:
+                SimpleLog.loge(TAG,"Error ！！！ getPercentDamageInBuff(): 进入了default分支 ");
+                break;
+        }
+        return damage;
     }
 }
