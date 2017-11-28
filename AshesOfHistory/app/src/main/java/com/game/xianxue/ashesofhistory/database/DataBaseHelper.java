@@ -112,6 +112,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 + BuffColumn.buff_fluctuate + " TEXT,"
                 + BuffColumn.time + " INTEGER,"
                 + BuffColumn.range + " INTEGER,"
+                + BuffColumn.damage_type + " INTEGER,"
                 + BuffColumn.level_up_constant + " TEXT,"
                 + BuffColumn.level_up_fluctuate + " TEXT,"
                 + BuffColumn.level_up_range + " REAL,"

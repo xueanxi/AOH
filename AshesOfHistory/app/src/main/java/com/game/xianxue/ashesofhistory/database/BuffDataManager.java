@@ -34,12 +34,13 @@ public class BuffDataManager {
                 + BuffColumn.buff_fluctuate + " ,"
                 + BuffColumn.time + " ,"
                 + BuffColumn.range + " ,"
+                + BuffColumn.damage_type + " ,"
                 + BuffColumn.level_up_constant + " ,"
                 + BuffColumn.level_up_fluctuate + " ,"
                 + BuffColumn.level_up_range + " ,"
                 + BuffColumn.level_up_time + " )"
                 + " VALUES ("
-                + " '%d','%s','%s','%s','%d','%d','%s','%s','%d','%d','%s','%s','%f','%f'"
+                + " '%d','%s','%s','%s','%d','%d','%s','%s','%d','%d','%d','%s','%s','%f','%f'"
                 + " )";
 
         return String.format(format,
@@ -53,6 +54,7 @@ public class BuffDataManager {
                 buff.getSbuff_fluctuate(),
                 buff.getTime(),
                 buff.getRange(),
+                buff.getDamage_type(),
                 buff.getSlevel_up_constant(),
                 buff.getSlevel_up_fluctuate(),
                 buff.getLevel_up_range(),
@@ -117,6 +119,7 @@ public class BuffDataManager {
                 buff.setSlevel_up_fluctuate(c.getString(c.getColumnIndex(BuffColumn.level_up_fluctuate)));
                 buff.setLevel_up_range(c.getFloat(c.getColumnIndex(BuffColumn.level_up_range)));
                 buff.setLevel_up_time(c.getFloat(c.getColumnIndex(BuffColumn.level_up_time)));
+                buff.setDamage_type(c.getInt(c.getColumnIndex(BuffColumn.damage_type)));
                 lists.add(buff);
             }
         }
@@ -151,6 +154,7 @@ public class BuffDataManager {
         buff.setSlevel_up_fluctuate(c.getString(c.getColumnIndex(BuffColumn.level_up_fluctuate)));
         buff.setLevel_up_range(c.getFloat(c.getColumnIndex(BuffColumn.level_up_range)));
         buff.setLevel_up_time(c.getFloat(c.getColumnIndex(BuffColumn.level_up_time)));
+        buff.setDamage_type(c.getInt(c.getColumnIndex(BuffColumn.damage_type)));
         return buff;
     }
 }

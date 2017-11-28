@@ -97,6 +97,7 @@ public class ConstantColumn {
         public static final String buff_fluctuate = "buff_fluctuate";   // buff的浮动影响
         public static final String time = "time";                       // buff的持续时间
         public static final String range = "range";                     // buff的范围
+        public static final String damage_type = "damage_type";         // buff如果有伤害，则伤害类型为
         public static final String level_up_constant = "level_up_constant";          // 每升一级 固定部分 提高的百分比
         public static final String level_up_fluctuate = "level_up_fluctuate";        // 每升一级 浮动部分 提高的百分比
         public static final String level_up_range = "level_up_range";                // 每升一级 作用范围提高

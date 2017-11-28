@@ -25,6 +25,7 @@ public class BuffBattle extends BuffBase implements Interface_Buff {
         this.buff_type = base.buff_type;            // buff类型     (0：只触发一次 1：时间内每回合触发一次)
         this.time = base.time;                      // buff持续时间
         this.range = base.range;                    // buff的影响范围
+        this.damage_type = base.damage_type;        // buff如果有伤害，则伤害类型为
         this.level_up_range = base.level_up_range;              // 每升一级浮动部分的提升
         this.level_up_time = base.level_up_time;                // 每升一级浮动部分的提升
 

@@ -164,15 +164,15 @@ public class DamgeModel implements Interface_Skill {
         return result;
     }
 
-    public static int getDamgeInBuff(SkillBattle skill,BattlePerson actionPerson,BattlePerson beAttackPerson){
-        int damage = 0;
-        int damageType = skill.getDamageType();
 
-        switch (damageType) {
+    public static int getDamgeInBuff(int buffDamageType,float buffConstantDamage,float buffFloatDamage,BattlePerson actionPerson,BattlePerson beAttackPerson){
+        int damage = 0;
+
+        switch (buffDamageType) {
             case SKILL_DAMAGE_TYPE_PHYSICS:
             case SKILL_DAMAGE_TYPE_MAGIC:
             case SKILL_DAMAGE_TYPE_REAL:
-                damage = getNormalDamageInBuff(skill,actionPerson);
+                damage = getNormalDamageInBuff(buffDamageType,buffConstantDamage,buffFloatDamage,actionPerson);
                 break;
             case SKILL_DAMAGE_TYPE_PHYSICS_PERCENT:
             case SKILL_DAMAGE_TYPE_MAGIC_PERCENT:
@@ -180,7 +180,7 @@ public class DamgeModel implements Interface_Skill {
             case SKILL_DAMAGE_TYPE_PHYSICS_PERCENT_MAX:
             case SKILL_DAMAGE_TYPE_MAGIC_PERCENT_MAX:
             case SKILL_DAMAGE_TYPE_REAL_PERCENT_MAX:
-                damage = getPercentDamageInBuff(skill,beAttackPerson);
+                damage = getPercentDamageInBuff(buffDamageType,buffConstantDamage,beAttackPerson);
                 break;
             default:
                 SimpleLog.loge(TAG,"Error ！！！ getDamgeInBuff(): 进入了default分支 ");
@@ -194,25 +194,22 @@ public class DamgeModel implements Interface_Skill {
      * 获得非百分比伤害技能的 最终伤害，这类型的技能伤害和释放技能的人的攻击力相关。
      * 注意：buff的伤害是无视被攻击者的抗性的
      */
-    public static int getNormalDamageInBuff(SkillBattle skill,BattlePerson person) {
+    public static int getNormalDamageInBuff(int buffDamageType,float buffConstantDamage,float buffFloatDamage,BattlePerson person) {
         int damage = 0;
-        int damageType = skill.getDamageType();
-
-        switch (damageType) {
+        switch (buffDamageType) {
             case SKILL_DAMAGE_TYPE_PHYSICS:
-                damage = (int) (skill.getDamageConstant() + person.getPhysicDamage() * skill.getDamageFluctuate());
+                damage = (int) (buffConstantDamage + person.getPhysicDamage() * buffFloatDamage);
                 break;
             case SKILL_DAMAGE_TYPE_MAGIC:
-                damage = (int) (skill.getDamageConstant() + person.getMagicDamage() * skill.getDamageFluctuate());
+                damage = (int) (buffConstantDamage + person.getMagicDamage() * buffFloatDamage);
                 break;
             case SKILL_DAMAGE_TYPE_REAL:
-                damage = (int) (skill.getDamageConstant() + person.getRealDamage() * skill.getDamageFluctuate());
+                damage = (int) (buffConstantDamage + person.getRealDamage() * buffFloatDamage);
                 break;
             default:
                 SimpleLog.loge(TAG,"Error ！！！ getNormalDamageInBuff(): 进入了default分支 ");
                 break;
         }
-
         return damage;
     }
 
@@ -220,19 +217,18 @@ public class DamgeModel implements Interface_Skill {
      * 获得 百分比伤害 技能的 最终伤害，这类型的技能伤害和承受此技能的人生命相关。
      * 注意：buff的伤害是无视被攻击者的抗性的
      */
-    public static int getPercentDamageInBuff(SkillBattle skill,BattlePerson beAttackPerson) {
+    public static int getPercentDamageInBuff(int buffDamageType,float buffConstantDamage,BattlePerson beAttackPerson) {
         int damage = 0;
-        int damageType = skill.getDamageType();
-        switch (damageType) {
+        switch (buffDamageType) {
             case SKILL_DAMAGE_TYPE_PHYSICS_PERCENT:
             case SKILL_DAMAGE_TYPE_MAGIC_PERCENT:
             case SKILL_DAMAGE_TYPE_REAL_PERCENT:
-                damage = (int) (skill.getDamageConstant() * beAttackPerson.getHP_Current());
+                damage = (int) (buffConstantDamage * beAttackPerson.getHP_Current());
                 break;
             case SKILL_DAMAGE_TYPE_PHYSICS_PERCENT_MAX:
             case SKILL_DAMAGE_TYPE_MAGIC_PERCENT_MAX:
             case SKILL_DAMAGE_TYPE_REAL_PERCENT_MAX:
-                damage = (int) (skill.getDamageConstant() * beAttackPerson.getHP_MAX());
+                damage = (int) (buffConstantDamage * beAttackPerson.getHP_MAX());
                 break;
             default:
                 SimpleLog.loge(TAG,"Error ！！！ getPercentDamageInBuff(): 进入了default分支 ");

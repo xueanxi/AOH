@@ -415,6 +415,9 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
                             attackRangeUp += buff.getBuff_constant()[i];
                             attackRangeRate += buff.getBuff_fluctuate()[i];
                             break;
+                        case BUFF_REDUCE_HP:
+                            // 这种掉血的buff，不属于人物的属性，是战斗属性，在战斗中处理。
+                            break;
                     }
                 }
             }

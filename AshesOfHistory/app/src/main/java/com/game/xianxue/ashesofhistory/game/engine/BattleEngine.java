@@ -169,12 +169,38 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
         // 刷新属性
         actionPerson.updateBattleAttribute();
 
-        // 每回合的自动回血的数量，那些持续回血的效果，还有持续掉血的效果，都在这里统一处理
+        // 处理负面状态
+        // 1.处理损失生命值的buff
+        int reduceHp = 0;
+        ArrayList<BuffBattle> buffLists = actionPerson.getActiveBuffList();
+        if(buffLists != null && buffLists.size()>0){
+            for(BuffBattle buff:buffLists){
+                for(int i = 0 ;i<buff.getBuff_effect().length;i++){
+                    if(buff.getBuff_effect()[i] == BUFF_REDUCE_HP){
+                        // 损失生命值的buff在上buff的时候已经计算好了伤害，伤害放在getBuff_constant里面，
+                        // 所以这个时候就不许要额外处理浮动伤害getBuff_fluctuate（）了
+                        reduceHp = (int)buff.getBuff_constant()[i];
+                        if(actionPerson.getHP_Current() > reduceHp){
+                            actionPerson.setHP_Current(actionPerson.getHP_Current() - reduceHp);
+                            BattleLog.log(actionPerson.getName()+"受到["+buff.getName()+"]影响，损失了"+reduceHp+"点生命");
+                        }else{
+                            actionPerson.setHP_Current(0);
+                            BattleLog.log(actionPerson.getName()+"受到["+buff.getName()+"]影响，损失了"+reduceHp+"点生命，死亡了！！！");
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        buffLists.clear();
+        buffLists = null;
+
+        // 每回合的自动回血的数量，那些持续回血的效果
         restoreHp(actionPerson);
-        if (actionPerson.getHP_Current() <= 0) {
+        /*if (actionPerson.getHP_Current() <= 0) {
             BattleLog.log(actionPerson.getName() + "死亡了。");
             return;
-        }
+        }*/
 
         // 打印技能列表
         ArrayList<SkillBattle> skillLists = actionPerson.getActiveSkillsList();
@@ -265,19 +291,19 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
     private void restoreHp(BattlePerson actionPerson) {
         // TODO: 10/18/17 这个方法只是实现了，还没有测试，需要在正常战斗中测试
 
-        // TODO: 10/18/17 那些回血的buff和掉血的buff也在这里进行处理
+        // TODO: 10/18/17 那些影响生命自然恢复的buff，在这里处理
         int HP_Loss = actionPerson.getHP_MAX() - actionPerson.getHP_Current();       // 当前受损了多少生命值
 
-        int HP_Current = actionPerson.getHP_Current() + actionPerson.getHpRestore(); // 恢复生命值
+        int HP_Current = actionPerson.getHP_Current() + actionPerson.getHpRestore(); // 恢复生命值,在某些debuff的影响下，可能为负数
         if (HP_Current > actionPerson.getHP_MAX()) {
             actionPerson.setHP_Current(actionPerson.getHP_MAX());
-            BattleLog.log(actionPerson.getName() + " 恢复了" + HP_Loss + "点生命值");
+            BattleLog.log(actionPerson.getName() + " 自然恢复了" + HP_Loss + "点生命值，生命值满了，当前生命值为"+actionPerson.getHP_MAX());
         } else {
             actionPerson.setHP_Current(HP_Current);
             if (actionPerson.getHpRestore() > 0) {
-                BattleLog.log(actionPerson.getName() + " 恢复了" + actionPerson.getHpRestore() + "点生命值");
+                BattleLog.log(actionPerson.getName() + " 自然恢复了" + actionPerson.getHpRestore() + "点生命值,当前生命值为"+actionPerson.getHP_Current());
             } else {
-                BattleLog.log(actionPerson.getName() + " 损失了" + actionPerson.getHpRestore() + "点生命值");
+                BattleLog.log(actionPerson.getName() + " 自然损失了" + actionPerson.getHpRestore() + "点生命值,当前生命值为"+actionPerson.getHP_Current());
             }
         }
     }
@@ -795,10 +821,6 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
                 case BUFF_ACTIONSPEED:     // 辅助效果：速度
                     break;
                 case BUFF_HPRESTORE:       // 辅助效果：生命恢复。发起进攻时，生命恢复
-                    float[] buff_HpRestore = {DamgeModel.getDamgeInBuff(skill, actionPerson, beAttackPerson)};
-                    float[] buff_HpRestore2 = {0f};
-                    buff.setBuff_constant(buff_HpRestore);
-                    buff.setBuff_fluctuate(buff_HpRestore2);
                     break;
                 case BUFF_ACTIVEVALUE:     // 辅助效果：行动值。执行一次行动，需要的行动值（越少越好）
                     break;
@@ -811,6 +833,12 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
                 case BUFF_ATTACK_NUMBER:    // 辅助效果:攻击目标数量
                     break;
                 case BUFF_ATTACK_RANGE:    // 辅助效果:攻击范围
+                    break;
+                case BUFF_REDUCE_HP:
+                    // 损失生命的buff的伤害放在Buff_constant里面
+                    float [] buff_damage = buff.getBuff_constant();
+                    buff_damage[i] = DamgeModel.getDamgeInBuff(buff.getDamage_type(),buff.getBuff_constant()[i],buff.getBuff_fluctuate()[i], actionPerson, beAttackPerson);
+                    buff.setBuff_constant(buff_damage);
                     break;
                 default:
                     break;

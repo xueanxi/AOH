@@ -246,6 +246,8 @@ public class XmlUtils {
                         buff.setLevel_up_range(Float.valueOf(pullParser.nextText()));
                     } else if (BuffColumn.level_up_time.equals(tag)) {
                         buff.setLevel_up_time(Float.valueOf(pullParser.nextText()));
+                    }else if (BuffColumn.damage_type.equals(tag)) {
+                        buff.setDamage_type(Integer.valueOf(pullParser.nextText()));
                     }
                     break;
                 case XmlPullParser.END_TAG:

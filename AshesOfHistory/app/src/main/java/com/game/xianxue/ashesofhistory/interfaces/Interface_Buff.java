@@ -39,6 +39,7 @@ public interface Interface_Buff {
     int BUFF_SKILL_RATE = 25;      // 辅助效果:技能发动概率
     int BUFF_ATTACK_NUMBER= 26;    // 辅助效果:攻击目标数量
     int BUFF_ATTACK_RANGE = 27;    // 辅助效果:攻击范围
+    int BUFF_REDUCE_HP = 28;       // 辅助效果:掉血的buff
     // ==================== Buff 的效果 end=======================
 
     int BUFF_LEVEL_LIMIT_MAX = 5;       // buff最高等级限制

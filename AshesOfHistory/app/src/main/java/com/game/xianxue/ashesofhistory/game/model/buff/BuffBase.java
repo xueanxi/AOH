@@ -12,6 +12,7 @@ public class BuffBase {
     protected int buff_type;                    // buff类型     (技能类型：0：只触发一次 1：时间内每回合触发一次)
     protected int time;                         // buff持续时间
     protected int range;                        // buff的影响范围
+    protected int damage_type;                  // buff如果有伤害，则伤害类型为
     protected float level_up_range;             // 每升一级 作用范围 的提升
     protected float level_up_time;              // 每升一级 持续时间 的提升
 
@@ -183,6 +184,15 @@ public class BuffBase {
         this.sbuff_fluctuate = sbuff_fluctuate;
     }
 
+
+    public int getDamage_type() {
+        return damage_type;
+    }
+
+    public void setDamage_type(int damage_type) {
+        this.damage_type = damage_type;
+    }
+
     @Override
     public String toString() {
         return "BuffBase{" +
@@ -196,6 +206,7 @@ public class BuffBase {
                 ", buff_fluctuate=" + buff_fluctuate +
                 ", time=" + time +
                 ", range=" + range +
+                ", damage_type=" + damage_type +
                 ", level_up_constant=" + level_up_constant +
                 ", level_up_fluctuate=" + level_up_fluctuate +
                 ", level_up_range=" + level_up_range +
