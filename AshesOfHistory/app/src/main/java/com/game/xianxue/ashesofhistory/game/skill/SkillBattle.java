@@ -122,6 +122,8 @@ public class SkillBattle extends SkillBase implements Interface_Skill {
         this.effectRate = base.effectRate + (level -1)*base.levelUpEffectRate;
         this.attackTime = base.attackTime + (int)((level -1)*base.levelUpAttackTime);
 
+        if(this.cdTime <=0 ) this.cdTime = 0;
+
         //SimpleLog.logd(TAG,"setStartLevel before:"+this.name+" number= "+effectNumber);
     }
 

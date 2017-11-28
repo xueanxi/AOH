@@ -149,7 +149,7 @@
         <spirit_raw>18</spirit_raw>
         <luck_raw>18</luck_raw>
         <fascination_raw>16</fascination_raw>
-        <skill_lists_raw>3,1,2,3:507,1,1,2:300,2,5,2:302,2,7,2</skill_lists_raw>
+        <skill_lists_raw>3,1,2,3:507,1,1,2:300,2,5,2<!--:302,2,7,2--></skill_lists_raw>
         <lead_buff_id>0</lead_buff_id><!--统帅光环 0:表示没有, 其他数字：表示buff的索引-->
     </item>
 
