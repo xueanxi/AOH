@@ -1,7 +1,5 @@
 package com.game.xianxue.ashesofhistory.game.engine;
 
-import android.util.Log;
-
 import com.game.xianxue.ashesofhistory.Log.BattleLog;
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.database.BuffDataManager;
@@ -13,10 +11,8 @@ import com.game.xianxue.ashesofhistory.game.model.lineup.LineUpBase;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBattle;
 import com.game.xianxue.ashesofhistory.interfaces.Interface_Buff;
-import com.game.xianxue.ashesofhistory.interfaces.Interface_LineUp;
 import com.game.xianxue.ashesofhistory.interfaces.Interface_Skill;
 import com.game.xianxue.ashesofhistory.utils.RandomUtils;
-import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 
 import java.util.ArrayList;
 
@@ -424,7 +420,7 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
         } else {
             // 技能范围
             if (SKILL_RANGE_AOE == effectRange) {
-                effectRange = LineUpBase.LINEUP_MAX_COL;
+                effectRange = LineUpBase.LINEUP_MAX_Y;
             }
 
             // 技能范围内的人
@@ -497,8 +493,8 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
                     SimpleLog.logd(TAG, "技能选择攻击近距离目标");
                     // 获得当前距离最近的攻击目标
                     farDistance = personsBeAttackList.get(personsBeAttackList.size() - 1).getDistance(); // 最远目标的距离
-                    nearDistance = personsBeAttackList.get(0).getDistance();//最近目标的距离
-                    distanceArrays = new int[farDistance - nearDistance + 1];
+                    distanceArrays = new int[farDistance];
+
                     attackNumberRemain = effectNumber;
                     tempList = new ArrayList<BattlePerson>();
                     tempList2 = new ArrayList<BattlePerson>();
@@ -506,9 +502,9 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
                     // 获得每个距离的人数 放在distanceArrays数组里面
                     for (int i = 0; i < personsBeAttackList.size(); i++) {
                         currentDistance = personsBeAttackList.get(i).getDistance();
-                        distanceArrays[currentDistance - 1]++;
+                        distanceArrays[currentDistance - 1] = distanceArrays[currentDistance - 1]+1;
                     }
-                    // 从最后的列开始，向前选择 effectNumber个目标
+                    // 从最近的列开始，向后选择 effectNumber个目标
                     for (int i = 0; i < distanceArrays.length; i++) {
                         // 如果当前还需要攻击的人数 大于 当前列的人数，则当前列的所有人都需要加到临时列表 tempList 中
                         if (attackNumberRemain > distanceArrays[i]) {
@@ -542,8 +538,7 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
                     SimpleLog.logd(TAG, "技能选择攻击远距离目标");
                     // 获得当前距离最远的攻击目标
                     farDistance = personsBeAttackList.get(personsBeAttackList.size() - 1).getDistance(); // 最远目标的距离
-                    nearDistance = personsBeAttackList.get(0).getDistance();//最近目标的距离
-                    distanceArrays = new int[farDistance - nearDistance + 1];
+                    distanceArrays = new int[farDistance];
                     attackNumberRemain = effectNumber;
                     tempList = new ArrayList<BattlePerson>();
                     tempList2 = new ArrayList<BattlePerson>();

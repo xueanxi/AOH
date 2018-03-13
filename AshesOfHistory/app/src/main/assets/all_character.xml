@@ -288,4 +288,21 @@
         <skill_lists_raw>2,1,1,5</skill_lists_raw>
         <lead_buff_id>0</lead_buff_id><!--统帅光环 0:表示没有, 其他数字：表示buff的索引-->
     </item>
+
+    <item>
+        <personId>1000</personId>
+        <name>测试木人</name>
+        <name2>ceshimuren</name2>
+        <sexuality>0</sexuality>
+        <aptitude>1.5</aptitude>
+        <strength_raw>1</strength_raw>
+        <intellect_raw>1</intellect_raw>
+        <physique_raw>300</physique_raw>
+        <dexterity_raw>1</dexterity_raw>
+        <spirit_raw>1</spirit_raw>
+        <luck_raw>1</luck_raw>
+        <fascination_raw>1</fascination_raw>
+        <skill_lists_raw>1,1,1,15</skill_lists_raw>
+        <lead_buff_id>0</lead_buff_id><!--统帅光环 0:表示没有, 其他数字：表示buff的索引-->
+    </item>
 </all_character>

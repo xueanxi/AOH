@@ -99,7 +99,7 @@ public class SkillTest {
         playerList1.add(b2);
 
 
-        BasePerson play3= PersonDataManager.getPersonFromDataBaseByPinyin("xvchu");
+        BasePerson play3= PersonDataManager.getPersonFromDataBaseByPinyin("ceshimuren");
         BattlePerson b3 = new BattlePerson(new NormalPerson(play3,15));
         BasePerson play4 = PersonDataManager.getPersonFromDataBaseByPinyin("caocao");
         BattlePerson b4 = new BattlePerson(new NormalPerson(play4,15));

@@ -6,8 +6,8 @@ package com.game.xianxue.ashesofhistory.game.model.lineup;
 public class LineUpBase {
     final static String TAG = "LineUpBase";
 
-    public static int LINEUP_MAX_ROW = 9;     // 阵型最大行数
-    public static int LINEUP_MAX_COL = 9;     // 阵型最大列数
+    public static int LINEUP_MAX_X = 9;        // 阵型X坐标最大数字
+    public static int LINEUP_MAX_Y = 9;        // 阵型Y坐标最大数字
 
     public static int LINEUP_MINI_ROW = 1;     // 阵型最小行数
     public static int LINEUP_MINI_COL = 1;     // 阵型最小列数

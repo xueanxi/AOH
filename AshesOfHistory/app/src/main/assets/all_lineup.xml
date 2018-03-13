@@ -29,10 +29,10 @@
         <max_person>6</max_person><!--最大人数-->
         <unit>0,0,2</unit>
         <unit>1,0,0,1</unit>
-        <unit>0,1,1</unit>
-        <unit>1,1,0,1</unit>
-        <unit>c0,2,1</unit>
-        <unit>l1,2,1</unit>
+        <unit>c0,1,1</unit>
+        <unit>l1,1,0,1</unit>
+        <unit>0,2,1</unit>
+        <unit>1,2,1</unit>
     </item>
 
     <item>

@@ -43,7 +43,7 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff, Interfac
             return;
         }
 
-        LineupMatrixs = new UnitBattle[LINEUP_MAX_ROW][LINEUP_MAX_COL];
+        LineupMatrixs = new UnitBattle[LINEUP_MAX_X][LINEUP_MAX_Y];
         for (UnitBase data : rawUnitLists) {
             LineupMatrixs[data.getX()][data.getY()] = new UnitBattle(data);
         }
@@ -147,8 +147,8 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff, Interfac
             // 填充团长
             if (person.isLeader()) {
                 isOver = false;
-                for (int x = 0; x < LINEUP_MAX_ROW; x++) {
-                    for (int y = 0; y < LINEUP_MAX_COL; y++) {
+                for (int x = 0; x < LINEUP_MAX_X; x++) {
+                    for (int y = 0; y < LINEUP_MAX_Y; y++) {
                         unit = LineupMatrixs[x][y];
                         if (unit != null && unit.isLeader()) {
                             unit.setPersonIndex(i);
@@ -164,8 +164,8 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff, Interfac
             } else if (person.isCounsellor()) {
                 // 填充军师
                 isOver = false;
-                for (int x = 0; x < LINEUP_MAX_ROW; x++) {
-                    for (int y = 0; y < LINEUP_MAX_COL; y++) {
+                for (int x = 0; x < LINEUP_MAX_X; x++) {
+                    for (int y = 0; y < LINEUP_MAX_Y; y++) {
                         unit = LineupMatrixs[x][y];
                         if (unit != null && unit.isCounsellor()) {
                             unit.setPersonIndex(i);
@@ -180,8 +180,8 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff, Interfac
             } else if (!person.isLeader() && !person.isCounsellor()) {
                 // 填充其他
                 isOver = false;
-                for (int x = 0; x < LINEUP_MAX_ROW; x++) {
-                    for (int y = 0; y < LINEUP_MAX_COL; y++) {
+                for (int x = 0; x < LINEUP_MAX_X; x++) {
+                    for (int y = 0; y < LINEUP_MAX_Y; y++) {
                         unit = LineupMatrixs[x][y];
                         if (unit != null && unit.isEmpty() && !unit.isCounsellor() && !unit.isLeader()) {
                             unit.setPersonIndex(i);
@@ -245,29 +245,32 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff, Interfac
     public ArrayList<BattlePerson> getPersonsByDistance(int distance) {
         if (distance < LINEUP_MINI_COL) {
             distance = LINEUP_MINI_COL;
-        } else if (distance > LINEUP_MAX_COL) {
-            distance = LINEUP_MAX_COL;
+        } else if (distance > LINEUP_MAX_Y) {
+            distance = LINEUP_MAX_Y;
         }
         ArrayList<BattlePerson> result = null;
         UnitBattle unit = null;
 
-        // nearCol 为距离敌人最近的一列还有活人的索引，
-        // 比如 第0列，还有人存活着，那么nearCol =0
-        // 比如 第0列，所有人都挂了，第1列还有人存活，此时nearCol等于1，而不是0
-        // 比如 第0列和第1列所有人都挂了，第2列还有人存活，此时nearCol等于2，而不是1或者0
-        int nearCol = 0;
+        // nearX 为距离敌人最近的一列还有活人的索引，
+        // 比如 第0列，还有人存活着，nearX =0
+        // 比如 第0列，所有人都挂了，第1列还有人存活，nearX =1 ，而不是0
+        // 比如 第0列和第1列所有人都挂了，第2列还有人存活，nearX =2 ，而不是1或者0
+        int nearX = 0;
         if (membersList == null) return null;
 
-        // 计算出 nearCol
+        // 计算出 nearX
         boolean isOver = false;
-        for (int y = 0; y < LINEUP_MAX_COL; y++) {
-            for (int x = 0; x < LINEUP_MAX_ROW; x++) {
+        for (int x = 0; x < LINEUP_MAX_X; x++) {
+            for (int y = 0; x < LINEUP_MAX_Y; x++) {
                 unit = LineupMatrixs[x][y];
-                if (unit == null) continue;
+                if (unit == null || unit.isEmpty() || unit.getPersonIndex()==-1){
+                    // 如果这个位置是空的，则跳过
+                    continue;
+                }
                 int HP = membersList.get(unit.getPersonIndex()).getHP_Current();
                 if (HP > 0) {
                     isOver = true;
-                    nearCol = y;
+                    nearX = x;
                     break;
                 }
             }
@@ -276,27 +279,22 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff, Interfac
 
         // 得到所有攻击范围内存活的目标
         result = new ArrayList<BattlePerson>();
-        int farCol = nearCol + distance - 1;
-        if (farCol > (LINEUP_MAX_ROW - 1)) {
-            farCol = LINEUP_MAX_ROW - 1;
+        int farCol = nearX + distance - 1;
+        if (farCol > (LINEUP_MAX_X - 1)) {
+            farCol = LINEUP_MAX_X - 1;
         }
         BattlePerson personInRange = null;
-        for (int y = nearCol; y <= farCol; y++) {
-            for (int x = 0; x < LINEUP_MAX_ROW; x++) {
+        for (int x = nearX; x <= farCol; x++) {
+            for (int y = 0; y < LINEUP_MAX_X; y++) {
                 unit = LineupMatrixs[x][y];
-                if (unit == null) {
-                    SimpleLog.loge(TAG, "getPersonsByDistance(): unit == null");
-                    continue;
-                }
-
-                if (unit.getPersonIndex() == -1) {
-                    SimpleLog.loge(TAG, "getPersonsByDistance(): unit.getPersonIndex()==-1");
+                if (unit == null || unit.getPersonIndex() == -1 || unit.isEmpty()) {
+                    SimpleLog.logd(TAG, "getPersonsByDistance(): unit is invalid");
                     continue;
                 }
 
                 personInRange = membersList.get(unit.getPersonIndex());
                 if (personInRange.getHP_Current() > 0) {
-                    personInRange.setDistance(y - nearCol + 1); // 设置personInRange与攻击者之间的距离
+                    personInRange.setDistance(x - nearX + 1); // 设置personInRange与攻击者之间的距离
                     result.add(personInRange);
                 }
             }
@@ -324,9 +322,9 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff, Interfac
     public void displayMatrix() {
         BattleLog.log("======" + this.name + "的阵型 start ======");
         UnitBattle unit = null;
-        for (int x = 0; x < LINEUP_MAX_ROW; x++) {
+        for (int y = 0; y < LINEUP_MAX_Y; y++) {
             StringBuilder sb = new StringBuilder();
-            for (int y = 0; y < LINEUP_MAX_COL; y++) {
+            for (int x = 0; x < LINEUP_MAX_X; x++) {
                 unit = LineupMatrixs[x][y];
                 if (unit != null && !unit.isEmpty()) {
                     String name = membersList.get(unit.getPersonIndex()).getName();
