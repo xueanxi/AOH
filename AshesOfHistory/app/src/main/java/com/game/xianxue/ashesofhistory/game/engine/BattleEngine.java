@@ -265,7 +265,7 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
                 if (buff == null) continue;
 
                 // buff一般都有回合限制，把时间到了的清除掉
-                if (BUFF_TIME_UNLIMITED != buff.getTime()) {
+                if (BUFF_TIME_UNLIMITED == buff.getTime()) {
                     int remainTime = buff.getRemainTime();
                     if (remainTime > 0) {
                         buff.setRemainTime(remainTime--);
@@ -602,7 +602,7 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
     /**
      * actionPerson 对 beAttackPerson 发动普通攻击
      *
-     * @param actionPerson   发动普通攻击的人
+     * @param actionPerson   发动攻击的人
      * @param beAttackPerson 被普通攻击的人
      * @param skill          普通攻击这个技能
      */

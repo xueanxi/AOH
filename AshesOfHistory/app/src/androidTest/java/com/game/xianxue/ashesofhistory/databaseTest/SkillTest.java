@@ -31,7 +31,7 @@ import java.util.ArrayList;
  */
 @RunWith(AndroidJUnit4.class)
 public class SkillTest {
-    private static final String TAG = "DataBaseTest";
+    private static final String TAG = "=SkillTest";
     Context mContext;
 
     public void init() {

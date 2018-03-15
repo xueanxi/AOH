@@ -306,6 +306,27 @@ public class BattlePerson extends NormalPerson {
     }
 
     /**
+     * 加持Buff
+     *
+     * @param buff
+     */
+    public void addBuff(BuffBattle buff) {
+        if (activeBuffList == null) {
+            activeBuffList = new ArrayList<BuffBattle>();
+        }
+
+        // 如果有相同的buff，则先移除掉旧的
+        for (int i = 0; i < activeBuffList.size(); i++) {
+            if (activeBuffList.get(i).getBuffId() == buff.getBuffId()) {
+                activeBuffList.remove(i);
+                break;
+            }
+        }
+        // 增加buff
+        activeBuffList.add(buff);
+    }
+
+    /**
      * 在战斗中加持Buff
      *
      * @param buff

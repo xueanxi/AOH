@@ -143,7 +143,7 @@ public class BuffTest {
         BuffBase b1 = BuffDataManager.getBuffFromDataBaseById(505);
         BuffBattle buff1 = new BuffBattle(b1,3);
 
-        person1.addBuffInBattle(buff1);
+        person1.addBuff(buff1);
 
         Log.d(TAG,"加持之前:"+person1.display());
 

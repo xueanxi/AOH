@@ -80,7 +80,7 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff, Interfac
         BuffBattle buffLeader = new BuffBattle(baseBuff, buffLevel);
 
         for (int i = 0; i < membersList.size(); i++) {
-            membersList.get(i).addBuffInBattle(buffLeader);
+            membersList.get(i).addBuff(buffLeader);
         }
 
         BattleLog.log(leader.getName() + "成为统帅,队伍全部人获得Buff" + baseBuff.getName());
@@ -315,9 +315,6 @@ public class LineUpBattle extends LineUpBase implements Interface_Buff, Interfac
             return false;
         }
     }
-
-
-
 
     /**
      * 展示 矩阵
