@@ -409,7 +409,8 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
         } else if (t2.getmCamp() == effectCamp) {
             teamBeAttack = t2;
         } else {
-            SimpleLog.loge(TAG, "Error !!! 技能找不到攻击的阵营");
+            SimpleLog.loge(TAG, "Error !!! 技能找不到攻击的阵营,放弃此次攻击");
+            return;
         }
 
         // 挑选出承受此次技能的人
@@ -436,7 +437,6 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
             // 用到的一些变量
             int skillTarget = skillCurrent.getEffectTarget();// 技能选择哪种类型的人物进行攻击
             int farDistance;// 最远目标的距离
-            int nearDistance;//最近目标的距离
             int currentDistance;// 当前遍历到的距离
             int[] distanceArrays;// 存放每个距离人数的数组。 Ex:数组[3,4,5] 表示距离为1的有3个人，距离为2的有4个人，距离为3的有5个人。
             int attackNumberRemain;// 还剩余多少个人需要攻击
