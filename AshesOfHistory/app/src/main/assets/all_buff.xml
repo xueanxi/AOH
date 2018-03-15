@@ -191,13 +191,13 @@ buff有四种：比如 力量契约 力量衰竭 力量祝福 力量诅咒
         <buff_nature>1</buff_nature><!--buff 性质 0 被动加成的 1 主动释放加持的-->
         <buff_constant>15</buff_constant><!--buff效果固定部分-->
         <buff_fluctuate>0.15</buff_fluctuate><!--buff效果浮动部分 浮点数-->
-        <time>3</time><!--技能持续时间，0是永久的 其他数字是buff的持续回合-->
+        <time>2</time><!--技能持续时间，0是永久的 其他数字是buff的持续回合-->
         <range>0</range><!--技能攻击范围，0～9 （0的意思是只能对自己释放） -->
         <damage_type>1</damage_type><!-- buff如果有伤害，则伤害类型为-->
         <level_up_constant>0</level_up_constant><!--技能升级 固定部分 效果提升 浮点数 0～5.0 -->
         <level_up_fluctuate>0.05</level_up_fluctuate><!--技能升级 浮动部分 效果提升 浮点数 0～5.0 -->
         <level_up_range>0</level_up_range><!--技能升级 范围提升 浮点数 原来的范围加上effect_range_up然后向下取整就是新的范围 -->
-        <level_up_time>1</level_up_time>  <!--技能升级 时间提升 浮点数 time+effect_time_up然后向下取整就是新的持续时间 -->
+        <level_up_time>0.5</level_up_time>  <!--技能升级 时间提升 浮点数 time+effect_time_up然后向下取整就是新的持续时间 -->
     </item>
 
 <!-- ====================专属Buff Start=============================-->

@@ -1,5 +1,7 @@
 package com.game.xianxue.ashesofhistory.game.model.person;
 
+import com.game.xianxue.ashesofhistory.Log.BattleLog;
+import com.game.xianxue.ashesofhistory.Log.BuffLog;
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBase;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBattle;
@@ -324,6 +326,7 @@ public class BattlePerson extends NormalPerson {
         }
         // 增加buff
         activeBuffList.add(buff);
+        showActiveBuff();
     }
 
     /**
@@ -397,13 +400,14 @@ public class BattlePerson extends NormalPerson {
     public String showActiveBuff() {
         StringBuilder result = new StringBuilder();
         if (activeBuffList == null || activeBuffList.size() == 0) {
-            result.append("没有主动加持的Buff");
+            result.append("没有 主动 加持的Buff");
         } else {
             BuffBattle buff;
             for (int i = 0; i < activeBuffList.size(); i++) {
                 buff = activeBuffList.get(i);
-                result.append(buff.getName() + " Lv." + buff.getLevel() + " dur:" + buff.getDuration()
-                        + "constant:" + buff.getBuff_constant()[0] + "fluctuate:" + buff.getBuff_fluctuate()[0] + "\n");
+                result.append(buff.getName() + " Lv." + buff.getLevel() + " dur:" + buff.getDuration() +" remainTime:"+buff.getRemainTime()+
+                        " time:"+buff.getTime()+
+                        " constant:" + buff.getBuff_constant()[0] + " fluctuate:" + buff.getBuff_fluctuate()[0] + "\n");
             }
         }
         return result.toString();
@@ -412,7 +416,7 @@ public class BattlePerson extends NormalPerson {
     public String showPassiveBuff() {
         StringBuilder result = new StringBuilder();
         if (passiveBuffList == null || passiveBuffList.size() == 0) {
-            result.append("没有主动加持的Buff");
+            result.append("没有 被动 加持的Buff");
         } else {
             BuffBattle buff;
             for (int i = 0; i < passiveBuffList.size(); i++) {

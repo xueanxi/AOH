@@ -41,6 +41,9 @@ public class BuffBattle extends BuffBase implements Interface_Buff {
         this.buff_fluctuate = TextUtils.getFloatArrayFromString(sbuff_fluctuate);
         this.level_up_constant = TextUtils.getFloatArrayFromString(slevel_up_constant);
         this.level_up_fluctuate = TextUtils.getFloatArrayFromString(slevel_up_fluctuate);
+
+        remainTime = time;
+        duration = 0;
     }
 
     public BuffBattle(BuffBase base, int level) {
@@ -104,8 +107,10 @@ public class BuffBattle extends BuffBase implements Interface_Buff {
                 buff_constant[i] = (float) (buff_constant[i] + (float) (level - 1) * level_up_constant[i]);
                 buff_fluctuate[i] = (float) (buff_fluctuate[i] + (float) (level - 1) * level_up_fluctuate[i]);
             }
-            time = (int) (time + time * (level - 1) * level_up_time);
-            range = (int) (range + range * (level - 1) * level_up_range);
+            time = (int) (time +  (level - 1) * level_up_time);
+            remainTime = time;
+            duration = 0;
+            range = (int) (range + (level - 1) * level_up_range);// TODO: 2018/3/15 这里有bug
         } else {
             SimpleLog.loge(TAG, this.getName() + " buff setLevel():的时候出现错误。");
         }
@@ -168,7 +173,9 @@ public class BuffBattle extends BuffBase implements Interface_Buff {
     @Override
     public String toString() {
         return "BuffBattle{" +
-                "startLevel=" + level +
+                "level=" + level +
+                ", remainTime=" + remainTime +
+                ", duration=" + duration +
                 "} " + super.toString();
     }
 }

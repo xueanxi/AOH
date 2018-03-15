@@ -453,7 +453,7 @@
         <damage_penetrate>0</damage_penetrate><!--穿透率 浮点数-->
         <accuracy_rate>1.5</accuracy_rate><!--技能命中率 = 人物命中率 * 技能命中率 Ex：如果accuracy_rate = -1 则表示必中-->
         <crite_rate>0</crite_rate><!--技能暴击率 技能触发暴击的概率 = 人物暴击率 * 技能暴击率-->
-        <cd_time>2</cd_time><!--技能冷却时间0～+ --><!-- debug cd time = 5-->
+        <cd_time>10</cd_time><!--技能冷却时间0～+ --><!-- debug cd time = 5-->
         <range>3</range><!--技能攻击范围，0～9 （-1表示范围是全场,0表示只能对自己释放） -->
         <effect_number>3</effect_number><!--技能攻击人数，0～10 （0的意思对全场AOE） -->
         <effect_camp>0</effect_camp><!--技能目标阵营 0对敌人 1对友方-->

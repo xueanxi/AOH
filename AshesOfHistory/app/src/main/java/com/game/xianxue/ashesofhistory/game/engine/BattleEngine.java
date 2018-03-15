@@ -1,6 +1,7 @@
 package com.game.xianxue.ashesofhistory.game.engine;
 
 import com.game.xianxue.ashesofhistory.Log.BattleLog;
+import com.game.xianxue.ashesofhistory.Log.BuffLog;
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.database.BuffDataManager;
 import com.game.xianxue.ashesofhistory.game.model.DamgeModel;
@@ -155,15 +156,16 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
     public void doAction(BattlePerson actionPerson) {
         // TODO: 2017/10/15 这里不应该直接进行释放技能或者普通攻击，应该在执行之前，判断一下，是否有什么负面状态，导致本次行动不能正常执行的。
 
-        // 处理Buff效果,这个每个回合都应该处理一次
-        handleBuff(actionPerson);
+        // 打印Buff效果
         String aBuff = actionPerson.showActiveBuff();
         String pBuff = actionPerson.showPassiveBuff();
-        BattleLog.log("主动Buff:" + aBuff);
-        BattleLog.log("被动Buff:" + pBuff);
+        BuffLog.log(actionPerson.getName()+"doAction() 主动Buff:" + aBuff);
+        BuffLog.log(actionPerson.getName()+"doAction() 被动Buff:" + pBuff);
 
-        // 刷新属性
-        actionPerson.updateBattleAttribute();
+        handleBuffBeforeAction(actionPerson);
+
+        // 每回合的自动回血的数量，那些持续回血的效果
+        restoreHp(actionPerson);
 
         // 处理负面状态
         // 1.处理损失生命值的buff
@@ -188,15 +190,6 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
                 }
             }
         }
-        buffLists.clear();
-        buffLists = null;
-
-        // 每回合的自动回血的数量，那些持续回血的效果
-        restoreHp(actionPerson);
-        /*if (actionPerson.getHP_Current() <= 0) {
-            BattleLog.log(actionPerson.getName() + "死亡了。");
-            return;
-        }*/
 
         // 打印技能列表
         ArrayList<SkillBattle> skillLists = actionPerson.getActiveSkillsList();
@@ -221,16 +214,20 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
                 startAttack(actionPerson, true);
             }
         }
+
+        // 行动结束后，移除过时的buf
+        handleBuffAfterAction(actionPerson);
     }
 
     /**
-     * 处理Buff效果,这个每个回合都应该处理一次
+     *
+     * 在执行行动之前先处理Buff效果
      * 1.去掉过时的buff
      * 2.处理每回合叠加的buff
      *
      * @param actionPerson
      */
-    private void handleBuff(BattlePerson actionPerson) {
+    private void handleBuffBeforeAction(BattlePerson actionPerson) {
         // TODO: 10/17/17 处理持续buff效果
         ArrayList<BuffBattle> buffPassives = actionPerson.getPassiveBuffList();
         ArrayList<BuffBattle> buffActives = actionPerson.getActiveBuffList();
@@ -246,9 +243,7 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
                 if (BUFF_TIME_UNLIMITED != buff.getTime()) {
                     int remainTime = buff.getRemainTime();
                     if (remainTime > 0) {
-                        buff.setRemainTime(remainTime--);
-                    } else {
-                        buffPassives.remove(i);
+                        buff.setRemainTime(remainTime-1);
                     }
                 }
 
@@ -265,12 +260,10 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
                 if (buff == null) continue;
 
                 // buff一般都有回合限制，把时间到了的清除掉
-                if (BUFF_TIME_UNLIMITED == buff.getTime()) {
+                if (BUFF_TIME_UNLIMITED != buff.getTime()) {
                     int remainTime = buff.getRemainTime();
                     if (remainTime > 0) {
-                        buff.setRemainTime(remainTime--);
-                    } else {
-                        buffActives.remove(i);
+                        buff.setRemainTime(remainTime-1);
                     }
                 }
 
@@ -279,6 +272,60 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
                 buff.setDuration(buff.getDuration() + 1);
             }
         }
+
+        // 刷新属性
+        actionPerson.updateBattleAttribute();
+    }
+
+    /**
+     *
+     * 在执行行动之后移除过时的Buff效果
+     * 1.去掉过时的buff
+     * 2.处理每回合叠加的buff
+     *
+     * @param actionPerson
+     */
+    private void handleBuffAfterAction(BattlePerson actionPerson) {
+        // TODO: 10/17/17 处理持续buff效果
+        ArrayList<BuffBattle> buffPassives = actionPerson.getPassiveBuffList();
+        ArrayList<BuffBattle> buffActives = actionPerson.getActiveBuffList();
+        BuffBattle buff = null;
+
+        // 处理被动技能的Buff
+        if (buffPassives != null) {
+            for (int i = 0; i < buffPassives.size(); i++) {
+                buff = buffPassives.get(i);
+                if (buff == null) continue;
+
+                // buff一般都有回合限制，把时间到了的清除掉
+                if (BUFF_TIME_UNLIMITED != buff.getTime()) {
+                    int remainTime = buff.getRemainTime();
+                    if (remainTime == 0) {
+                        buffPassives.remove(i);
+                        BuffLog.log(buff.getName()+" 因为时间到了而失效。");
+                    }
+                }
+            }
+        }
+
+        // 处理主动加持的buff
+        if (buffActives != null) {
+            for (int i = 0; i < buffActives.size(); i++) {
+                buff = buffActives.get(i);
+                if (buff == null) continue;
+
+                // buff一般都有回合限制，把时间到了的清除掉
+                if (BUFF_TIME_UNLIMITED != buff.getTime()) {
+                    int remainTime = buff.getRemainTime();
+                    if (remainTime == 0) {
+                        buffActives.remove(i);
+                        BuffLog.log(buff.getName()+" 因为时间到了而失效。");
+                    }
+                }
+            }
+        }
+
+        actionPerson.updateBattleAttribute();
     }
 
     /**
@@ -768,9 +815,12 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
      */
     private void triggerSkillEffect(SkillBattle skill, BattlePerson actionPerson, BattlePerson beAttackPerson) {
         BuffBase buffbase = BuffDataManager.getBuffFromDataBaseById(skill.getAssistEffect());
+        BattleLog.log("BuffBase "+buffbase.getName()+" time:"+buffbase.getTime()+" level:"+skill.getLevel());
         if (buffbase == null) return;
         BuffBattle buff = new BuffBattle(buffbase, skill.getLevel());
         BattleLog.log("技能["+skill.getName()+"]触发了攻击特效["+buff.getName()+"]");
+        BattleLog.log(" BuffBattle "+buff.getName()+" = "+buff.getTime());
+
         if (buff == null) return;
         int[] effectType = buff.getBuff_effect();
         for (int i = 0; i < effectType.length; i++) {
