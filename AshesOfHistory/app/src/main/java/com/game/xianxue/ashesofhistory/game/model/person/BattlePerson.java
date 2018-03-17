@@ -1,10 +1,13 @@
 package com.game.xianxue.ashesofhistory.game.model.person;
 
+import android.support.annotation.Nullable;
+
 import com.game.xianxue.ashesofhistory.Log.BattleLog;
 import com.game.xianxue.ashesofhistory.Log.BuffLog;
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBase;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBattle;
+import com.game.xianxue.ashesofhistory.game.skill.SkillBattle;
 import com.game.xianxue.ashesofhistory.interfaces.Interface_LineUp;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 
@@ -326,7 +329,7 @@ public class BattlePerson extends NormalPerson {
         }
         // 增加buff
         activeBuffList.add(buff);
-        showActiveBuff();
+        //showActiveBuff(null);
     }
 
     /**
@@ -397,7 +400,11 @@ public class BattlePerson extends NormalPerson {
         updateBattleAttribute();
     }
 
-    public String showActiveBuff() {
+    public void showActiveBuff(@Nullable String tag) {
+        if(tag == null){
+            tag = logTAG;
+        }
+
         StringBuilder result = new StringBuilder();
         if (activeBuffList == null || activeBuffList.size() == 0) {
             result.append("没有 主动 加持的Buff");
@@ -410,22 +417,9 @@ public class BattlePerson extends NormalPerson {
                         " constant:" + buff.getBuff_constant()[0] + " fluctuate:" + buff.getBuff_fluctuate()[0] + "\n");
             }
         }
-        return result.toString();
-    }
-
-    public String showPassiveBuff() {
-        StringBuilder result = new StringBuilder();
-        if (passiveBuffList == null || passiveBuffList.size() == 0) {
-            result.append("没有 被动 加持的Buff");
-        } else {
-            BuffBattle buff;
-            for (int i = 0; i < passiveBuffList.size(); i++) {
-                buff = passiveBuffList.get(i);
-                result.append(buff.getName() + " Lv." + buff.getLevel() + " dur:" + buff.getDuration()
-                        + "constant:" + buff.getBuff_constant()[0] + "fluctuate:" + buff.getBuff_fluctuate()[0] + "\n");
-            }
+        if(result != null){
+            SimpleLog.logd(tag,result.toString());
         }
-        return result.toString();
     }
 
     public int getActiveValues() {
@@ -595,24 +589,12 @@ public class BattlePerson extends NormalPerson {
         }
     }
 
-    @Override
-    public void showSkill() {
-        SimpleLog.logd(TAG, "===showSkill()===");
-        if (passiveBuffList == null) {
-            SimpleLog.loge(TAG, "passiveBuffList == null");
-        } else {
-            if (passiveBuffList.size() == 0) {
-                SimpleLog.loge(TAG, "passiveBuffList size == 0");
-            }
+    public void displaySkill(){
+        ArrayList<SkillBattle> skillLists = getActiveSkillsList();
+        StringBuilder skillStrings = new StringBuilder();
+        for (int i = 1; i < skillLists.size(); i++) {
+            skillStrings.append(skillLists.get(i).getName() + " 恢复时间:" + skillLists.get(i).getRecoverTime() + " CD:" + skillLists.get(i).getCdTime() + "| ");
         }
-        if (activeSkillsList == null) {
-            SimpleLog.loge(TAG, "activeSkillsList == null");
-        } else {
-            if (activeSkillsList.size() == 0) {
-                SimpleLog.loge(TAG, "activeSkillsList size == 0");
-            }
-        }
-        ShowUtils.showArrayLists(TAG, passiveBuffList);
-        ShowUtils.showArrayLists(TAG, activeSkillsList);
+        BattleLog.log(getName() + "技能列表：" + skillStrings.toString());
     }
 }

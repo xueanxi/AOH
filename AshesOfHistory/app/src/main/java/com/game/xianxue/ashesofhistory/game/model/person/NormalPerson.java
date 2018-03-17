@@ -1,5 +1,8 @@
 package com.game.xianxue.ashesofhistory.game.model.person;
 
+import android.support.annotation.Nullable;
+
+import com.game.xianxue.ashesofhistory.Log.BattleLog;
 import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.database.BuffDataManager;
 import com.game.xianxue.ashesofhistory.game.model.buff.BuffBase;
@@ -20,6 +23,7 @@ import java.util.ArrayList;
 
 public class NormalPerson extends BasePerson implements Interface_Buff, Interface_Person, Interface_Skill {
     private static final String TAG = "NormalPerson";
+    final String logTAG = BattleLog.TAG;
 
     /**
      * 7个基础属性
@@ -1260,8 +1264,47 @@ public class NormalPerson extends BasePerson implements Interface_Buff, Interfac
                 '}';
     }
 
-    public void showSkill() {
-        ShowUtils.showArrayLists(TAG, passiveBuffList);
-        ShowUtils.showArrayLists(TAG, activeSkillsList);
+    public void showPassiveBuff(@Nullable String tag) {
+        if(tag == null){
+            tag = logTAG;
+        }
+        StringBuilder result = new StringBuilder();
+        if (passiveBuffList == null || passiveBuffList.size() == 0) {
+            result.append("没有 被动 加持的Buff");
+        } else {
+            BuffBattle buff;
+            for (int i = 0; i < passiveBuffList.size(); i++) {
+                buff = passiveBuffList.get(i);
+                result.append(buff.getName() + " Lv." + buff.getLevel() + " dur:" + buff.getDuration()
+                        + "constant:" + buff.getBuff_constant()[0] + "fluctuate:" + buff.getBuff_fluctuate()[0] + "\n");
+            }
+        }
+        if(result != null){
+            SimpleLog.logd(tag,result.toString());
+        }
+    }
+
+    /**
+     * 打印主动技能
+     * @param tag
+     */
+    public void showActiveSkill(@Nullable String tag) {
+        if(tag == null){
+            tag = logTAG;
+        }
+        StringBuilder result = new StringBuilder();
+        if (activeSkillsList == null || activeSkillsList.size() == 0) {
+            result.append("没有主动技能");
+        } else {
+            SkillBattle skill;
+            for (int i = 0; i < activeSkillsList.size(); i++) {
+                skill = activeSkillsList.get(i);
+                result.append(skill.getName() + " Lv." + skill.getLevel() + " cd:" + skill.getCdTime()
+                        + "constant:" + skill.getDamageConstant() + "fluctuate:" + skill.getDamageFluctuate() + "\n");
+            }
+        }
+        if(result != null){
+            SimpleLog.logd(tag,result.toString());
+        }
     }
 }

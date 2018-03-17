@@ -5,6 +5,7 @@ import android.os.SystemClock;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
+import com.game.xianxue.ashesofhistory.Log.SimpleLog;
 import com.game.xianxue.ashesofhistory.database.LineUpDataManager;
 import com.game.xianxue.ashesofhistory.database.PersonDataManager;
 import com.game.xianxue.ashesofhistory.database.SkillDataManager;
@@ -16,6 +17,7 @@ import com.game.xianxue.ashesofhistory.game.model.person.BasePerson;
 import com.game.xianxue.ashesofhistory.game.model.person.BattlePerson;
 import com.game.xianxue.ashesofhistory.game.model.person.NormalPerson;
 import com.game.xianxue.ashesofhistory.game.skill.SkillBase;
+import com.game.xianxue.ashesofhistory.game.skill.SkillBattle;
 import com.game.xianxue.ashesofhistory.utils.ShowUtils;
 import com.game.xianxue.ashesofhistory.utils.XmlUtils;
 
@@ -87,9 +89,59 @@ public class SkillTest {
      */
     @Test
     public void TestHuoGong() {
+        testSkill("zhugeliang",300,15);
+    }
+
+    /**
+     * 测试 技能攻击距离 随等级提升
+     */
+    @Test
+    public void TestSkillAttackRangeLevelUp() {
+        SkillBase baseSkill = SkillDataManager.getSkillFromDataBaseById(1);// 1是普通攻击的id
+        SkillBattle skill = new SkillBattle(baseSkill,1);
+        SimpleLog.logd(TAG,"skill range1 = "+skill.getRange() + "每级提升距离"+skill.getLevelUpRange());
+
+        skill= new SkillBattle(baseSkill,5);
+        SimpleLog.logd(TAG,"skill range2 = "+skill.getRange()+"每级提升距离"+ skill.getLevelUpRange());
+    }
+
+    /**
+     * 测试 技能cd 随等级提升
+     */
+    @Test
+    public void TestSkillCDLevelUp() {
+        SkillBase baseSkill = SkillDataManager.getSkillFromDataBaseById(200);// 弱点攻击
+        SkillBattle skill = new SkillBattle(baseSkill,1);
+        SimpleLog.logd(TAG,"skill cd = "+skill.getCdTime() + "每级减低CD"+skill.getLevelUpCDTime());
+
+        skill= new SkillBattle(baseSkill,5);
+        SimpleLog.logd(TAG,"skill cd = "+skill.getCdTime() + "每级减低CD"+skill.getLevelUpCDTime());
+    }
+
+    /**
+     * 这个方法用于测试技能
+     *
+     * @param personName2 用于测试的武将拼音名字
+     * @param skillId   技能ID
+     * @param skillLevel  技能等级
+     */
+    public void testSkill(String personName2, int skillId, int skillLevel) {
         init();
-        BasePerson play1 = PersonDataManager.getPersonFromDataBaseByPinyin("zhugeliang");
+
+        SkillBase baseSkill = SkillDataManager.getSkillFromDataBaseById(skillId);
+        SkillBattle skill = new SkillBattle(baseSkill,skillLevel);
+
+        BasePerson play1 = PersonDataManager.getPersonFromDataBaseByPinyin(personName2);
         BattlePerson b1 = new BattlePerson(new NormalPerson(play1,15));
+        ArrayList<SkillBattle> skillList = b1.getActiveSkillsList();
+        for(int i =0;i<skillList.size();i++){
+            if(skillList.get(i).getSkillId() == skillId){
+                skillList.remove(i);
+                break;
+            }
+        }
+        skillList.add(skill);
+
         BasePerson play2 = PersonDataManager.getPersonFromDataBaseByPinyin("liubei");
         BattlePerson b2 = new BattlePerson(new NormalPerson(play2,15));
         b2.setLeader(true);

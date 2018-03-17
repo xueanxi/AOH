@@ -113,17 +113,49 @@ public class SkillBattle extends SkillBase implements Interface_Skill {
         }
         this.level = level;
 
+
         this.damageConstant = base.damageConstant + (level -1)*base.levelUpConstant;
         this.damageFluctuate = base.damageFluctuate + (level -1)*base.levelUpFluctuate;
-        this.range = (int)(base.range + (level -1)*base.levelUpRange);
-        this.effectNumber = (int)(base.effectNumber + (level -1)*base.levelUpNumber);
-        this.cdTime = (int)(base.cdTime + (level -1)*base.levelUpCDTime);
-        this.damagePenetrate = (int)(base.damagePenetrate + (level -1)*base.levelUpPenetrate);
         this.effectRate = base.effectRate + (level -1)*base.levelUpEffectRate;
-        this.attackTime = base.attackTime + (int)((level -1)*base.levelUpAttackTime);
+
+        // 因为等级提升有些效果是增加的(攻击力)，有些效果是减少的(减cd)，所以需要进行以下计算
+        // 效果是增加的 结果要向下取整
+        // 效果是减少的 结果要向上取整
+        if(base.levelUpRange >=0){
+            this.range = (int)(base.range + (level -1)*base.levelUpRange);
+        }else{
+            this.range = (int)Math.ceil(base.range + (level -1)*base.levelUpRange);
+        }
+
+        // 攻击人数
+        if(base.levelUpNumber >=0){
+            this.effectNumber = (int)(base.effectNumber + (level -1)*base.levelUpNumber);
+        }else{
+            this.effectNumber = (int)Math.ceil(base.effectNumber + (level -1)*base.levelUpNumber);
+        }
+
+        // 技能cd
+        if(base.levelUpCDTime >=0) {
+            this.cdTime = (int) (base.cdTime + (level - 1) * base.levelUpCDTime);
+        }else{
+            this.cdTime = (int)Math.ceil(base.cdTime + (level - 1) * base.levelUpCDTime);
+        }
+
+        // 穿透
+        if(base.levelUpPenetrate >=0) {
+            this.damagePenetrate = (int)(base.damagePenetrate + (level -1)*base.levelUpPenetrate);
+        }else{
+            this.damagePenetrate = (int)Math.ceil(base.damagePenetrate + (level -1)*base.levelUpPenetrate);
+        }
+
+        // 攻击次数
+        if(base.levelUpAttackTime >= 0){
+            this.attackTime = base.attackTime + (int)((level -1)*base.levelUpAttackTime);
+        }else{
+            this.attackTime = (int)Math.ceil(base.attackTime + (int)((level -1)*base.levelUpAttackTime));
+        }
 
         if(this.cdTime <=0 ) this.cdTime = 0;
-
         //SimpleLog.logd(TAG,"setStartLevel before:"+this.name+" number= "+effectNumber);
     }
 

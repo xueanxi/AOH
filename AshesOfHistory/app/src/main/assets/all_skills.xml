@@ -90,7 +90,7 @@
         <level_up_range>0</level_up_range><!--技能升级 范围提升 浮点数 -->
         <level_up_number>0</level_up_number><!--技能升级 攻击目标数量 浮点数-->
         <level_up_effect_rate>0</level_up_effect_rate><!--技能升级 攻击效果触发概率 浮点数-->
-        <level_up_cd_time>-0.3</level_up_cd_time><!--技能升级 cd时间减少-->
+        <level_up_cd_time>0</level_up_cd_time><!--技能升级 cd时间减少-->
     </item>
     <!--=====================1～99为普通攻击 End =======================-->
 

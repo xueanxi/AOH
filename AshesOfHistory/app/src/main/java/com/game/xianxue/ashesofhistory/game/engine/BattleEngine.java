@@ -157,10 +157,9 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
         // TODO: 2017/10/15 这里不应该直接进行释放技能或者普通攻击，应该在执行之前，判断一下，是否有什么负面状态，导致本次行动不能正常执行的。
 
         // 打印Buff效果
-        String aBuff = actionPerson.showActiveBuff();
-        String pBuff = actionPerson.showPassiveBuff();
-        BuffLog.log(actionPerson.getName()+"doAction() 主动Buff:" + aBuff);
-        BuffLog.log(actionPerson.getName()+"doAction() 被动Buff:" + pBuff);
+        actionPerson.showActiveBuff(null);
+        actionPerson.showPassiveBuff(null);
+        actionPerson.showActiveSkill(null);
 
         handleBuffBeforeAction(actionPerson);
 
@@ -168,27 +167,10 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
         restoreHp(actionPerson);
 
         // 处理负面状态
-        // 1.处理损失生命值的buff
-        int reduceHp = 0;
-        ArrayList<BuffBattle> buffLists = actionPerson.getActiveBuffList();
-        if(buffLists != null && buffLists.size()>0){
-            for(BuffBattle buff:buffLists){
-                for(int i = 0 ;i<buff.getBuff_effect().length;i++){
-                    if(buff.getBuff_effect()[i] == BUFF_REDUCE_HP){
-                        // 损失生命值的buff在上buff的时候已经计算好了伤害，伤害放在getBuff_constant里面，
-                        // 所以这个时候就不许要额外处理浮动伤害getBuff_fluctuate（）了
-                        reduceHp = (int)buff.getBuff_constant()[i];
-                        if(actionPerson.getHP_Current() > reduceHp){
-                            actionPerson.setHP_Current(actionPerson.getHP_Current() - reduceHp);
-                            BattleLog.log(actionPerson.getName()+"受到["+buff.getName()+"]影响，损失了"+reduceHp+"点生命");
-                        }else{
-                            actionPerson.setHP_Current(0);
-                            BattleLog.log(actionPerson.getName()+"受到["+buff.getName()+"]影响，损失了"+reduceHp+"点生命，死亡了！！！");
-                            return;
-                        }
-                    }
-                }
-            }
+        // 处理损失生命值的buff,如果处理后，死亡了则清除所有主动buff，然后返回。
+        if(handlerReduceBuff(actionPerson)){
+            actionPerson.getActiveBuffList().clear();
+            return;
         }
 
         // 打印技能列表
@@ -217,6 +199,37 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
 
         // 行动结束后，移除过时的buf
         handleBuffAfterAction(actionPerson);
+    }
+
+    /**
+     * 处理让执行行动的人减低HP的buff，返回减低HP之后，是否会死亡
+     * @param actionPerson
+     * @return true 会死亡，false 不会死亡
+     */
+    private boolean handlerReduceBuff(BattlePerson actionPerson) {
+        boolean isActionPersonDie = false;
+        int reduceHp = 0;
+        ArrayList<BuffBattle> buffLists = actionPerson.getActiveBuffList();
+        if(buffLists != null && buffLists.size()>0){
+            for(BuffBattle buff:buffLists){
+                for(int i = 0 ;i<buff.getBuff_effect().length;i++){
+                    if(buff.getBuff_effect()[i] == BUFF_REDUCE_HP){
+                        // 损失生命值的buff在上buff的时候已经计算好了伤害，伤害放在getBuff_constant里面，
+                        // 所以这个时候就不许要额外处理浮动伤害getBuff_fluctuate（）了
+                        reduceHp = (int)buff.getBuff_constant()[i];
+                        if(actionPerson.getHP_Current() > reduceHp){
+                            actionPerson.setHP_Current(actionPerson.getHP_Current() - reduceHp);
+                            BattleLog.log(actionPerson.getName()+"受到["+buff.getName()+"]影响，损失了"+reduceHp+"点生命");
+                        }else{
+                            actionPerson.setHP_Current(0);
+                            BattleLog.log(actionPerson.getName()+"受到["+buff.getName()+"]影响，损失了"+reduceHp+"点生命，死亡了！！！");
+                            isActionPersonDie = true;
+                        }
+                    }
+                }
+            }
+        }
+        return isActionPersonDie;
     }
 
     /**
@@ -332,7 +345,6 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
      * 战斗中每回合恢复HP
      */
     private void restoreHp(BattlePerson actionPerson) {
-        // TODO: 10/18/17 这个方法只是实现了，还没有测试，需要在正常战斗中测试
 
         // TODO: 10/18/17 那些影响生命自然恢复的buff，在这里处理
         int HP_Loss = actionPerson.getHP_MAX() - actionPerson.getHP_Current();       // 当前受损了多少生命值
@@ -805,7 +817,6 @@ public class BattleEngine implements Interface_Skill, Interface_Buff {
     }
 
     /**
-     * // TODO: 10/23/17 这个方法还没有测试
      * beAttackPerson.addBuffInBattle(buff);
      * 触发技能特效 为 beAttackPerson 附加 buff
      *

@@ -170,7 +170,8 @@ public class BattleEngineTest {
         // 第一队
         BasePerson play1 = PersonDataManager.getPersonFromDataBaseByPinyin("guanyu");
         BattlePerson b1 = new BattlePerson(new NormalPerson(play1,5));
-        b1.showSkill();
+        b1.showPassiveBuff(null);
+        b1.showActiveSkill(null);
     }
 
 

@@ -41,12 +41,14 @@ public class PersonTest {
         BasePerson p1 = PersonDataManager.getPersonFromDataBaseByPinyin("zhangfei");
         NormalPerson n1 = new NormalPerson(p1,10);
         Log.d(TAG,"TestGetNormalPerson() : "+n1.display());
-        n1.showSkill();
+        n1.showPassiveBuff(null);
+        n1.showActiveSkill(null);
 
         BasePerson p2 = PersonDataManager.getPersonFromDataBaseByPinyin("lvbu");
         NormalPerson n2 = new NormalPerson(p2,10);
         Log.d(TAG,"TestGetNormalPerson() : "+n2.display());
-        n2.showSkill();
+        n2.showPassiveBuff(null);
+        n2.showActiveSkill(null);
     }
     /**
      * 测试BasePerson数据

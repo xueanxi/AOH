@@ -6,7 +6,7 @@ import android.util.Log;
  * Created by user on 5/24/17.
  */
 public class BattleLog {
-    static final String TAG = "BattleLog";
+    static public final String TAG = "BattleLog";
     static boolean isSimpleMode = false;
 
     public static void log(String content) {
