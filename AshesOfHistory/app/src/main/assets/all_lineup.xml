@@ -23,7 +23,7 @@
 -->
 <all_lineup>
     <item>
-        <lineup_id>0</lineup_id><!--技能ID,唯一标识这个技能-->
+        <formation_id>0</formation_id><!--技能ID,唯一标识这个技能-->
         <name>普通阵型</name><!--阵型-->
         <introduce>普通阵型</introduce><!--阵型描述-->
         <max_person>6</max_person><!--最大人数-->
@@ -36,7 +36,7 @@
     </item>
 
     <item>
-        <lineup_id>1</lineup_id><!--技能ID,唯一标识这个技能-->
+        <formation_id>1</formation_id><!--技能ID,唯一标识这个技能-->
         <name>长蛇阵</name><!--阵型-->
         <introduce>长蛇阵</introduce><!--阵型描述-->
         <max_person>8</max_person><!--最大人数-->
@@ -51,7 +51,7 @@
     </item>
 
     <item>
-        <lineup_id>2</lineup_id><!--技能ID,唯一标识这个技能-->
+        <formation_id>2</formation_id><!--技能ID,唯一标识这个技能-->
         <name>铁桶阵</name><!--阵型-->
         <introduce>铁桶阵</introduce><!--阵型描述-->
         <max_person>9</max_person><!--最大人数-->
