@@ -1,0 +1,25 @@
+<component name="libraryTable">
+  <library name="debug1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/debug/classes_704f023b1c5a1a9642ea476812a1f332f7687c19.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/debug/classes_a6cd9a0ed00c77b004c2b0e004b5787712aa5156.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/debug/classes_40d9e1dfe7fac75567475c4b88ee9106b0c61151.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/debug/classes_63e314fd860f16462d5a4f6eac78c76a5c4b1187.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/debug/classes_b183b67747ce4226a42e4e79c7919f2656254f36.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/debug/classes_97c22a527a423afef33c71ce913a2efb61294cce.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/debug/classes_113cffeea511666f4a34b2dd69c02e467e430461.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/debug/constraint-layout-solver-1.0.2_4d3330b6adf486eb53c406078c8bdf7a77129571.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/debug/gson-2.2.4_cea4d7a01777dd8c8ae6219607361aafc4a197e9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/debug/classes_251680bbe12aae4ff4cd516247d347e6c7a3e4ab.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/debug/debug_1d77d78dd92c5c52c02d365bc7a7380a21f7940e.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/debug/classes_0a7e4ccf5a532c85f8fd3a19379db88ce928ec83.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/debug/classes_543ef1cc62fc5c19f3701f9edd14758062ce838e.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/debug/classes_7819b06d877d4755c5d08b7e5b8300e3ba60e758.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/debug/support-annotations-25.4.0_cfbf5cbadf2e66284a3d6d70bfeb08d957959144.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/debug/classes_04138a0e109ef3bfe1e76f2496908ccb295dc6cc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/debug/classes_c5729855e2d241502dde1a12b881c06c22bae0fa.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

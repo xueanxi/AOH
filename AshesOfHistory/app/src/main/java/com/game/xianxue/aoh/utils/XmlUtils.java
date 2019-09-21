@@ -27,7 +27,7 @@ public class XmlUtils {
     private static final String DEFAULT_PAGE_TAG = "all_character.xml";
     private static final String SKILL_PAGE_TAG = "all_skills.xml";
     private static final String BUFF_PAGE_TAG = "all_buff.xml";
-    private static final String LINE_UP_PAGE_TAG = "all_lineup.xml";
+    private static final String LINE_UP_PAGE_TAG = "all_formation.xml";
 
     /**
      * 从 xml 文件 解析 所有人物出来
@@ -311,6 +311,7 @@ public class XmlUtils {
                         lineupBase.setFormationsJsonString(FormationUnitBase.toJsonString(unitList));
                         lineupBaseList.add(lineupBase);
                         unitList = null;
+                        ShowUtils.showLists(TAG,lineupBaseList);
                         lineupBase = null;
                     }
                     break;

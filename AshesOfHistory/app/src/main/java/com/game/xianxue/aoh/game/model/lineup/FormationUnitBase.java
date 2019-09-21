@@ -16,8 +16,8 @@ import java.util.List;
 public class FormationUnitBase {
     private static final String TAG = "=FormationUnitBase";
 
-    int x = 0;                      // x 坐标，以左上角为原点
-    int y = 0;                      // y 坐标，以左上角为原点
+    int row = 0;                      // row 坐标，以左上角为原点
+    int col = 0;                      // col 坐标，以左上角为原点
     ArrayList<Integer> buffIDs;     // 阵型中这个位置能获得哪些Buff的加成
     boolean canSetPerson = false;   // 是否能站人
     boolean isCounsellor = false;   // 是否军师的位置
@@ -29,29 +29,29 @@ public class FormationUnitBase {
 
     /**
      *  unitString 是xml文件里面读取出来的内容，内容的格式如下面两个例子。
-     * 例子1： unitString可能是这样的："1,2,3" 表示 x = 1,y = 2 ,作用的buff id为 3
-     * 例子2： unitString可能是这样的："1,2,3,4,5,6" 表示 x = 1,y = 2 ,作用的 buff 有多个分别为3,4,5,6
-     * 特殊情况：主帅和军师的位置是固定的，主帅的字符串以l开头，军师的字符串以j开头
+     * 例子1： unitString可能是这样的："1,2,3" 表示 row = 1,col = 2 ,作用的buff id为 3
+     * 例子2： unitString可能是这样的："1,2,3,4,5,6" 表示 row = 1,col = 2 ,作用的 buff 有多个分别为3,4,5,6
+     * 特殊情况：主帅和军师的位置是固定的，主帅的字符串以L开头，军师的字符串以C开头
      *
      * @param unitString
      */
     public FormationUnitBase(String unitString) {
         if (unitString == null || unitString.length() < 5) {
-            LogUtils.e(TAG, "Error !!! 初始化LineupUint失败");
+            LogUtils.e(TAG, "Error !!! 初始化阵型失败，unitString == null.");
         }
 
         // 先判断是否是主帅和军师的单元格
-        if(unitString.startsWith("l")){
+        if(unitString.startsWith("L")){
             isLeader = true;
             unitString = unitString.substring(1,unitString.length());
-        }else if(unitString.startsWith("c")){
+        }else if(unitString.startsWith("C")){
             isCounsellor = true;
             unitString = unitString.substring(1,unitString.length());
         }
 
-        // 二维数组存储数据 x = 0时，表示第一行数据 y=0 时表示第一列数据
-        this.x = Integer.valueOf((unitString.split(",")[0]));
-        this.y = Integer.valueOf((unitString.split(",")[1]));
+        // 二维数组存储数据 row = 0时，表示第一行数据 col=0 时表示第一列数据
+        this.row = Integer.valueOf((unitString.split(",")[0]));
+        this.col = Integer.valueOf((unitString.split(",")[1]));
 
         unitString = unitString.substring(4, unitString.length());
         String[] buffid = unitString.split(",");
@@ -87,20 +87,20 @@ public class FormationUnitBase {
         return itemInfos;
     }
 
-    public int getX() {
-        return x;
+    public int getRow() {
+        return row;
     }
 
-    public void setX(int x) {
-        this.x = x;
+    public void setRow(int row) {
+        this.row = row;
     }
 
-    public int getY() {
-        return y;
+    public int getCol() {
+        return col;
     }
 
-    public void setY(int y) {
-        this.y = y;
+    public void setCol(int col) {
+        this.col = col;
     }
 
     public ArrayList<Integer> getBuffIDs() {
@@ -138,8 +138,8 @@ public class FormationUnitBase {
     @Override
     public String toString() {
         return "FormationUnitBase{" +
-                "x=" + x +
-                ", y=" + y +
+                "row=" + row +
+                ", col=" + col +
                 ", buffIDs=" + buffIDs +
                 ", canSetPerson=" + canSetPerson +
                 ", isCounsellor=" + isCounsellor +

@@ -38,9 +38,9 @@ public class FormationBattle extends FormationBase implements IBuffEffect, ILine
 
         // 为阵型中的每一个位置初始化
 
-        formationMatrix = new UnitBattle[LINEUP_MAX_X][LINEUP_MAX_Y];
+        formationMatrix = new UnitBattle[LINEUP_MAX_COL][LINEUP_MAX_ROW];
         for (FormationUnitBase data : unitList) {
-            formationMatrix[data.getX()][data.getY()] = new UnitBattle(data);
+            formationMatrix[data.getRow()][data.getCol()] = new UnitBattle(data);
         }
 
         fillPerson();
@@ -140,8 +140,8 @@ public class FormationBattle extends FormationBase implements IBuffEffect, ILine
             // 填充团长
             if (person.isLeader()) {
                 isOver = false;
-                for (int x = 0; x < LINEUP_MAX_X; x++) {
-                    for (int y = 0; y < LINEUP_MAX_Y; y++) {
+                for (int x = 0; x < LINEUP_MAX_COL; x++) {
+                    for (int y = 0; y < LINEUP_MAX_ROW; y++) {
                         unit = formationMatrix[x][y];
                         if (unit != null && unit.isLeader()) {
                             unit.setPersonIndex(i);
@@ -157,8 +157,8 @@ public class FormationBattle extends FormationBase implements IBuffEffect, ILine
             } else if (person.isCounsellor()) {
                 // 填充军师
                 isOver = false;
-                for (int x = 0; x < LINEUP_MAX_X; x++) {
-                    for (int y = 0; y < LINEUP_MAX_Y; y++) {
+                for (int x = 0; x < LINEUP_MAX_COL; x++) {
+                    for (int y = 0; y < LINEUP_MAX_ROW; y++) {
                         unit = formationMatrix[x][y];
                         if (unit != null && unit.isCounsellor()) {
                             unit.setPersonIndex(i);
@@ -173,8 +173,8 @@ public class FormationBattle extends FormationBase implements IBuffEffect, ILine
             } else if (!person.isLeader() && !person.isCounsellor()) {
                 // 填充其他
                 isOver = false;
-                for (int x = 0; x < LINEUP_MAX_X; x++) {
-                    for (int y = 0; y < LINEUP_MAX_Y; y++) {
+                for (int x = 0; x < LINEUP_MAX_COL; x++) {
+                    for (int y = 0; y < LINEUP_MAX_ROW; y++) {
                         unit = formationMatrix[x][y];
                         if (unit != null && unit.isEmpty() && !unit.isCounsellor() && !unit.isLeader()) {
                             unit.setPersonIndex(i);
@@ -236,10 +236,10 @@ public class FormationBattle extends FormationBase implements IBuffEffect, ILine
      * @return
      */
     public ArrayList<BattlePerson> getPersonsByDistance(int distance) {
-        if (distance < LINEUP_MINI_X) {
-            distance = LINEUP_MINI_X;
-        } else if (distance > LINEUP_MAX_Y) {
-            distance = LINEUP_MAX_Y;
+        if (distance < LINEUP_MINI_COL) {
+            distance = LINEUP_MINI_COL;
+        } else if (distance > LINEUP_MAX_ROW) {
+            distance = LINEUP_MAX_ROW;
         }
         ArrayList<BattlePerson> result = null;
         UnitBattle unit = null;
@@ -253,8 +253,8 @@ public class FormationBattle extends FormationBase implements IBuffEffect, ILine
 
         // 计算出 nearX
         boolean isOver = false;
-        for (int x = 0; x < LINEUP_MAX_X; x++) {
-            for (int y = 0; x < LINEUP_MAX_Y; x++) {
+        for (int x = 0; x < LINEUP_MAX_COL; x++) {
+            for (int y = 0; x < LINEUP_MAX_ROW; x++) {
                 unit = formationMatrix[x][y];
                 if (unit == null || unit.isEmpty() || unit.getPersonIndex()==-1){
                     // 如果这个位置是空的，则跳过
@@ -273,12 +273,12 @@ public class FormationBattle extends FormationBase implements IBuffEffect, ILine
         // 得到所有攻击范围内存活的目标
         result = new ArrayList<BattlePerson>();
         int farCol = nearX + distance - 1;
-        if (farCol > (LINEUP_MAX_X - 1)) {
-            farCol = LINEUP_MAX_X - 1;
+        if (farCol > (LINEUP_MAX_COL - 1)) {
+            farCol = LINEUP_MAX_COL - 1;
         }
         BattlePerson personInRange = null;
         for (int x = nearX; x <= farCol; x++) {
-            for (int y = 0; y < LINEUP_MAX_X; y++) {
+            for (int y = 0; y < LINEUP_MAX_COL; y++) {
                 unit = formationMatrix[x][y];
                 if (unit == null || unit.getPersonIndex() == -1 || unit.isEmpty()) {
                     LogUtils.d(TAG, "getPersonsByDistance(): unit is invalid");
@@ -315,9 +315,9 @@ public class FormationBattle extends FormationBase implements IBuffEffect, ILine
     public void displayMatrix() {
         BattleLog.log(BattleLog.TAG_LU,"======" + this.name + "的阵型 start ======");
         UnitBattle unit = null;
-        for (int y = 0; y < LINEUP_MAX_Y; y++) {
+        for (int y = 0; y < LINEUP_MAX_ROW; y++) {
             StringBuilder sb = new StringBuilder();
-            for (int x = 0; x < LINEUP_MAX_X; x++) {
+            for (int x = 0; x < LINEUP_MAX_COL; x++) {
                 unit = formationMatrix[x][y];
                 if (unit != null && !unit.isEmpty()) {
                     String name = membersList.get(unit.getPersonIndex()).getName();

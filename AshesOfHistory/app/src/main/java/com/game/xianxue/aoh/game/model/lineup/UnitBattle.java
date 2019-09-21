@@ -17,8 +17,8 @@ public class UnitBattle extends FormationUnitBase {
      * @param base
      */
     public UnitBattle(FormationUnitBase base) {
-        this.x = base.getX();
-        this.y = base.getY();
+        this.row = base.getRow();
+        this.col = base.getCol();
         this.isCounsellor = base.isCounsellor();
         this.isLeader = base.isLeader();
         this.canSetPerson = base.isCanSetPerson();
@@ -46,8 +46,8 @@ public class UnitBattle extends FormationUnitBase {
     public String toString() {
         return "UnitBattle{" +
                 "index=" + personIndex +
-                ", x=" + x +
-                ", y=" + y +
+                ", row=" + row +
+                ", col=" + col +
                 ", buffIDs=" + buffIDs +
                 ", isEmpty=" + isEmpty +
                 ", canSetPerson=" + canSetPerson +

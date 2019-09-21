@@ -11,6 +11,7 @@ import com.game.xianxue.aoh.database.BuffDataManager;
 import com.game.xianxue.aoh.database.SkillDataManager;
 import com.game.xianxue.aoh.game.model.buff.BuffBase;
 import com.game.xianxue.aoh.game.model.buff.BuffEffectBattle;
+import com.game.xianxue.aoh.game.model.lineup.FormationBase;
 import com.game.xianxue.aoh.game.skill.SkillBase;
 import com.game.xianxue.aoh.game.model.TeamModel;
 import com.game.xianxue.aoh.game.model.person.BasePerson;
@@ -24,6 +25,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
@@ -182,10 +184,14 @@ public class DataBaseTest {
      * 测试通过id 获取一个阵型
      */
     @Test
-    public void TestgetLineupdata() throws Exception {
+    public void TestgetFormationdata() throws Exception {
         init();
         //FormationManager.getAllDataFromDataBase();
-        XmlUtils.getAllBuff(mContext);
+        List<FormationBase> formations  = XmlUtils.getAllFormations(mContext);
+
+        for(FormationBase base:formations){
+            base.displayMatrix("XmlUtils");
+        }
         //BuffDataManager.getBuffFromDataBaseById(1);
         //BuffDataManager.loadAllBuffFromDataBase();
     }

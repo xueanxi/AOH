@@ -1,5 +1,7 @@
 package com.game.xianxue.aoh.game.model.lineup;
 
+import com.game.xianxue.aoh.Log.LogUtils;
+
 import java.util.List;
 
 /**
@@ -11,17 +13,17 @@ import java.util.List;
  *     3  [ 0 0 B ]
  *     4  [ 0 0 0 ]
  *
- *  定义数组[5][3]
+ *  定义数组[5][3] 5行3列
  * 这是一个5行3列的阵型，row = 5, col = 3, 左上角是(0,0) A坐标(1,0) B坐标(2,3),A在前排,B在后排
  */
 public class FormationBase {
     final static String TAG = "FormationBase";
 
-    public static int LINEUP_MAX_X = 6;        // 阵型X坐标最大数字
-    public static int LINEUP_MAX_Y = 6;        // 阵型Y坐标最大数字
+    public static int LINEUP_MAX_COL = 6;           // 阵型最大列数
+    public static int LINEUP_MAX_ROW = 6;           // 阵型最大行数
 
-    public static int LINEUP_MINI_Y = 1;     // 阵型最小行数
-    public static int LINEUP_MINI_X = 1;     // 阵型最小列数
+    public static int LINEUP_MINI_ROW = 1;          // 阵型最小行数
+    public static int LINEUP_MINI_COL = 1;          // 阵型最小列数
 
     // 阵法类型，不同类型的阵法站位不同，加成效果不同。
     protected int formation_id;                           // 阵法id
@@ -83,6 +85,39 @@ public class FormationBase {
 
     public void setFormationsJsonString(String formationsJsonString) {
         this.formationsJsonString = formationsJsonString;
+    }
+
+    /**
+     * 展示 矩阵
+     */
+    public void displayMatrix(String tag) {
+        getUnitList();
+        LogUtils.d(tag,"======" + this.name + "的阵型 start ======");
+        for (int row = 0; row < LINEUP_MAX_ROW; row++) {
+            StringBuilder sb = new StringBuilder();
+            for (int col = 0; col < LINEUP_MAX_COL; col++) {
+                boolean isEmpty = true;
+                for(FormationUnitBase unit:unitList){
+                    if(unit.getRow() == row && unit.getCol() == col){
+                        if(unit.isCounsellor){
+                            sb.append("C");
+
+                        }else if(unit.isLeader){
+                            sb.append("L");
+                        }else{
+                            sb.append("X");
+                        }
+                        isEmpty = false;
+                        break;
+                    }
+                }
+                if(isEmpty){
+                    sb.append("O");
+                }
+            }
+            LogUtils.d(tag,sb.toString());
+        }
+        LogUtils.d(tag,"======" + this.name + "的阵型 end ======");
     }
 
     @Override

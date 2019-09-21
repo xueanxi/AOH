@@ -1,0 +1,22 @@
+<component name="libraryTable">
+  <library name="debug">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/androidTest/debug/classes_a12956df497ebe3d2f153b73ea5d7804f8db6627.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/androidTest/debug/hamcrest-integration-1.3_fc487b3b80a835b0948c801a72bde4074f1c3d16.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/androidTest/debug/classes_760e77067cca4ce0020ce248a7329379e4e2fdfe.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/androidTest/debug/javax.inject-1_72b7373fdeda6b1ccc0ba025ffb36e1a5d73eeed.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/androidTest/debug/debug_53e6ae1766ea3c708186b44a55b923b1f4095601.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/androidTest/debug/hamcrest-library-1.3_3b19e2a058cec3b966baca9aa526d552a6c390c7.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/androidTest/debug/hamcrest-core-1.3_919982722556902682d6e5f2483cd1a359e4eb96.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/androidTest/debug/javax.annotation-api-1.2_03e37aa345d4bd94d04889b7f6a4e662c43d7c37.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/androidTest/debug/classes_c885c53eb3a249a56fa881bc6a8d361f403f4e72.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/androidTest/debug/jsr305-2.0.1_11e21b20fc01b4a43d1e0980f15c8c00b3ad6ab8.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/androidTest/debug/junit-4.12_d7704c0ba9abfeb4781802900c0a5ad2121784af.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/androidTest/debug/javawriter-2.1.1_9eee44abce9eca0d002a2ee07b5438cc07dc549f.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/androidTest/debug/classes_5b607a8ac356c5679c239b6b11970001aaf91d9d.jar!/" />
+      <root url="jar://$PROJECT_DIR$/AshesOfHistory/app/build/intermediates/pre-dexed/androidTest/debug/classes_2293331fb8c8fea94942b57f0b8711683e214ee7.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

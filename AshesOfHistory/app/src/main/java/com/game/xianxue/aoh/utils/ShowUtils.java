@@ -3,6 +3,7 @@ package com.game.xianxue.aoh.utils;
 import com.game.xianxue.aoh.Log.LogUtils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by user on 8/29/17.
@@ -13,6 +14,17 @@ public class ShowUtils {
 
     //=====================显示ArrayList start========================
     public static void showArrayLists(String tag, ArrayList lists) {
+        if (lists == null) {
+            LogUtils.d(tag, "ArrayList is null !!! ");
+            return;
+        }
+
+        for(int i = 0;i<lists.size();i++){
+            LogUtils.d(tag,i+":" + lists.get(i).toString());
+        }
+    }
+
+    public static void showLists(String tag, List lists) {
         if (lists == null) {
             LogUtils.d(tag, "ArrayList is null !!! ");
             return;

@@ -29,25 +29,34 @@
         <max_person>6</max_person><!--最大人数-->
         <unit>0,0,2</unit>
         <unit>1,0,0,1</unit>
-        <unit>c0,1,1</unit>
-        <unit>l1,1,0,1</unit>
+        <unit>C0,1,1</unit>
+        <unit>L1,1,0,1</unit>
         <unit>0,2,1</unit>
         <unit>1,2,1</unit>
     </item>
 
+    <!--
+    长蛇阵
+    0 row row 0 0 0
+    0 0 row 0 0 0
+    0 0 L 0 0 0
+    0 0 C 0 0 0
+    0 0 row 0 0 0
+    0 row row 0 0 0
+    -->
     <item>
         <formation_id>1</formation_id><!--技能ID,唯一标识这个技能-->
         <name>长蛇阵</name><!--阵型-->
         <introduce>长蛇阵</introduce><!--阵型描述-->
         <max_person>8</max_person><!--最大人数-->
-        <unit>0,0,2</unit>
-        <unit>3,0,2</unit>
         <unit>0,1,2</unit>
-        <unit>3,1,1</unit>
-        <unit>0,2,1</unit>
-        <unit>3,2,1</unit>
-        <unit>l1,3,0</unit>
-        <unit>c2,3,0</unit>
+        <unit>0,2,2</unit>
+        <unit>1,2,2</unit>
+        <unit>L2,2,1</unit>
+        <unit>C3,2,1</unit>
+        <unit>4,2,1</unit>
+        <unit>5,2,0</unit>
+        <unit>5,1,0</unit>
     </item>
 
     <item>
@@ -59,8 +68,8 @@
         <unit>0,1,2</unit>
         <unit>0,2,2</unit>
         <unit>1,0,1</unit>
-        <unit>l1,1,1</unit>
-        <unit>c1,2,1</unit>
+        <unit>L1,1,1</unit>
+        <unit>C1,2,1</unit>
         <unit>2,0,0</unit>
         <unit>2,1,0</unit>
         <unit>2,2,0,1,2</unit>
